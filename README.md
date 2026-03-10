@@ -1,6 +1,6 @@
 EDR-VAULT
 Personal Game Library and Save Backup Manager
-Version 1.0.2 - Portable - Windows 10 / Windows 11 (x64)
+Version 1.0.4 - Portable - Windows 10 / Windows 11 (x64)
 
 Built with Electron - Free and Open Source (MIT License)
 

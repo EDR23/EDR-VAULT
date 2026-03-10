@@ -1,6 +1,6 @@
 {
   "name": "edr-vault",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "EDR-Vault \u2014 Personal Game Library & Save Backup Manager",
   "main": "main.js",
   "scripts": {

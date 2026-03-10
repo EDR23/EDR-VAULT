@@ -2,6 +2,41 @@
 
 ---
 
+## v1.0.4 — 2026-03-11
+
+### 🐛 Bug Fixes
+
+- **Windows Startup — `ffmpeg.dll was not found` after reboot**
+  The portable `.exe` depends on Electron's full runtime folder (DLLs, resources, etc.). Copying only the `.exe` to `%LOCALAPPDATA%\EDR-Vault\` left all DLLs behind, causing a fatal error on next login. Fixed by copying the **entire directory** recursively so all dependencies are present alongside the executable.
+
+### ✨ New Features
+
+- **Purge Interval — added 12h and 1 Month options**
+  The interval selector now offers five choices: **12h · 1 Day · 1 Week · 1 Month · 1 Year**, giving finer control over how often automatic FTP save cleanup runs.
+
+---
+
+## v1.0.3 — 2026-03-10
+
+### 🐛 Bug Fixes
+
+- **Windows Startup task pointed to Temp folder — broke after reboot**
+  The portable `.exe` runs from a temporary extraction folder (`%TEMP%\...\EDR-Vault.exe`) that Windows deletes after the process exits. The Task Scheduler task was pointing to this Temp path, so it became a dead link on the next login. Fixed by copying the exe to a permanent location (`%LOCALAPPDATA%\EDR-Vault\EDR-Vault.exe`) before registering the task.
+
+### 🔧 Changes & Improvements
+
+- **Startup: two-layer approach (Task Scheduler + shell:startup shortcut)**
+  When enabling startup, EDR-Vault now:
+  1. Copies itself to `%LOCALAPPDATA%\EDR-Vault\EDR-Vault.exe` (permanent, survives temp cleanup)
+  2. Creates a Windows Task Scheduler task pointing to that permanent copy (elevated, highest privileges)
+  3. Drops a `.lnk` shortcut in `shell:startup` as a fallback (no UAC required)
+  Removing startup deletes both the task and the shortcut.
+
+- **Single-instance lock**
+  Added `app.requestSingleInstanceLock()` so that double-clicking the portable `.exe` when EDR-Vault is already running will not open a second instance.
+
+---
+
 ## v1.0.2 — 2026-03-10
 
 ### 🐛 Bug Fixes

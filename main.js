@@ -1,9 +1,17 @@
 const { app, BrowserWindow, ipcMain, shell, dialog, net, Tray, Menu, nativeImage, Notification } = require('electron');
 app.setAppUserModelId('com.edr.vault');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const fs = require('fs');
 const crypto = require('crypto');
+const os = require('os');
+
+// ── SINGLE INSTANCE LOCK ──────────────────────────────────
+// Ensures only one EDR-Vault process can run at a time.
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+}
 
 let mainWindow;
 let cloudWindow = null;
@@ -461,49 +469,88 @@ ipcMain.handle('purge-ftp-saves', async (_, { cfg }) => {
   finally { client.close(); }
 });
 
-// ── STARTUP ON BOOT — Windows Task Scheduler ──────────────
-// Creates/removes a scheduled task that launches the app at logon.
-// Uses PowerShell elevated (UAC prompt) only for create/remove.
-// The app itself runs as a normal user; only the task creation needs elevation.
+// ── STARTUP ON BOOT ────────────────────────────────────────
+// Copies the portable .exe to a permanent location and drops a
+// shortcut in shell:startup. No UAC / Task Scheduler needed.
+// On remove: deletes the shortcut (exe copy stays as cache).
 
-const TASK_NAME = 'EDR-Vault';
+function getPermanentExePath() {
+  const dir = path.join(os.homedir(), 'AppData', 'Local', 'EDR-Vault');
+  return path.join(dir, 'EDR-Vault.exe');
+}
 
-ipcMain.handle('task-status', () => {
+function getStartupShortcutPath() {
+  return path.join(
+    os.homedir(),
+    'AppData', 'Roaming',
+    'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup',
+    'EDR-Vault.lnk'
+  );
+}
+
+function copyExeToPermanentLocation() {
+  const srcExe  = process.execPath;
+  const srcDir  = path.dirname(srcExe);
+  const destExe = getPermanentExePath();
+  const destDir = path.dirname(destExe);
+
+  // Copy the entire folder (exe + all DLLs Electron needs)
+  function copyDirRecursive(from, to) {
+    if (!fs.existsSync(to)) fs.mkdirSync(to, { recursive: true });
+    for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+      const srcPath  = path.join(from, entry.name);
+      const destPath = path.join(to, entry.name);
+      if (entry.isDirectory()) {
+        copyDirRecursive(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  }
+
+  copyDirRecursive(srcDir, destDir);
+  return destExe;
+}
+
+function createStartupShortcut(targetExe) {
+  const lnk    = getStartupShortcutPath();
+  const target = targetExe.replace(/\\/g, '\\\\');
+  const wdir   = path.dirname(targetExe).replace(/\\/g, '\\\\');
+  const lnkEsc = lnk.replace(/\\/g, '\\\\');
+  const ps = [
+    `$ws = New-Object -ComObject WScript.Shell`,
+    `$sc = $ws.CreateShortcut('${lnkEsc}')`,
+    `$sc.TargetPath = '${target}'`,
+    `$sc.Arguments = '--hidden'`,
+    `$sc.WorkingDirectory = '${wdir}'`,
+    `$sc.Description = 'EDR-Vault — Game Library'`,
+    `$sc.Save()`
+  ].join('; ');
   try {
-    require('child_process').execSync(
-      `schtasks /query /tn "${TASK_NAME}"`,
-      { stdio: 'ignore', windowsHide: true }
-    );
+    execSync(`powershell -WindowStyle Hidden -NoProfile -Command "${ps}"`, { windowsHide: true });
     return true;
   } catch(e) { return false; }
+}
+
+function removeStartupShortcut() {
+  const lnk = getStartupShortcutPath();
+  try { if (fs.existsSync(lnk)) fs.unlinkSync(lnk); } catch(e) {}
+}
+
+ipcMain.handle('task-status', () => {
+  return fs.existsSync(getStartupShortcutPath());
 });
 
 ipcMain.handle('task-create', async () => {
-  const exePath = process.execPath;
-  const ps = `
-    $action = New-ScheduledTaskAction -Execute '"${exePath}"' -Argument '--hidden'
-    $trigger = New-ScheduledTaskTrigger -AtLogOn
-    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
-    $principal = New-ScheduledTaskPrincipal -UserId ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name) -RunLevel Highest -LogonType Interactive
-    Register-ScheduledTask -TaskName '${TASK_NAME}' -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force
-  `.replace(/\n\s*/g, '; ').trim();
-  return new Promise(resolve => {
-    require('child_process').exec(
-      `powershell -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -Wait -WindowStyle Hidden -ArgumentList '-NoProfile -Command ${ps.replace(/'/g, "''")}'"`,
-      { windowsHide: true },
-      (err) => resolve(!err)
-    );
-  });
+  try {
+    const permExe = copyExeToPermanentLocation();
+    return createStartupShortcut(permExe);
+  } catch(e) { return false; }
 });
 
 ipcMain.handle('task-remove', async () => {
-  return new Promise(resolve => {
-    require('child_process').exec(
-      `powershell -WindowStyle Hidden -Command "Start-Process schtasks -Verb RunAs -Wait -WindowStyle Hidden -ArgumentList '/delete /tn ${TASK_NAME} /f'"`,
-      { windowsHide: true },
-      (err) => resolve(!err)
-    );
-  });
+  removeStartupShortcut();
+  return true;
 });
 
 // ── SCAN FOR SAVE FOLDER ──────────────────────────────────

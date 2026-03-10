@@ -884,8 +884,10 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
         <div class="settings-row" id="purge-interval-row">
           <div><div class="settings-row-label" data-i18n="purge_interval_label">Purge Interval</div><div class="settings-row-desc" data-i18n="purge_interval_desc">How often to run the automatic purge</div></div>
           <div class="interval-btn-group">
+            <button class="interval-btn purge-interval-btn" data-purge="12h" onclick="setPurgeInterval('12h')" data-i18n="purge_12h">12h</button>
             <button class="interval-btn purge-interval-btn" data-purge="1d" onclick="setPurgeInterval('1d')" data-i18n="purge_day">1 Day</button>
             <button class="interval-btn purge-interval-btn" data-purge="1w" onclick="setPurgeInterval('1w')" data-i18n="purge_week">1 Week</button>
+            <button class="interval-btn purge-interval-btn" data-purge="1mo" onclick="setPurgeInterval('1mo')" data-i18n="purge_month">1 Month</button>
             <button class="interval-btn purge-interval-btn" data-purge="1y" onclick="setPurgeInterval('1y')" data-i18n="purge_year">1 Year</button>
           </div>
         </div>
@@ -1041,7 +1043,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 // ═══════════════════════════════════════════════════════════
 // VERSION & MODAL IDS — declared first (used in STRINGS below)
 // ═══════════════════════════════════════════════════════════
-const CURRENT_VERSION = '1.0.2';
+const CURRENT_VERSION = '1.0.4';
 const DOWNLOAD_URL = 'https://github.com/EDR23/EDR-VAULT/releases/latest/download/EDR-Vault-Portable.exe';
 const ALL_MODAL_IDS = [
   'modal-overlay', 'cloud-modal-overlay', 'backups-modal-overlay',
@@ -1101,14 +1103,14 @@ const STRINGS = {
     purge_interval_label:'Purge Interval',
     purge_interval_desc:'How often to run the automatic purge',
     purge_btn:'Purge FTP Saves Now',
-    purge_day:'1 Day', purge_week:'1 Week', purge_year:'1 Year',
+    purge_12h:'12h', purge_day:'1 Day', purge_week:'1 Week', purge_month:'1 Month', purge_year:'1 Year',
     purge_interval_word:'Interval',
     settings_updates_title:'Updates',
     settings_updates_label:'Check for Updates',
     settings_updates_desc:'Check if a new version of EDR-Vault is available',
     settings_updates_btn:'Check Now',
     update_checking:'Checking for updates…',
-    update_uptodate:'You are on the latest version (v1.0.2)',
+    update_uptodate:'You are on the latest version (v1.0.4)',
     update_available:'New version available! Click below to download.',
     update_error:'Could not check for updates. Check your internet connection.',
     update_download_btn:'Download latest version',
@@ -1168,13 +1170,13 @@ const STRINGS = {
     purge_interval_label:'Intervalo de Limpieza',
     purge_interval_desc:'Con qué frecuencia ejecutar la limpieza automática',
     purge_btn:'Limpiar FTP Ahora',
-    purge_day:'1 Día', purge_week:'1 Semana', purge_year:'1 Año',
+    purge_12h:'12h', purge_day:'1 Día', purge_week:'1 Semana', purge_month:'1 Mes', purge_year:'1 Año',
     settings_updates_title:'Actualizaciones',
     settings_updates_label:'Buscar Actualizaciones',
     settings_updates_desc:'Comprueba si hay una nueva versión de EDR-Vault disponible',
     settings_updates_btn:'Comprobar',
     update_checking:'Buscando actualizaciones…',
-    update_uptodate:'Tienes la última versión (v1.0.2)',
+    update_uptodate:'Tienes la última versión (v1.0.4)',
     update_available:'¡Nueva versión disponible! Haz clic para descargar.',
     update_error:'No se pudo comprobar. Revisa tu conexión a internet.',
     update_download_btn:'Descargar última versión',

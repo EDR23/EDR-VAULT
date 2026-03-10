@@ -1,7 +1,7 @@
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                          EDR-VAULT                                 ║
 ║           Personal Game Library & Save Backup Manager              ║
-║                   Version 1.0.2 — Portable                         ║
+║                   Version 1.0.4 — Portable                         ║
 ║               Windows 10 / Windows 11  (x64)                       ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
