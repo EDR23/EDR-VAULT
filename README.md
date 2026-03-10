@@ -72,6 +72,10 @@ Click the **Customise** button in the top bar to choose a colour theme.
 
 EDR-VAULT uses Windows 10/11 notification system so make sure you enable if you want to get notified when a backup or purge happend.
 
+### 9. Auto-Run
+
+EDR-VAULT Can me launched at Windows startup so make sure you enable that option its on settings.
+
 ---
 
 ## License
