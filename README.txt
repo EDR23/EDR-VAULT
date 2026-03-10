@@ -1,8 +1,11 @@
+
+This Program must be running as administrator in order to open every added game.
+
 ╔══════════════════════════════════════════════════════════════════════╗
-║                          EDR-VAULT                                 ║
-║           Personal Game Library & Save Backup Manager              ║
-║                   Version 1.0.0 — Portable                         ║
-║               Windows 10 / Windows 11  (x64)                       ║
+║                          EDR-VAULT                                   ║
+║           Personal Game Library & Save Backup Manager                ║
+║                   Version 1.0.0 — Portable                           ║
+║               Windows 10 / Windows 11  (x64)                         ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
   Built with Electron · Free & Open Source (MIT License)
@@ -163,3 +166,4 @@ Puedes copiar, modificar y distribuir este software libremente.
 Sin garantías expresas ni implícitas.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
