@@ -1,0 +1,43 @@
+{
+  "name": "edr-vault",
+  "version": "1.0.0",
+  "description": "EDR-Vault — Personal Game Library & Save Backup Manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build-portable": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.edrvault.gamelibrary",
+    "productName": "EDR-Vault",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "icon.ico"
+    },
+    "portable": {
+      "artifactName": "EDR-Vault-Portable.exe"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "preload-cloud.js",
+      "ftp.html",
+      "index.html",
+      "icon.ico",
+      "icon.png"
+    ]
+  },
+  "dependencies": {
+    "basic-ftp": "^5.0.5"
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.0"
+  }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:"/>
+<title>EDR-Vault — FTP Backup</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:#0f1520;color:#e2e8f0;height:100vh;display:flex;flex-direction:column;overflow:hidden;-webkit-app-region:no-drag}
+  #tb{height:38px;background:#0a0f1a;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 12px;flex-shrink:0;-webkit-app-region:drag;position:relative}
+  .tb-logo{display:flex;align-items:center;gap:7px;-webkit-app-region:no-drag}
+  .tb-logo span{font-size:12px;font-weight:700;letter-spacing:3px;color:#3b82f6;text-transform:uppercase}
+  #btn-close{position:absolute;right:0;top:0;width:46px;height:38px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;transition:background .15s,color .15s;-webkit-app-region:no-drag}
+  #btn-close:hover{background:#dc2626;color:#fff}
+  #body{flex:1;overflow-y:auto;padding:24px 22px 18px}
+  #body::-webkit-scrollbar{width:4px}
+  #body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+  .page-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:.5px;color:#f1f5f9;margin-bottom:6px}
+  .page-sub{font-size:12px;color:#64748b;line-height:1.6;margin-bottom:20px}
+  #status{display:none;align-items:center;gap:8px;padding:10px 13px;border-radius:8px;font-size:12px;font-weight:500;margin-bottom:16px}
+  #status.show{display:flex}
+  #status.loading{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa}
+  #status.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#4ade80}
+  #status.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .spin{animation:spin .8s linear infinite;display:inline-block}
+  .card{background:#161f30;border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:20px;margin-bottom:14px;transition:border-color .2s}
+  .card.connected{border-color:rgba(34,197,94,.35)}
+  .card-top{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+  .card-logo{width:46px;height:46px;border-radius:10px;background:#1e2d45;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .card-info{flex:1}
+  .card-name{font-size:15px;font-weight:700;color:#f1f5f9}
+  .card-desc{font-size:11px;color:#475569;margin-top:2px}
+  .badge{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .badge-off{background:rgba(255,255,255,.05);color:#374151;border:1px solid rgba(255,255,255,.07)}
+  .badge-on{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .connected-info{display:none;align-items:center;gap:7px;padding:8px 11px;border-radius:6px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);font-size:11px;color:#4ade80;margin-bottom:14px}
+  .connected-info.show{display:flex}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:10.5px;font-weight:700;color:#64748b;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+  .field-row{display:flex;gap:8px}
+  .field-row .field{flex:1;margin-bottom:0}
+  input.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:10px 12px;color:#e2e8f0;font-size:12px;outline:none;transition:border-color .2s,background .2s;font-family:-apple-system,'Segoe UI',Arial,sans-serif}
+  input.inp:focus{border-color:#3b82f6;background:rgba(59,130,246,.05)}
+  input.inp.err{border-color:#ef4444;animation:shake .3s ease}
+  input.inp::placeholder{color:#374151;font-size:11px}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .btn-row{display:flex;gap:8px;margin-top:16px}
+  .btn-test{padding:10px 16px;border:1px solid rgba(59,130,246,.3);border-radius:7px;background:rgba(59,130,246,.08);color:#60a5fa;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .btn-test:hover:not(:disabled){background:rgba(59,130,246,.18);border-color:#3b82f6}
+  .btn-test:disabled{opacity:.4;cursor:not-allowed}
+  .btn-save{flex:1;padding:10px 16px;border:none;border-radius:7px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;box-shadow:0 4px 14px rgba(59,130,246,.25)}
+  .btn-save:hover:not(:disabled){filter:brightness(1.1);box-shadow:0 4px 18px rgba(59,130,246,.4)}
+  .btn-save:disabled{opacity:.4;cursor:not-allowed}
+  .btn-disconnect{padding:10px 16px;border:1px solid rgba(239,68,68,.2);border-radius:7px;background:rgba(239,68,68,.08);color:#f87171;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+  .btn-disconnect:hover{background:rgba(239,68,68,.18);border-color:#ef4444}
+  #footer{padding:12px 22px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:flex-end;flex-shrink:0;background:#0a0f1a}
+  .btn-done{padding:9px 24px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border:none;border-radius:7px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 14px rgba(59,130,246,.3)}
+  .btn-done:hover{filter:brightness(1.1);box-shadow:0 6px 20px rgba(59,130,246,.45)}
+</style>
+</head>
+<body>
+
+<div id="tb">
+  <div class="tb-logo">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+    <span>EDR-Vault — Backup</span>
+  </div>
+  <button id="btn-close" onclick="doClose()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<div id="body">
+  <div class="page-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+    <span id="txt-title">FTP Backup</span>
+  </div>
+  <p class="page-sub" id="txt-sub"></p>
+  <div id="status"><span id="status-icon"></span><span id="status-text"></span></div>
+
+  <div class="card" id="card-ftp">
+    <div class="card-top">
+      <div class="card-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="5" rx="1"/><circle cx="19" cy="5.5" r="1" fill="#3b82f6" stroke="none"/><circle cx="19" cy="12.5" r="1" fill="#3b82f6" stroke="none"/><circle cx="19" cy="19.5" r="1" fill="#3b82f6" stroke="none"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-name" id="txt-card-name">FTP Server</div>
+        <div class="card-desc" id="txt-card-desc"></div>
+      </div>
+      <div class="badge badge-off" id="badge-ftp">
+        <span class="badge-dot"></span>
+        <span id="badge-ftp-text">Not configured</span>
+      </div>
+    </div>
+
+    <div class="connected-info" id="ci-ftp">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+      <span id="ci-ftp-host"></span>
+    </div>
+
+    <div class="field-row">
+      <div class="field" style="flex:3"><label id="txt-lbl-host">Host / Server</label><input class="inp" id="inp-host" type="text" placeholder="ftp.example.com"/></div>
+      <div class="field" style="flex:1"><label id="txt-lbl-port">Port</label><input class="inp" id="inp-port" type="number" placeholder="21" value="21" min="1" max="65535"/></div>
+    </div>
+    <div class="field" style="margin-top:12px"><label id="txt-lbl-user">Username</label><input class="inp" id="inp-user" type="text" placeholder="ftpuser" autocomplete="off"/></div>
+    <div class="field"><label id="txt-lbl-pass">Password</label><input class="inp" id="inp-pass" type="password" placeholder="••••••••" autocomplete="off"/></div>
+    <div class="field">
+      <label><span id="txt-lbl-path">Remote Path</span> <span style="color:#374151;font-weight:400;text-transform:none;letter-spacing:0" id="txt-lbl-path-hint">(folder on server)</span></label>
+      <input class="inp" id="inp-path" type="text" placeholder="/vault-saves"/>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-test" id="btn-test" onclick="testConnection()">Test Connection</button>
+      <button class="btn-save" id="btn-save" onclick="saveConfig()">Save &amp; Connect</button>
+      <button class="btn-disconnect" id="btn-disc" onclick="disconnect()" style="display:none">Disconnect</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer">
+  <button class="btn-done" id="btn-done" onclick="doClose()">Done</button>
+</div>
+
+<script>
+const FTP_STR = {
+  en:{title:'FTP Backup',sub:'Configure your FTP server to store game save backups. Files are uploaded directly to your server.',cardName:'FTP Server',cardDesc:'Upload save backups to your own server',notCfg:'Not configured',configured:'Configured',lblHost:'Host / Server',lblPort:'Port',lblUser:'Username',lblPass:'Password',lblPath:'Remote Path',lblPathHint:'(folder on server)',btnTest:'Test Connection',btnSave:'Save & Connect',btnDisc:'Disconnect',btnDone:'Done',discConfirm:'Remove FTP configuration?',validErr:'Please fill in Host, Username and Password.',connecting:'Connecting to FTP server…',connOk:'Connection successful!',connFail:'Connection failed: ',testing:'Testing connection…',savedOk:'FTP server saved! Backups will upload to ',couldNot:'Could not connect: ',removed:'FTP configuration removed.',apiErr:'API not available. Reinstall the app.'},
+  es:{title:'Backup FTP',sub:'Configura tu servidor FTP para almacenar backups de partidas. Los archivos se suben directamente a tu servidor.',cardName:'Servidor FTP',cardDesc:'Sube backups de partidas a tu propio servidor',notCfg:'No configurado',configured:'Configurado',lblHost:'Host / Servidor',lblPort:'Puerto',lblUser:'Usuario',lblPass:'Contraseña',lblPath:'Ruta Remota',lblPathHint:'(carpeta en el servidor)',btnTest:'Probar Conexión',btnSave:'Guardar y Conectar',btnDisc:'Desconectar',btnDone:'Listo',discConfirm:'¿Eliminar la configuración FTP?',validErr:'Por favor rellena Host, Usuario y Contraseña.',connecting:'Conectando al servidor FTP…',connOk:'¡Conexión exitosa!',connFail:'Falló la conexión: ',testing:'Probando conexión…',savedOk:'¡Servidor FTP guardado! Los backups se subirán a ',couldNot:'No se pudo conectar: ',removed:'Configuración FTP eliminada.',apiErr:'API no disponible. Reinstala la aplicación.'}
+};
+
+const urlLang = new URLSearchParams(window.location.search).get('lang') || 'en';
+const L = FTP_STR[urlLang] || FTP_STR.en;
+
+(function applyLang(){
+  document.getElementById('txt-title').textContent        = L.title;
+  document.getElementById('txt-sub').textContent          = L.sub;
+  document.getElementById('txt-card-name').textContent    = L.cardName;
+  document.getElementById('txt-card-desc').textContent    = L.cardDesc;
+  document.getElementById('badge-ftp-text').textContent   = L.notCfg;
+  document.getElementById('txt-lbl-host').textContent     = L.lblHost;
+  document.getElementById('txt-lbl-port').textContent     = L.lblPort;
+  document.getElementById('txt-lbl-user').textContent     = L.lblUser;
+  document.getElementById('txt-lbl-pass').textContent     = L.lblPass;
+  document.getElementById('txt-lbl-path').textContent     = L.lblPath;
+  document.getElementById('txt-lbl-path-hint').textContent= L.lblPathHint;
+  document.getElementById('btn-test').textContent         = L.btnTest;
+  document.getElementById('btn-save').textContent         = L.btnSave;
+  document.getElementById('btn-disc').textContent         = L.btnDisc;
+  document.getElementById('btn-done').textContent         = L.btnDone;
+})();
+
+function waitForAPI(cb){if(window.cloudAPI){cb();return;}let t=0;const id=setInterval(()=>{t++;if(window.cloudAPI){clearInterval(id);cb();}else if(t>40){clearInterval(id);showErr(L.apiErr);}},50);}
+let S={};
+function doClose(){if(window.cloudAPI)window.cloudAPI.close();else window.close();}
+function showStatus(type,msg){const el=document.getElementById('status');el.className='show '+type;document.getElementById('status-text').textContent=msg;document.getElementById('status-icon').innerHTML=type==='loading'?'<span class="spin">&#9696;</span>':type==='ok'?'✓':'✕';if(type!=='loading')setTimeout(()=>el.classList.remove('show'),4500);}
+function showErr(m){showStatus('err',m);}
+function setLoading(on){document.getElementById('btn-test').disabled=on;document.getElementById('btn-save').disabled=on;}
+function getCfg(){return{host:document.getElementById('inp-host').value.trim(),port:document.getElementById('inp-port').value.trim()||'21',user:document.getElementById('inp-user').value.trim(),password:document.getElementById('inp-pass').value,remotePath:document.getElementById('inp-path').value.trim()||'/vault-saves'};}
+function validateFields(){let ok=true;['inp-host','inp-user','inp-pass'].forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('err');setTimeout(()=>el.classList.remove('err'),600);ok=false;}});if(!ok)showErr(L.validErr);return ok;}
+function updateUI(){const cfg=S.ftp;const conn=!!(cfg&&cfg.host);document.getElementById('badge-ftp').className='badge '+(conn?'badge-on':'badge-off');document.getElementById('badge-ftp-text').textContent=conn?L.configured:L.notCfg;document.getElementById('ci-ftp').classList.toggle('show',conn);document.getElementById('card-ftp').classList.toggle('connected',conn);document.getElementById('btn-disc').style.display=conn?'block':'none';if(conn){document.getElementById('ci-ftp-host').textContent=cfg.user+'@'+cfg.host+':'+(cfg.port||21)+(cfg.remotePath||'/vault-saves');document.getElementById('inp-host').value=cfg.host;document.getElementById('inp-port').value=cfg.port||21;document.getElementById('inp-user').value=cfg.user;document.getElementById('inp-pass').value=cfg.password||'';document.getElementById('inp-path').value=cfg.remotePath||'/vault-saves';}}
+async function testConnection(){if(!validateFields())return;setLoading(true);showStatus('loading',L.connecting);const r=await window.cloudAPI.ftpTest(getCfg());setLoading(false);if(r.success)showStatus('ok',L.connOk);else showErr(L.connFail+(r.error||'Unknown error'));}
+async function saveConfig(){if(!validateFields())return;setLoading(true);showStatus('loading',L.testing);const cfg=getCfg();const r=await window.cloudAPI.ftpTest(cfg);setLoading(false);if(!r.success){showErr(L.couldNot+(r.error||'Unknown error'));return;}S.ftp=cfg;S.provider='ftp';await window.cloudAPI.saveSettings(S);updateUI();showStatus('ok',L.savedOk+cfg.host);}
+async function disconnect(){if(!confirm(L.discConfirm))return;delete S.ftp;S.provider=null;await window.cloudAPI.saveSettings(S);updateUI();showStatus('ok',L.removed);}
+waitForAPI(async()=>{S=await window.cloudAPI.getSettings()||{};updateUI();});
+</script>
+</body>
+</html>
