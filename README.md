@@ -74,7 +74,7 @@ EDR-VAULT uses Windows 10/11 notification system so make sure you enable if you 
 
 ### 9. Auto-Run
 
-EDR-VAULT Can me launched at Windows startup so make sure you enable that option its on settings.
+EDR-VAULT Can me launched at Windows startup so make sure you enable that option.
 
 ---
 
