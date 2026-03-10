@@ -60,7 +60,7 @@ EDR-Vault uses standard FTP for cloud backups. We recommend **[ftpgrid.com](http
 4. Enter those details in **Settings → FTP Configuration**
 
 ### 6. Language
-Go to **Settings → Language** to switch between **English** and **Español**. The entire UI switches instantly — no restart needed.
+Go to **Settings → Language** to switch between **English** and **Spanish**. The entire UI switches instantly — no restart needed.
 
 ### 7. Themes
 Click the **Customise** button in the top bar to choose a colour theme.
