@@ -55,8 +55,9 @@ Select a game and click **PLAY**. EDR-Vault records your playtime and last-playe
 EDR-Vault uses standard FTP for cloud backups. We recommend **[ftpgrid.com](https://ftpgrid.com)** — free FTP hosting, no credit card needed.
 
 1. Sign up at [https://ftpgrid.com](https://ftpgrid.com)
-2. Note your host, port, username and password
-3. Enter those details in **Settings → FTP Configuration**
+2. Note your host, port, username and password and the remote path.
+3. For the remote path use /backup it creates by default this remote path  if you are using ftpgrid as provided.
+4. Enter those details in **Settings → FTP Configuration**
 
 ### 6. Language
 Go to **Settings → Language** to switch between **English** and **Español**. The entire UI switches instantly — no restart needed.
