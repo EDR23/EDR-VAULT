@@ -5,6 +5,8 @@
 
 > ⚠️ This program must be running as **administrator** in order to open every added game.
 
+<img width="1276" height="1598" alt="{85B6B678-2893-45CF-A71F-9D624DA2E633}" src="https://github.com/user-attachments/assets/754921ff-3167-4893-b97b-f51cac93a5b4" />
+
 Built with **Electron** · Free & Open Source (**MIT License**) · Designed and coded by **Claude AI (Anthropic)**
 
 ---
