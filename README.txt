@@ -113,7 +113,7 @@ CARACTERÍSTICAS PRINCIPALES
   • 100 % portátil — no requiere instalación, funciona desde un USB
 
 CÓMO USAR
-──────────
+
 
 1. AÑADIR JUEGOS
    Haz clic en el botón + (parte inferior izquierda).
@@ -164,6 +164,7 @@ LICENCIA
 Licencia MIT — Libre para uso personal y comercial.
 Puedes copiar, modificar y distribuir este software libremente.
 Sin garantías expresas ni implícitas.
+
 
 
 
