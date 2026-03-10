@@ -2,44 +2,74 @@
 
 ---
 
+## v1.0.2 — 2026-03-10
+
+### 🐛 Bug Fixes
+
+- **All buttons were unresponsive after startup (click-blocking)**
+  Root cause: `window.electronAPI.oauthRefresh` and `window.electronAPI.oauthStart` were called in `index.html` but were missing from `preload.js` and `main.js`. The resulting `TypeError` silently crashed the entire JavaScript runtime on load, making every button non-functional. Fixed by adding stub IPC handlers for `oauth-start` and `oauth-refresh` in `main.js` and exposing them via `preload.js`.
+
+- **`CURRENT_VERSION` and `ALL_MODAL_IDS` — "Cannot access before initialization" errors**
+  Both `const` declarations were placed deep in the script, after code that referenced them (notably inside the `STRINGS` object). Since `const`/`let` are not hoisted like `var`, this caused a `ReferenceError` at runtime. Moved all three declarations (`CURRENT_VERSION`, `DOWNLOAD_URL`, `ALL_MODAL_IDS`) and the `closeAllModals()` helper to the very top of the script, before `STRINGS`.
+
+- **Search bar overlapped buttons when resizing the window narrower**
+  The search bar was positioned with `position:absolute; left:50%; transform:translateX(-50%)`, which placed it outside the normal flex flow. At narrow window widths it would render on top of the nav buttons and pill buttons. Changed to a proper flex item (`flex:1; min-width:0; overflow:hidden`) so it automatically yields space to its siblings without overlapping.
+
+### 🔧 Changes & Improvements
+
+- **Removed UAC / Administrator elevation requirement**
+  The `requireAdministrator` manifest flag and the `checkAdminAndRelaunch()` logic have been removed. EDR-Vault now launches as a standard user process, eliminating the UAC prompt on every start.
+
+- **Startup replaced: shell shortcut (LNK) → Windows Task Scheduler**
+  The previous "Launch at Startup" used a startup folder shortcut that required Administrator rights and was unreliable with portable executables. It has been replaced with a Windows Task Scheduler task (`EDR-Vault`), created via PowerShell with a one-time UAC elevation. The task runs at log-on with highest available privileges. The toggle switch has been replaced with a button that creates or removes the task and shows its current status.
+
+- **F12 / Ctrl+Shift+I DevTools shortcut — fixed in packaged `.exe`**
+  `globalShortcut.register` did not work reliably inside a packaged Electron executable. Replaced with a `before-input-event` listener on `mainWindow.webContents`, which works correctly in all environments.
+
+- **`asar: false` added to build configuration**
+  The build now extracts all files instead of bundling them into an `.asar` archive. This ensures `preload.js` and other files are accessible as real files on disk, preventing path resolution failures in packaged builds.
+
+### 🛠️ Developer
+
+- **Debug Tool added (`debug.html`)**
+  A standalone `debug.html` page is included in the build. Accessible via tray icon → right-click → **Open Debug Tool**. Opens with DevTools visible and provides:
+  - ✓/✗ status check for every `window.electronAPI` method
+  - Live IPC handler tests (`getCloudSettings`, `taskStatus`, `checkUpdate`)
+  - localStorage viewer with game count
+  - Console error / unhandled promise rejection intercept
+  - Buttons: Clear Storage, Export Storage as JSON, Run All Tests
+
+---
+
 ## v1.0.1 — 2026-03-10
 
 ### 🐛 Bug Fixes
 
+- **Theme colors not applied to modal footer buttons (Cancel / Save Game)**
+  Several UI elements had hardcoded hex color values instead of CSS variables, causing them to remain stuck on the default "Abyss" theme colors. Fixed across modal footers, headers, Settings header, titlebar gradient, game list panel, and game grid cards.
+
 - **"About" and "Customize" buttons did not open their modals**
-  The titlebar buttons were unresponsive to clicks under certain conditions within Electron. The modal-opening system was redesigned using `double requestAnimationFrame`, and the CSS was migrated from `display:none/flex` to `opacity/visibility` to ensure the render engine correctly processes the transition before displaying content.
+  Redesigned the modal-opening system using `double requestAnimationFrame` and migrated CSS from `display:none/flex` to `opacity/visibility`.
 
 - **All modals opened simultaneously when clicking "Settings"**
-  Added a `closeAllModals()` helper that clears the state of all overlays before opening any modal, preventing them from remaining open in the background at the same time.
+  Added a `closeAllModals()` helper that clears all overlays before opening any modal.
 
-- **"Close" and "Apply" buttons in Settings scrolled with the content**
-  The Settings modal footer was incorrectly nested inside `modal-body`, causing it to scroll along with the content. It is now a sibling element with `flex-shrink:0`, keeping it always fixed at the bottom of the modal.
+- **"Close" and "Apply" buttons in Settings scrolled with content**
+  Modal footer was incorrectly nested inside `modal-body`. Now a sibling element with `flex-shrink:0`.
 
 - **X button click area misaligned from the visible icon**
-  Across all modals, `overflow:hidden` combined with the `modalIn` animation (which uses `transform: translateY`) caused Electron to calculate click zones based on the original layout position while content was visually rendered offset. Removed `overflow:hidden` from all modal-box elements.
+  Removed `overflow:hidden` from all modal-box elements, which was causing Electron to miscalculate click zones during CSS animations.
 
 - **X button in "About" modal unresponsive when using English**
-  Switching to English caused longer text to push the modal beyond the screen height. Since the overlay uses `align-items:center`, the top section (where the X lives) was clipped outside the viewport. Added `max-height:88vh` to the modal and `overflow-y:auto` to the body so content scrolls inside instead of pushing the X off-screen.
+  Added `max-height:88vh` to the modal and `overflow-y:auto` to the body.
 
 ### ✨ New Features
 
 - **Animated progress bar for update check**
-  Clicking "Check Now" now shows an animated progress bar (0→100% over ~3 seconds) with a spinning icon and live percentage counter. The real GitHub API call runs in parallel. The button can be pressed any number of times — each press restarts the animation from 0.
-
-- **Executable requires Administrator privileges (UAC elevation)**
-  EDR-Vault now runs as Administrator automatically via a UAC manifest embedded in the executable (`requestedExecutionLevel=requireAdministrator`). This prevents permission errors when launching certain games and ensures full system access. A runtime fallback relaunch is also included for development mode.
-
-- **"Launch at Startup" option now communicates admin requirement**
-  The startup setting description was updated in both Spanish and English to clearly indicate that Administrator privileges are required. A shield icon (🛡) was added to the option label as a visual indicator.
-
-### 🎨 Visual Improvements
+  Clicking "Check Now" shows an animated progress bar (0→100% over ~3s) with a spinning icon and live percentage counter.
 
 - **Titlebar buttons redesigned to pill style**
-  The flat titlebar buttons were replaced with pill-shaped buttons with distinct colors:
-  - 🟣 **About** — purple
-  - 🔵 **Settings** — blue (accent)
-  - 🟢 **Customize** — green
-  Each button features a colored border, semi-transparent background, and a glow effect on hover.
+  🟣 About · 🔵 Settings · 🟢 Customize
 
 ---
 

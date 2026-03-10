@@ -1,6 +1,6 @@
 {
   "name": "edr-vault",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "EDR-Vault \u2014 Personal Game Library & Save Backup Manager",
   "main": "main.js",
   "scripts": {
@@ -23,8 +23,7 @@
           ]
         }
       ],
-      "icon": "icon.ico",
-      "requestedExecutionLevel": "requireAdministrator"
+      "icon": "icon.ico"
     },
     "portable": {
       "artifactName": "EDR-Vault-Portable.exe"
@@ -36,8 +35,10 @@
       "ftp.html",
       "index.html",
       "icon.ico",
-      "icon.png"
-    ]
+      "icon.png",
+      "debug.html"
+    ],
+    "asar": false
   },
   "dependencies": {
     "basic-ftp": "^5.0.5"

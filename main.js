@@ -11,25 +11,7 @@ let tray = null;
 let isQuitting = false;
 let startHidden = process.argv.includes('--hidden');
 
-// ── REQUIRE ADMIN ELEVATION ───────────────────────────────
-// If not running as administrator, relaunch with UAC elevation prompt.
-// The exe manifest (requestedExecutionLevel=requireAdministrator) handles
-// this automatically for packaged builds. This is a runtime fallback for dev.
-function checkAdminAndRelaunch() {
-  if (app.isPackaged) return; // packaged exe already has UAC manifest
-  try {
-    require('child_process').execSync('net session', { stdio: 'ignore' });
-  } catch(e) {
-    // Not admin — relaunch with elevation
-    const args = process.argv.slice(1).join(' ');
-    require('child_process').exec(
-      `powershell -WindowStyle Hidden -Command "Start-Process -FilePath '${process.execPath}' -ArgumentList '${args}' -Verb RunAs"`,
-      () => {}
-    );
-    app.quit();
-  }
-}
-checkAdminAndRelaunch();
+
 
 // ── TRAY ──────────────────────────────────────────────────
 function createTray() {
@@ -44,6 +26,20 @@ function createTray() {
       click: () => {
         mainWindow.show();
         mainWindow.focus();
+      }
+    },
+    { type: 'separator' },
+    {
+      label: 'Open Debug Tool',
+      click: () => {
+        const dbg = new BrowserWindow({
+          width: 800, height: 700,
+          title: 'EDR-Vault Debug',
+          backgroundColor: '#0d1117',
+          webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js') }
+        });
+        dbg.loadFile(path.join(__dirname, 'debug.html'));
+        dbg.webContents.openDevTools({ mode: 'bottom' });
       }
     },
     { type: 'separator' },
@@ -83,6 +79,17 @@ function createWindow() {
     createTray();
     if (!startHidden) {
       mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+
+  // F12 / Ctrl+Shift+I opens DevTools — works in packaged exe
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F12' && input.type === 'keyDown') {
+      mainWindow.webContents.toggleDevTools();
+    }
+    if (input.key === 'I' && input.control && input.shift && input.type === 'keyDown') {
+      mainWindow.webContents.toggleDevTools();
     }
   });
 
@@ -345,6 +352,10 @@ ipcMain.handle('save-cloud-settings', async (_, s) => {
   try { fs.writeFileSync(settingsPath(), JSON.stringify(s,null,2)); return { success: true }; } catch(e) { return { success: false, error: e.message }; }
 });
 
+// OAuth stubs — cloud auth is handled in ftp.html window
+ipcMain.handle('oauth-start',   async () => ({ success: false, error: 'Use the FTP window to connect' }));
+ipcMain.handle('oauth-refresh', async () => ({ success: false, error: 'Use the FTP window to connect' }));
+
 // ── FTP ───────────────────────────────────────────────────
 function makeFtpClient() {
   const ftp = require('basic-ftp');
@@ -450,41 +461,49 @@ ipcMain.handle('purge-ftp-saves', async (_, { cfg }) => {
   finally { client.close(); }
 });
 
-// ── STARTUP ON BOOT ───────────────────────────────────────
-// --hidden flag makes the app start silently in the tray (no window shown)
-ipcMain.handle('get-login-item', () => {
+// ── STARTUP ON BOOT — Windows Task Scheduler ──────────────
+// Creates/removes a scheduled task that launches the app at logon.
+// Uses PowerShell elevated (UAC prompt) only for create/remove.
+// The app itself runs as a normal user; only the task creation needs elevation.
+
+const TASK_NAME = 'EDR-Vault';
+
+ipcMain.handle('task-status', () => {
   try {
-    const startupFolder = require('path').join(
-      require('os').homedir(),
-      'AppData', 'Roaming', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup'
+    require('child_process').execSync(
+      `schtasks /query /tn "${TASK_NAME}"`,
+      { stdio: 'ignore', windowsHide: true }
     );
-    const lnkPath = require('path').join(startupFolder, 'EDR-Vault.lnk');
-    return require('fs').existsSync(lnkPath);
+    return true;
   } catch(e) { return false; }
 });
 
-ipcMain.handle('set-login-item', (_, enable) => {
-  try {
-    const startupFolder = require('path').join(
-      require('os').homedir(),
-      'AppData', 'Roaming', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup'
+ipcMain.handle('task-create', async () => {
+  const exePath = process.execPath;
+  const ps = `
+    $action = New-ScheduledTaskAction -Execute '"${exePath}"' -Argument '--hidden'
+    $trigger = New-ScheduledTaskTrigger -AtLogOn
+    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
+    $principal = New-ScheduledTaskPrincipal -UserId ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name) -RunLevel Highest -LogonType Interactive
+    Register-ScheduledTask -TaskName '${TASK_NAME}' -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force
+  `.replace(/\n\s*/g, '; ').trim();
+  return new Promise(resolve => {
+    require('child_process').exec(
+      `powershell -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -Wait -WindowStyle Hidden -ArgumentList '-NoProfile -Command ${ps.replace(/'/g, "''")}'"`,
+      { windowsHide: true },
+      (err) => resolve(!err)
     );
-    const lnkPath = require('path').join(startupFolder, 'EDR-Vault.lnk');
-    if (enable) {
-      const exePath = process.execPath;
-      shell.writeShortcutLink(lnkPath, 'create', {
-        target: exePath,
-        args: '--hidden',
-        description: 'EDR-Vault Game Library',
-        icon: exePath,
-        iconIndex: 0,
-        workingDirectory: require('path').dirname(exePath),
-      });
-    } else {
-      if (require('fs').existsSync(lnkPath)) require('fs').unlinkSync(lnkPath);
-    }
-    return true;
-  } catch(e) { return false; }
+  });
+});
+
+ipcMain.handle('task-remove', async () => {
+  return new Promise(resolve => {
+    require('child_process').exec(
+      `powershell -WindowStyle Hidden -Command "Start-Process schtasks -Verb RunAs -Wait -WindowStyle Hidden -ArgumentList '/delete /tn ${TASK_NAME} /f'"`,
+      { windowsHide: true },
+      (err) => resolve(!err)
+    );
+  });
 });
 
 // ── SCAN FOR SAVE FOLDER ──────────────────────────────────

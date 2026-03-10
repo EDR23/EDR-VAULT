@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EDR-Vault Debug</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e8eaf0; font-family: 'Consolas', monospace; font-size: 12px; padding: 16px; }
+  h2 { color: #1a9fff; margin-bottom: 12px; font-family: sans-serif; }
+  .section { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+  .section h3 { color: #aaa; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .ok   { color: #3ddc84; }
+  .err  { color: #ff4757; }
+  .warn { color: #ffa502; }
+  .row  { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid #21262d; }
+  .row:last-child { border-bottom: none; }
+  #log  { background: #0d1117; border: 1px solid #30363d; border-radius: 4px; padding: 8px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+  .log-err  { color: #ff4757; }
+  .log-warn { color: #ffa502; }
+  .log-ok   { color: #3ddc84; }
+  button { background: #1a9fff; border: none; border-radius: 4px; color: #fff; padding: 6px 12px; cursor: pointer; font-size: 11px; margin-right: 6px; margin-top: 6px; }
+  button:hover { background: #0d8aed; }
+  button.danger { background: #ff4757; }
+</style>
+</head>
+<body>
+<h2>🔧 EDR-Vault Debug Tool</h2>
+
+<div class="section">
+  <h3>electronAPI Status</h3>
+  <div id="api-status">Checking...</div>
+</div>
+
+<div class="section">
+  <h3>Storage (localStorage)</h3>
+  <div id="storage-status">Checking...</div>
+  <button onclick="clearStorage()" class="danger" style="margin-top:8px">⚠ Clear All Storage</button>
+  <button onclick="exportStorage()">Export Storage JSON</button>
+</div>
+
+<div class="section">
+  <h3>IPC Handler Tests</h3>
+  <button onclick="testAll()">Run All Tests</button>
+  <div id="ipc-results" style="margin-top:8px"></div>
+</div>
+
+<div class="section">
+  <h3>Console Log</h3>
+  <div id="log"></div>
+</div>
+
+<script>
+const log = document.getElementById('log');
+
+function addLog(msg, type = '') {
+  const line = document.createElement('div');
+  line.className = type ? 'log-' + type : '';
+  line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+// Intercept console
+const origError = console.error;
+const origWarn  = console.warn;
+const origLog   = console.log;
+console.error = (...a) => { addLog('ERROR: ' + a.join(' '), 'err');  origError(...a); };
+console.warn  = (...a) => { addLog('WARN:  ' + a.join(' '), 'warn'); origWarn(...a);  };
+console.log   = (...a) => { addLog(a.join(' '), 'ok');               origLog(...a);   };
+
+window.addEventListener('error', e => {
+  addLog('UNCAUGHT: ' + e.message + ' (' + e.filename + ':' + e.lineno + ')', 'err');
+});
+window.addEventListener('unhandledrejection', e => {
+  addLog('PROMISE REJECT: ' + (e.reason?.message || e.reason), 'err');
+});
+
+// Check electronAPI
+function checkAPI() {
+  const el = document.getElementById('api-status');
+  if (!window.electronAPI) {
+    el.innerHTML = '<span class="err">❌ window.electronAPI is UNDEFINED — preload.js is not loading!</span>';
+    addLog('CRITICAL: window.electronAPI is undefined', 'err');
+    return;
+  }
+  const methods = [
+    'minimize','maximize','close','launchExe','killGame',
+    'openFolder','browseExe','browseImage','browseSaveFolder',
+    'getSaveInfo','zipSaves','getCloudSettings','saveCloudSettings',
+    'openCloudWindow','uploadToCloud','listCloudBackups','downloadCloudBackup',
+    'restoreBackup','ensureSavePath','deleteCloudBackup','purgeFtpBackups',
+    'taskStatus','taskCreate','taskRemove','oauthStart','oauthRefresh',
+    'scanSaveFolder','onCloudUpdated','notify','onGameExited',
+    'onWindowMaximized','openExternal','checkUpdate',
+    'showGameCtxMenu','onCtxAction','onNativeContextMenu'
+  ];
+  let html = '';
+  let missing = [];
+  methods.forEach(m => {
+    const exists = typeof window.electronAPI[m] === 'function';
+    if (!exists) missing.push(m);
+    html += `<div class="row"><span>${m}</span><span class="${exists ? 'ok' : 'err'}">${exists ? '✓' : '✗ MISSING'}</span></div>`;
+  });
+  el.innerHTML = html;
+  if (missing.length) addLog('Missing API methods: ' + missing.join(', '), 'err');
+  else addLog('All electronAPI methods present', 'ok');
+}
+
+// Check storage
+function checkStorage() {
+  const el = document.getElementById('storage-status');
+  const keys = ['vault_v2', 'vault_settings', 'vault_theme', 'vault_next_purge'];
+  let html = '';
+  keys.forEach(k => {
+    const val = localStorage.getItem(k);
+    const preview = val ? val.substring(0, 60) + (val.length > 60 ? '…' : '') : 'null';
+    html += `<div class="row"><span>${k}</span><span class="${val ? 'ok' : 'warn'}">${preview}</span></div>`;
+  });
+  // Count games
+  try {
+    const games = JSON.parse(localStorage.getItem('vault_v2') || '[]');
+    html += `<div class="row"><b>Games count:</b><span class="${games.length > 0 ? 'ok' : 'warn'}">${games.length}</span></div>`;
+  } catch(e) {
+    html += `<div class="row err">vault_v2 parse error: ${e.message}</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function clearStorage() {
+  if (confirm('Delete ALL vault data? This cannot be undone.')) {
+    localStorage.clear();
+    checkStorage();
+    addLog('localStorage cleared', 'warn');
+  }
+}
+
+function exportStorage() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    data[k] = localStorage.getItem(k);
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vault_storage_backup.json';
+  a.click();
+}
+
+// IPC tests
+async function testAll() {
+  const el = document.getElementById('ipc-results');
+  el.innerHTML = '<span class="warn">Testing...</span>';
+  if (!window.electronAPI) {
+    el.innerHTML = '<span class="err">electronAPI not available</span>';
+    return;
+  }
+  const tests = [
+    { name: 'get-cloud-settings', fn: () => window.electronAPI.getCloudSettings() },
+    { name: 'task-status',        fn: () => window.electronAPI.taskStatus() },
+    { name: 'check-update',       fn: () => window.electronAPI.checkUpdate() },
+  ];
+  let html = '';
+  for (const t of tests) {
+    try {
+      const result = await t.fn();
+      html += `<div class="row"><span>${t.name}</span><span class="ok">✓ ${JSON.stringify(result).substring(0,50)}</span></div>`;
+      addLog(t.name + ' OK: ' + JSON.stringify(result).substring(0,80), 'ok');
+    } catch(e) {
+      html += `<div class="row"><span>${t.name}</span><span class="err">✗ ${e.message}</span></div>`;
+      addLog(t.name + ' FAILED: ' + e.message, 'err');
+    }
+  }
+  el.innerHTML = html;
+}
+
+// Run checks
+checkAPI();
+checkStorage();
+addLog('Debug tool loaded');
+</script>
+</body>
+</html>

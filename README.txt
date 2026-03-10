@@ -1,7 +1,7 @@
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                          EDR-VAULT                                 ║
 ║           Personal Game Library & Save Backup Manager              ║
-║                   Version 1.0.1 — Portable                         ║
+║                   Version 1.0.2 — Portable                         ║
 ║               Windows 10 / Windows 11  (x64)                       ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
@@ -74,6 +74,14 @@ HOW TO USE
 7. THEMES
    Click the Customise button in the top bar to choose a colour theme.
    Themes: Abyss · Obsidian · Jungle · Ember · Aurora · Storm · Dawn
+
+
+8. DEBUG TOOL (for developers / troubleshooting)
+   Right-click the system tray icon → Open Debug Tool.
+   A standalone panel opens with DevTools already visible.
+   It checks every electronAPI method, runs IPC handler tests,
+   shows localStorage contents, and intercepts console errors.
+   Useful for diagnosing issues without touching source files.
 
 
 LICENSE
@@ -154,6 +162,14 @@ CÓMO USAR
    Haz clic en el botón Personalizar de la barra superior para elegir
    un tema de color.
    Temas: Abyss · Obsidian · Jungle · Ember · Aurora · Storm · Dawn
+
+
+8. HERRAMIENTA DE DEPURACIÓN (para desarrolladores / diagnóstico)
+   Clic derecho en el icono de la bandeja del sistema → Abrir Debug Tool.
+   Se abre un panel independiente con DevTools ya visible.
+   Comprueba cada método de electronAPI, ejecuta pruebas de IPC,
+   muestra el contenido de localStorage e intercepta errores de consola.
+   Útil para diagnosticar problemas sin modificar los archivos fuente.
 
 
 LICENCIA

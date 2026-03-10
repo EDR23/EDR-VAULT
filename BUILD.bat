@@ -22,7 +22,7 @@ echo  ^|                                                                    ^|
 echo  ^|              V  A  U  L  T     B  U  I  L  D  E  R               ^|
 echo  ^|                                                                    ^|
 echo  ^|        Personal Game Library  ^&  Save Backup Manager              ^|
-echo  ^|                  Windows 10 / 11  x64   v1.0.1                      ^|
+echo  ^|                  Windows 10 / 11  x64   v1.0.2                      ^|
 echo  ^|                                                                    ^|
 echo  +====================================================================+
 echo.
