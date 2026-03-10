@@ -68,6 +68,8 @@ Click the **Customise** button in the top bar to choose a colour theme.
 
 | Themes  | Abyss | | Jungle | | Aurora | | Obsidian | | Ember | | Storm | | Dawn |
 
+### 7. Notifications EDR-VAULT uses Windows 10/11 notification system so make sure you enable if you want to get notified when a backup or purge happend.
+
 ---
 
 ## License
