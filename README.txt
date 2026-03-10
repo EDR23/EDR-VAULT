@@ -1,29 +1,29 @@
 
 This Program must be running as administrator in order to open every added game.
 
-╔══════════════════════════════════════════════════════════════════════╗
-║                          EDR-VAULT                                   ║
-║           Personal Game Library & Save Backup Manager                ║
-║                   Version 1.0.0 — Portable                           ║
-║               Windows 10 / Windows 11  (x64)                         ║
-╚══════════════════════════════════════════════════════════════════════╝
+
+                          EDR-VAULT                                   
+           Personal Game Library & Save Backup Manager                
+                    Version 1.0.0 — Portable                           
+                Windows 10 / Windows 11  (x64)                         
+
 
   Built with Electron · Free & Open Source (MIT License)
   Designed and coded by Claude AI (Anthropic)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
     			 [  E N G L I S H  ]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 
 WHAT IS EDR-VAULT?
-──────────────────
+
 EDR-Vault is a personal game library manager built on Electron. It lets
 you organise every game you own in one clean interface, manage save game
 folders, back up those saves to your own FTP server and restore them with
 a single click.
 
 KEY FEATURES
-────────────
+
   • Unified game library with cover art for all your titles
   • Launch any game directly from the app and track playtime
   • Assign a save-data folder to each game
@@ -36,7 +36,7 @@ KEY FEATURES
   • 100 % portable — no installation required, runs from a USB drive
 
 HOW TO USE
-──────────
+
 
 1. ADDING GAMES
    Click the + button (bottom-left) to add a game.
@@ -80,17 +80,17 @@ HOW TO USE
 
 
 LICENSE
-───────
+
 MIT License — Free for personal and commercial use.
 You may copy, modify and distribute this software freely.
 No warranties expressed or implied.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 			[  E S P A Ñ O L  ]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 
 ¿QUÉ ES EDR-VAULT?
-──────────────────
+
 EDR-Vault es un gestor personal de biblioteca de videojuegos creado con
 Electron. Te permite organizar todos tus juegos en una única interfaz
 limpia, gestionar las carpetas de partidas guardadas, hacer copias de
@@ -98,7 +98,7 @@ seguridad de esas partidas en tu propio servidor FTP y restaurarlas con
 un solo clic.
 
 CARACTERÍSTICAS PRINCIPALES
-────────────────────────────
+
   • Biblioteca unificada con carátulas para todos tus títulos
   • Lanza cualquier juego directamente desde la app y registra el tiempo
     de juego
@@ -160,10 +160,10 @@ CÓMO USAR
 
 
 LICENCIA
-────────
+
 Licencia MIT — Libre para uso personal y comercial.
 Puedes copiar, modificar y distribuir este software libremente.
 Sin garantías expresas ni implícitas.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 
