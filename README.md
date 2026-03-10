@@ -62,11 +62,7 @@ Go to **Settings → Language** to switch between **English** and **Español**. 
 ### 7. Themes
 Click the **Customise** button in the top bar to choose a colour theme.
 
-| Theme | | Theme | | Theme |
-|---|---|---|---|---|
-| Abyss | | Jungle | | Aurora |
-| Obsidian | | Ember | | Storm |
-| | | | | Dawn |
+| Themes  | Abyss | | Jungle | | Aurora | | Obsidian | | Ember | | Storm | | Dawn |
 
 ---
 
