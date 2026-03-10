@@ -32,4 +32,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   notify:              (d)   => ipcRenderer.invoke('show-notification', d),
   onGameExited:   (cb) => ipcRenderer.on('game-exited', cb),
   onWindowMaximized: (cb) => ipcRenderer.on('window-maximized', (_, v) => cb(v)),
+  openExternal:      (url) => ipcRenderer.invoke('open-external', url),
+  checkUpdate:       ()    => ipcRenderer.invoke('check-update'),
 });

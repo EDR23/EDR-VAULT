@@ -1,7 +1,7 @@
 {
   "name": "edr-vault",
-  "version": "1.0.0",
-  "description": "EDR-Vault — Personal Game Library & Save Backup Manager",
+  "version": "1.0.1",
+  "description": "EDR-Vault \u2014 Personal Game Library & Save Backup Manager",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -16,9 +16,15 @@
     },
     "win": {
       "target": [
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
-      "icon": "icon.ico"
+      "icon": "icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
     },
     "portable": {
       "artifactName": "EDR-Vault-Portable.exe"

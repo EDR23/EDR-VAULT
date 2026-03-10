@@ -11,6 +11,26 @@ let tray = null;
 let isQuitting = false;
 let startHidden = process.argv.includes('--hidden');
 
+// ── REQUIRE ADMIN ELEVATION ───────────────────────────────
+// If not running as administrator, relaunch with UAC elevation prompt.
+// The exe manifest (requestedExecutionLevel=requireAdministrator) handles
+// this automatically for packaged builds. This is a runtime fallback for dev.
+function checkAdminAndRelaunch() {
+  if (app.isPackaged) return; // packaged exe already has UAC manifest
+  try {
+    require('child_process').execSync('net session', { stdio: 'ignore' });
+  } catch(e) {
+    // Not admin — relaunch with elevation
+    const args = process.argv.slice(1).join(' ');
+    require('child_process').exec(
+      `powershell -WindowStyle Hidden -Command "Start-Process -FilePath '${process.execPath}' -ArgumentList '${args}' -Verb RunAs"`,
+      () => {}
+    );
+    app.quit();
+  }
+}
+checkAdminAndRelaunch();
+
 // ── TRAY ──────────────────────────────────────────────────
 function createTray() {
   const iconPath = path.join(__dirname, 'icon.ico');
@@ -163,7 +183,7 @@ ipcMain.on('window-close', () => showCloseDialog());
 ipcMain.handle('open-cloud-window', async (_, lang) => {
   if (cloudWindow && !cloudWindow.isDestroyed()) { cloudWindow.focus(); return; }
   cloudWindow = new BrowserWindow({
-    width: 520, height: 720, minWidth: 460, minHeight: 600,
+    width: 520, height: 580, minWidth: 460, minHeight: 520,
     parent: mainWindow, frame: false, backgroundColor: '#0f1520',
     resizable: true, title: 'EDR-Vault — FTP Backup',
     webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload-cloud.js') },
@@ -238,8 +258,9 @@ ipcMain.handle('kill-game', async (_, gameId) => {
   }
 });
 ipcMain.handle('open-folder', async (_, p) => { shell.showItemInFolder(p); return { success: true }; });
+ipcMain.handle('open-external', async (_, url) => { shell.openExternal(url); return { success: true }; });
 
-ipcMain.handle('show-notification', (_, { title, body }) => {
+ipcMain.handle('show-notification', (_, { title, body, url }) => {
   try {
     if (!Notification.isSupported()) return;
     const iconPath = path.join(__dirname, 'icon.ico');
@@ -249,8 +270,33 @@ ipcMain.handle('show-notification', (_, { title, body }) => {
       icon: fs.existsSync(iconPath) ? iconPath : undefined,
       silent: false,
     });
+    if (url) n.on('click', () => shell.openExternal(url));
     n.show();
   } catch(e) {}
+});
+
+ipcMain.handle('check-update', async () => {
+  return new Promise((resolve) => {
+    try {
+      const req = net.request({
+        method: 'GET',
+        url: 'https://api.github.com/repos/EDR23/EDR-VAULT/releases/latest',
+        headers: { 'User-Agent': 'EDR-Vault', 'Accept': 'application/vnd.github.v3+json' }
+      });
+      let data = '';
+      req.on('response', (res) => {
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          try {
+            const json = JSON.parse(data);
+            resolve({ success: true, tag: json.tag_name || '' });
+          } catch(e) { resolve({ success: false, error: 'Parse error' }); }
+        });
+      });
+      req.on('error', (e) => resolve({ success: false, error: e.message }));
+      req.end();
+    } catch(e) { resolve({ success: false, error: e.message }); }
+  });
 });
 ipcMain.handle('browse-exe', async () => {
   const r = await dialog.showOpenDialog(mainWindow, { title: 'Select Executable', filters: [{ name: 'Executables', extensions: ['exe','bat','cmd'] }, { name: 'All', extensions: ['*'] }], properties: ['openFile'] });
