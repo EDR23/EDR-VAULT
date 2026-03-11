@@ -47,8 +47,8 @@ EDR-Vault is a personal game library manager built on Electron. It lets you orga
 
 ## 🚀 Getting Started
 
-1. Download the latest `Build.zip` from [Releases](https://github.com/EDR23/EDR-VAULT/releases/latest)
-2. Extract anywhere — USB, desktop, wherever you like
+1. Download the latest `EDR-Vault-Portable.exe` from [Releases](https://github.com/EDR23/EDR-VAULT/releases/latest)
+2. If you prefer to build it yourself extract anywhere — USB, desktop, wherever you like
 3. Run build.bat to generate your own `EDR-Vault-Portable.exe`
 4. Click **+ ADD GAME** and start building your library
 
