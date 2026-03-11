@@ -1,204 +1,148 @@
-EDR-VAULT
-Personal Game Library and Save Backup Manager
-Version 1.0.4 - Portable - Windows 10 / Windows 11 (x64)
+# EDR-Vault
 
-Built with Electron - Free and Open Source (MIT License)
+**Personal Game Library & Save Backup Manager**
 
+> Portable · No installation required · Runs from USB · Windows 10 / 11 (x64)
 
-WHAT IS EDR-VAULT
+[![Version](https://img.shields.io/badge/version-1.0.5-blue?style=flat-square)](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey?style=flat-square)]()
+[![Built with Electron](https://img.shields.io/badge/built%20with-Electron-47848F?style=flat-square&logo=electron)](https://electronjs.org)
 
-EDR-Vault is a personal game library manager built on Electron. It lets you organise every game you own in one clean interface, manage save game folders, back up those saves to your own FTP server and restore them with a single click.
+---
 
+## What is EDR-Vault?
 
-KEY FEATURES
+EDR-Vault is a personal game library manager built on Electron. It lets you organise every game you own in one clean dark interface, manage save-game folders, back up those saves to your own FTP server and restore them with a single click — all from a portable `.exe` that needs no installation.
 
-Unified game library with cover art for all your titles
-Launch any game directly from the app and track playtime
-Assign a save-data folder to each game
-Manual and automatic FTP backup of save files (zipped)
-One-click restore or full folder recovery after a fresh OS install
-Favourites, sorting and quick-search across your library
-English and Spanish interface, switch any time in Settings
-Seven visual themes: Abyss, Obsidian, Jungle, Ember, Aurora, Storm, Dawn
-100% portable, no installation required, runs from a USB drive
-Runs as Administrator automatically to avoid permission issues with games
+---
 
+## ✨ Features
 
-HOW TO USE
+### Library
+- Unified game library with cover art
+- Launch games directly and track total playtime automatically
+- **Live session timer** — see how long you've been playing in the detail panel
+- **Game Notes** — add personal notes to any game
+- One-click **copy buttons** for save folder and exe paths
+- Favourites, sorting, and instant search
+- **Keyboard shortcuts**: `/` search · `Space` play · `F` favourite
+- **Auto-name from EXE** — game name fills in automatically when you pick the executable
 
+### FTP Backup & Restore
+- Manual and **automatic FTP backup** of save files (zipped, on a 20–60 min schedule)
+- **FTPS support** — FTP over TLS for encrypted connections
+- One-click **Restore** or full **Recover** (rebuilds folder structure — great after a clean Windows install)
+- **Save folder scanner** with multi-result selection, OneDrive paths and D: drive Steam libraries
+- **FTP Save Purge** — keeps only the 3 most recent backups per game automatically
+- **Config Snapshots** — back up and restore your full library + settings to FTP (keeps last 3 versions)
 
-1. ADDING GAMES
+### Interface
+- **9 visual themes**: Abyss · Obsidian · Jungle · Ember · Aurora · Storm · Dawn · Sangre · Midnight
+- English / Spanish UI — switch instantly in Settings, no restart needed
+- In-app **toast notifications** — smooth slide-in alerts replace system popups
+- Built-in **Update Checker** — compares your version against the latest GitHub release
 
-Click the + button at the bottom left to add a game.
-Enter the name, browse for the .exe, and optionally add a cover image and the save-game folder path.
+---
 
+## 🚀 Getting Started
 
-2. PLAYING GAMES
+1. Download the latest `Build.zip` from [Releases](https://github.com/EDR23/EDR-VAULT/releases/latest)
+2. Extract anywhere — USB, desktop, wherever you like
+3. Run `EDR-Vault-Portable.exe`
+4. Click **+ ADD GAME** and start building your library
 
-Select a game and click Play. EDR-Vault records your playtime and last-played date automatically.
+No admin rights required. No registry entries. No traces left behind.
 
+---
 
-3. SAVE GAME BACKUPS
+## ☁️ FTP Setup
 
-Open Settings or click the FTP button in the top bar and enter your FTP server credentials: host, port, username and password.
-For each game, set the Save Data path where the game stores its save files.
-Click Backup to FTP to upload a zip of that game's saves.
-Enable Auto-Backup in Settings to back up on a schedule every 20 to 60 minutes.
+EDR-Vault uses standard FTP or FTPS for cloud backups. We recommend **[ftpgrid.com](https://ftpgrid.com)** — free FTP hosting with no credit card needed.
 
+1. Sign up at [ftpgrid.com](https://ftpgrid.com)
+2. Note your host, port, username and password
+3. Open **Settings → FTP Configuration** in EDR-Vault and fill in the details
+4. Optionally enable **FTPS** for TLS-encrypted transfers
 
-4. RESTORING BACKUPS
+---
 
-Go to the Backups tab in the navigation bar.
-Filter by game to find the backup you want.
-Click Restore to extract the backup to the correct save path.
-Click Recover to rebuild the folder structure first and then restore. This is useful after a clean Windows install.
+## ⌨️ Keyboard Shortcuts
 
+| Key | Action |
+|-----|--------|
+| `/` | Focus search bar |
+| `Space` | Launch selected game |
+| `F` | Toggle favourite |
 
-5. FTP SETUP
+---
 
-EDR-Vault uses standard FTP for cloud backups.
-We recommend ftpgrid.com which offers free FTP hosting with no credit card needed.
-Sign up at https://ftpgrid.com, note your host, port, username and password, then enter those details in Settings under FTP Configuration.
+## 🎨 Themes
 
+| Theme | Style |
+|-------|-------|
+| Abyss | Deep blue-black |
+| Obsidian | Dark neutral |
+| Jungle | Green accent |
+| Ember | Orange warm |
+| Aurora | Teal/purple |
+| Storm | Cold grey-blue |
+| Dawn | Light soft |
+| Sangre | Deep crimson |
+| Midnight | Ultra dark |
 
-6. LANGUAGE
+---
 
-Go to Settings, then Language, and choose English or Español.
-The entire interface switches instantly with no restart needed.
+## 📋 Changelog
 
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 
-7. THEMES
+**v1.0.5 highlights:** Game Notes · Live Session Timer · Toast Notifications · FTPS · New Sangre theme · Keyboard shortcuts · Copy path buttons · Extended save scanner
 
-Click the Customise button in the top bar to choose a colour theme.
-Available themes: Abyss, Obsidian, Jungle, Ember, Aurora, Storm, Dawn.
+---
 
+## 🔧 Building from Source
 
-8. UPDATES
+Requirements: **Node.js 18+** and **npm**
 
-Open the About panel from the top bar and click Check Now.
-EDR-Vault will compare your version against the latest GitHub release and show a download button if an update is available.
+```bash
+# Install dependencies
+npm install
 
+# Run in development
+npm start
 
-9. DEBUG TOOL (Advanced)
+# Build portable .exe
+BUILD.bat
+```
 
-If something is not working, right-click the EDR-Vault tray icon and select Open Debug Tool.
-The debug page opens automatically with DevTools visible and shows:
-- Status of every internal API method (available / missing)
-- Live test results for settings, startup task, and update checker
-- localStorage contents and game count
-- Any console errors or unhandled promise rejections captured at startup
+Or run `BUILD.bat` directly — it handles the full `electron-builder` process.
 
+---
 
-REQUIREMENTS
+## 📁 Repository Structure
 
-Windows 10 or Windows 11 (64-bit)
-No installation required
-No Administrator privileges required
+```
+EDR-VAULT/
+├── index.html          # Main renderer — entire UI
+├── main.js             # Electron main process
+├── preload.js          # IPC bridge (main window)
+├── preload-cloud.js    # IPC bridge (FTP window)
+├── ftp.html            # FTP configuration window
+├── debug.html          # Debug & diagnostics tool
+├── package.json        # Electron build config
+├── BUILD.bat           # One-click build script
+├── CHANGELOG.md        # Version history
+└── README.md
+```
 
+---
 
-LICENSE
+## 📜 License
 
-MIT License - Free for personal and commercial use.
+MIT License — free for personal and commercial use.
 You may copy, modify and distribute this software freely.
-No warranties expressed or implied.
 
+---
 
-ENGLISH AND SPANISH DOCUMENTATION FOLLOWS
-
-
-QUE ES EDR-VAULT
-
-EDR-Vault es un gestor personal de biblioteca de videojuegos creado con Electron. Te permite organizar todos tus juegos en una unica interfaz limpia, gestionar las carpetas de partidas guardadas, hacer copias de seguridad de esas partidas en tu propio servidor FTP y restaurarlas con un solo clic.
-
-
-CARACTERISTICAS PRINCIPALES
-
-Biblioteca unificada con caratulas para todos tus titulos
-Lanza cualquier juego directamente desde la app y registra el tiempo de juego
-Asigna una carpeta de partidas guardadas a cada juego
-Copia de seguridad FTP manual o automatica en archivos zip
-Restauracion en un clic o recuperacion completa de carpetas tras una reinstalacion del sistema
-Favoritos, ordenacion y busqueda rapida en tu biblioteca
-Interfaz en ingles y espanol, cambiala cuando quieras en Ajustes
-Siete temas visuales: Abyss, Obsidian, Jungle, Ember, Aurora, Storm, Dawn
-100% portatil, no requiere instalacion, funciona desde un USB
-Se ejecuta como Administrador automaticamente para evitar problemas con permisos en juegos
-
-
-COMO USAR
-
-
-1. ANADIR JUEGOS
-
-Haz clic en el boton + en la parte inferior izquierda.
-Escribe el nombre, selecciona el .exe y opcionalmente anade una caratula y la ruta de la carpeta de partidas guardadas.
-
-
-2. JUGAR
-
-Selecciona un juego y pulsa Jugar. EDR-Vault registra automaticamente el tiempo de juego y la fecha de la ultima sesion.
-
-
-3. COPIAS DE SEGURIDAD DE PARTIDAS
-
-Abre Ajustes o el boton FTP de la barra superior e introduce los datos de tu servidor FTP: host, puerto, usuario y contrasena.
-Para cada juego, define la ruta de Datos de Partida donde el juego guarda sus archivos.
-Haz clic en Copia a FTP para subir un zip con las partidas de ese juego.
-Activa la Copia Automatica en Ajustes para hacer backups con un intervalo programado de 20 a 60 minutos.
-
-
-4. RESTAURAR COPIAS DE SEGURIDAD
-
-Ve a la pestana Copias de Seguridad en la barra de navegacion.
-Filtra por juego para localizar la copia que necesitas.
-Pulsa Restaurar para extraer la copia en la ruta de partidas.
-Pulsa Recuperar para reconstruir primero la estructura de carpetas y luego restaurar. Ideal tras una instalacion limpia de Windows.
-
-
-5. CONFIGURACION FTP
-
-EDR-Vault usa FTP estandar para las copias en la nube.
-Recomendamos ftpgrid.com con alojamiento FTP gratuito sin tarjeta de credito.
-Registrate en https://ftpgrid.com, anota host, puerto, usuario y contrasena, e introduzcalos en Ajustes bajo Configuracion FTP.
-
-
-6. IDIOMA
-
-Ve a Ajustes, luego Idioma, y elige English o Espanol.
-Toda la interfaz cambia al instante sin necesidad de reiniciar.
-
-
-7. TEMAS
-
-Haz clic en el boton Personalizar de la barra superior para elegir un tema de color.
-Temas disponibles: Abyss, Obsidian, Jungle, Ember, Aurora, Storm, Dawn.
-
-
-8. ACTUALIZACIONES
-
-Abre el panel Acerca de desde la barra superior y haz clic en Comprobar ahora.
-EDR-Vault comparara tu version con la ultima disponible en GitHub y mostrara un boton de descarga si hay una actualizacion.
-
-
-9. HERRAMIENTA DE DEPURACION (Avanzado)
-
-Si algo no funciona correctamente, haz clic derecho en el icono de EDR-Vault en la bandeja del sistema y selecciona Abrir herramienta de depuracion.
-La pagina de depuracion se abre automaticamente con DevTools visible y muestra:
-- Estado de cada metodo interno de la API (disponible / no disponible)
-- Pruebas en vivo de ajustes, tarea de inicio y comprobador de actualizaciones
-- Contenido de localStorage y recuento de juegos
-- Errores de consola y rechazos de promesas no controlados capturados al inicio
-
-
-REQUISITOS
-
-Windows 10 o Windows 11 de 64 bits
-No requiere instalacion
-No requiere permisos de Administrador
-
-
-LICENCIA
-
-Licencia MIT - Libre para uso personal y comercial.
-Puedes copiar, modificar y distribuir este software libremente.
-Sin garantias expresas ni implicitas.
+*EDR-Vault — because your saves deserve a backup.*
