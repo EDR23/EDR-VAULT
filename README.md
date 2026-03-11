@@ -4,7 +4,7 @@
 
 > Portable · No installation required · Runs from USB · Windows 10 / 11 (x64)
 
-[![Version](https://img.shields.io/badge/version-1.0.5-blue?style=flat-square)](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[![Version](https://img.shields.io/badge/version-1.0.6-blue?style=flat-square)](https://github.com/EDR23/EDR-VAULT/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey?style=flat-square)]()
 [![Built with Electron](https://img.shields.io/badge/built%20with-Electron-47848F?style=flat-square&logo=electron)](https://electronjs.org)
