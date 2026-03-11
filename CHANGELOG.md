@@ -2,6 +2,25 @@
 
 ---
 
+## [v1.0.6] — 2026-03-11
+
+### 🎨 UI Redesign
+
+- **Backups tab — unified list** — Game saves and Config Snapshots are now displayed together in a single chronological list. A new filter bar with **All / Saves / Config** chips (each showing a live count) lets you switch views instantly. Each item carries a colour-coded type badge (Save · Config) so you can tell entries apart at a glance.
+- **FTP/Cloud settings pane redesign** — The FTP tab in Settings now features a connection card showing server status badge, hostname and remote path at a glance, with a direct "Open FTP Config" button alongside it.
+
+### ⚡ Improvements
+
+- **Auto-backup now includes Config JSON** — Every auto-backup cycle automatically uploads a full config snapshot (`vault_config_*.json`) to FTP alongside game saves, keeping your library and settings always protected without any manual action.
+- **Auto-backup status text updated** — The info box below the Backup Interval setting now confirms that config JSON is also included in each auto-backup cycle.
+
+### 🐛 Bug Fixes
+
+- **Backup counter accuracy fixed** — The Backups counter in the Save Data panel now always reflects the actual number of backups on FTP (capped at 3, consistent with the FTP purge policy). Previously the local counter could display a higher number than the real backup count after a purge.
+- Updated all internal version-bump references from 1.0.5 → 1.0.6.
+
+---
+
 ## [v1.0.5] — 2026-03-11
 
 ### 🆕 New Features
