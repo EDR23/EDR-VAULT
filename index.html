@@ -83,6 +83,40 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 .tbar-ftp-btn:hover{border-color:rgba(255,255,255,.18);color:var(--text-bright)}
 .tbar-ftp-dot{width:6px;height:6px;border-radius:50%;background:#ff4757;flex-shrink:0;transition:background .3s;box-shadow:0 0 6px #ff4757}
 .tbar-ftp-dot.online{background:#3ddc84;box-shadow:0 0 6px #3ddc84;animation:ftpPulse 2.5s ease-in-out infinite}
+.tbar-stats-btn{background:none;border:1px solid rgba(255,255,255,.08);border-radius:5px;color:var(--text-dim);cursor:pointer;padding:0 10px;height:24px;margin:auto 3px auto 0;display:flex;align-items:center;gap:5px;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;transition:all .15s;-webkit-app-region:no-drag}
+.tbar-stats-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* last-played badge on cards */
+.card-last-played{font-size:9px;color:var(--text-dim);letter-spacing:.4px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-last-played.recent{color:var(--accent)}
+/* stats modal */
+.stats-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease,visibility .15s ease}
+.stats-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
+.stats-box{background:var(--bg-mid);border:1px solid var(--border);border-radius:14px;width:680px;max-width:95vw;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;animation:modalIn .18s ease}
+.stats-box-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.stats-box-title{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-bright);display:flex;align-items:center;gap:8px}
+.stats-box-body{padding:20px 22px;overflow-y:auto;flex:1}
+.stats-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stats-kpi{background:var(--bg-dark);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.stats-kpi-label{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim)}
+.stats-kpi-val{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:700;color:var(--accent);line-height:1}
+.stats-kpi-sub{font-size:9px;color:var(--text-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stats-section-title{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+.stats-chart-wrap{background:var(--bg-dark);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.stats-chart-bars{display:flex;align-items:flex-end;gap:3px;height:80px;margin-bottom:6px}
+.stats-chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.stats-chart-bar{width:100%;background:var(--accent);border-radius:3px 3px 0 0;opacity:.7;transition:opacity .15s;min-height:2px;cursor:default}
+.stats-chart-bar:hover{opacity:1}
+.stats-chart-bar.today{opacity:1;box-shadow:0 0 6px var(--accent)}
+.stats-chart-label{font-size:7px;color:var(--text-dim);white-space:nowrap}
+.stats-chart-legend{display:flex;justify-content:space-between;font-size:8px;color:var(--text-dim);margin-top:4px}
+.stats-top-list{display:flex;flex-direction:column;gap:6px}
+.stats-top-row{display:flex;align-items:center;gap:10px;background:var(--bg-dark);border-radius:8px;padding:8px 12px;border:1px solid var(--border)}
+.stats-top-rank{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;color:var(--text-dim);width:16px;flex-shrink:0}
+.stats-top-rank.gold{color:#ffd32a}
+.stats-top-cover{width:28px;height:28px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--bg-mid)}
+.stats-top-cover-ph{width:28px;height:28px;border-radius:4px;flex-shrink:0;background:var(--bg-mid);display:flex;align-items:center;justify-content:center;opacity:.4}
+.stats-top-name{flex:1;font-size:11px;font-weight:600;color:var(--text-bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stats-top-time{font-size:10px;color:var(--accent);font-weight:700;flex-shrink:0}
 @keyframes ftpPulse{0%,100%{opacity:1}50%{opacity:.55}}
 .wc-btn{width:44px;height:var(--tbar);background:none;border:none;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;-webkit-app-region:no-drag}
 .wc-btn:hover{background:rgba(255,255,255,.07);color:var(--text-bright)}
@@ -156,6 +190,8 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 .steam-game-thumb{width:54px;height:32px;flex-shrink:0;object-fit:cover;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg-card);margin:2px 10px 2px 6px}
 .steam-game-thumb img{width:100%;height:100%;object-fit:cover}
 .steam-game-name{flex:1;min-width:0;font-size:12px;font-weight:500;color:#8f98a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Exo 2',sans-serif;padding-right:8px}
+.steam-game-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:1px;padding-right:8px}
+.steam-game-info .steam-game-name{flex:none;padding-right:0}
 .steam-game-fav{flex-shrink:0;margin-right:8px;opacity:.7}
 /* STEAM GRID VIEW */
 .game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:8px}
@@ -206,6 +242,87 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 @keyframes pulseCloud{0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,.4)}50%{box-shadow:0 0 0 6px rgba(167,139,250,0)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes modalIn{from{opacity:0;transform:scale(.93) translateY(-10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ── TOAST NOTIFICATION SYSTEM ── */
+#toast-container{position:fixed;top:48px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:320px}
+.toast{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.55);pointer-events:auto;animation:toastIn .25s cubic-bezier(.34,1.36,.64,1);position:relative;overflow:hidden;backdrop-filter:blur(10px);min-width:220px;max-width:320px}
+.toast.removing{animation:toastOut .2s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(110%)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(110%)}}
+.toast-success{background:rgba(20,50,35,.92);border:1px solid rgba(61,220,132,.4);color:var(--green)}
+.toast-error{background:rgba(50,15,15,.92);border:1px solid rgba(255,71,87,.4);color:var(--red)}
+.toast-info{background:rgba(14,35,60,.92);border:1px solid rgba(26,159,255,.4);color:var(--accent)}
+.toast-warning{background:rgba(50,40,10,.92);border:1px solid rgba(255,211,42,.4);color:var(--yellow)}
+.toast-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.toast-body{flex:1;min-width:0}
+.toast-title{font-size:11px;font-weight:700;letter-spacing:.5px;font-family:'Rajdhani',sans-serif;text-transform:uppercase}
+.toast-msg{font-size:11px;color:var(--text-mid);margin-top:1px;line-height:1.4;word-break:break-word}
+.toast-close{background:none;border:none;color:currentColor;opacity:.5;cursor:pointer;padding:0;font-size:14px;line-height:1;flex-shrink:0;transition:opacity .15s}
+.toast-close:hover{opacity:1}
+.toast-bar{position:absolute;bottom:0;left:0;height:2px;background:currentColor;opacity:.4;animation:toastBar linear forwards}
+@keyframes toastBar{from{width:100%}to{width:0%}}
+
+/* ── LIBRARY STATS FOOTER ── */
+#stats-footer{height:28px;background:var(--bg-mid);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:0;flex-shrink:0;z-index:5}
+.stat-item{display:flex;align-items:center;gap:5px;padding:0 12px;border-right:1px solid var(--border);font-size:9px;color:var(--text-dim);font-family:'Exo 2',sans-serif;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
+.stat-item:first-child{padding-left:0}
+.stat-item:last-child{border-right:none}
+.stat-item svg{width:10px;height:10px;opacity:.6}
+.stat-val{color:var(--text-mid);font-weight:700;font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:.5px}
+.stat-ftp-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
+.stat-ftp-dot.online{background:var(--green);animation:ftpPulse 2.5s ease-in-out infinite}
+.footer-action-btn{background:none;border:none;color:var(--text-dim);cursor:pointer;padding:0 10px;height:100%;display:flex;align-items:center;gap:5px;font-family:'Exo 2',sans-serif;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;transition:all .15s;border-left:1px solid var(--border)}
+.footer-action-btn:hover{color:var(--accent);background:rgba(26,159,255,.06)}
+.footer-action-btn svg{width:10px;height:10px;flex-shrink:0}
+#stat-session{margin-left:auto;display:none;align-items:center;gap:5px;font-size:9px;color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;animation:pillPulse 2s ease-in-out infinite}
+#stat-session.visible{display:flex}
+
+/* ── NOTES CARD ── */
+.notes-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
+.notes-card-header{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .15s}
+.notes-card-header:hover{background:var(--bg-hover)}
+.notes-card-header svg{width:13px;height:13px;color:var(--yellow);flex-shrink:0}
+.notes-card-header span{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-bright);flex:1}
+.notes-card-body{padding:14px 16px}
+.notes-text{font-size:11px;color:var(--text-mid);line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.notes-text.empty{color:var(--text-dim);font-style:italic}
+.notes-edit-area{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:9px 11px;color:var(--text-bright);font-family:'Exo 2',sans-serif;font-size:11px;resize:vertical;min-height:70px;outline:none;transition:border .2s;line-height:1.6}
+.notes-edit-area:focus{border-color:var(--yellow);background:rgba(255,211,42,.03)}
+.notes-edit-row{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+.btn-notes-save{background:rgba(255,211,42,.12);border:1px solid rgba(255,211,42,.35);color:var(--yellow);padding:5px 11px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .15s}
+.btn-notes-save:hover{background:rgba(255,211,42,.22);border-color:var(--yellow)}
+.btn-notes-cancel{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-dim);padding:5px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .15s}
+.btn-notes-cancel:hover{background:var(--bg-hover);color:var(--text-bright)}
+
+/* ── SCAN MULTI SUGGESTIONS ── */
+.scan-suggestions{margin-top:7px;display:flex;flex-direction:column;gap:4px}
+.scan-suggestion-item{display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(26,159,255,.06);border:1px solid rgba(26,159,255,.18);border-radius:4px;cursor:pointer;font-size:10px;color:var(--text-mid);transition:all .15s;font-family:'Courier New',monospace;word-break:break-all}
+.scan-suggestion-item:hover{background:rgba(26,159,255,.14);border-color:var(--accent);color:var(--text-bright)}
+.scan-suggestion-item svg{width:10px;height:10px;flex-shrink:0;color:var(--accent)}
+
+/* ── COPY PATH BUTTON ── */
+.btn-copy-path{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-dim);padding:4px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:3px;font-family:'Exo 2',sans-serif}
+.btn-copy-path:hover{background:rgba(26,159,255,.1);color:var(--accent);border-color:rgba(26,159,255,.3)}
+.btn-copy-path svg{width:9px;height:9px}
+
+/* ── SESSION BADGE IN DETAIL ── */
+.session-live-bar{display:none;align-items:center;gap:8px;padding:9px 14px;background:rgba(61,220,132,.06);border:1px solid rgba(61,220,132,.2);border-radius:6px;margin-bottom:14px;font-size:11px;color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px}
+.session-live-bar.visible{display:flex}
+.session-live-bar svg{width:12px;height:12px;animation:pillPulse 2s ease-in-out infinite}
+#session-elapsed{font-size:18px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:2px}
+
+/* ── CHANGELOG MODAL ── */
+.changelog-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease,visibility .15s ease}
+.changelog-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
+.changelog-box{background:var(--bg-panel);border:1px solid rgba(26,159,255,.3);border-radius:10px;width:430px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:0 20px 54px rgba(0,0,0,.6);animation:modalIn .2s ease}
+.changelog-header{padding:16px 20px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(26,159,255,.08),transparent)}
+.changelog-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.changelog-body{padding:18px 20px}
+.changelog-item{display:flex;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text-mid);line-height:1.5}
+.changelog-badge{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-top:2px;white-space:nowrap}
+.badge-new{background:rgba(61,220,132,.15);color:var(--green);border:1px solid rgba(61,220,132,.3)}
+.badge-fix{background:rgba(255,211,42,.12);color:var(--yellow);border:1px solid rgba(255,211,42,.3)}
+.badge-improve{background:rgba(26,159,255,.12);color:var(--accent);border:1px solid rgba(26,159,255,.25)}
 
 .detail-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin-bottom:18px;padding:16px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius)}
 .meta-label{font-size:9px;letter-spacing:1.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:3px}
@@ -346,6 +463,14 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 .btn-restore:disabled{opacity:.4;cursor:not-allowed}
 .btn-del{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.2);color:var(--red);padding:5px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .15s;display:flex;align-items:center}
 .btn-del:hover{background:rgba(255,71,87,.18);border-color:var(--red)}
+/* CONFIG SNAPSHOTS */
+.cfg-snapshot-section{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.cfg-snapshot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cfg-snapshot-title{display:flex;align-items:center;gap:7px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim)}
+.cfg-snap-item{display:flex;align-items:center;gap:11px;padding:10px 13px;margin-bottom:5px;background:rgba(61,220,132,.03);border:1px solid rgba(61,220,132,.12);border-radius:6px;transition:background .15s}
+.cfg-snap-item:hover{background:rgba(61,220,132,.06);border-color:rgba(61,220,132,.2)}
+.btn-cfg-import{background:rgba(61,220,132,.1);border:1px solid rgba(61,220,132,.25);color:var(--green);padding:5px 9px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;font-family:'Exo 2',sans-serif;letter-spacing:.4px;transition:all .15s;display:flex;align-items:center;gap:4px}
+.btn-cfg-import:hover{background:rgba(61,220,132,.2);border-color:var(--green)}
 .backups-modal-footer{padding:11px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg-panel);flex-shrink:0}
 .bkp-footer-tag{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:.4px}
 /* SETTINGS MODAL */
@@ -493,6 +618,10 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
       <span class="tbar-ftp-dot" id="tbar-ftp-dot"></span>
       <span id="tbar-ftp-label">FTP</span>
     </button>
+    <button class="tbar-stats-btn" id="tbar-stats-btn" onclick="openStats()" title="Global Stats">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span data-i18n="nav_stats">Stats</span>
+    </button>
     <button class="tbar-pill-btn tbar-pill-about" onclick="openAbout()" title="About">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r=".5" fill="currentColor" stroke-width="3"/><line x1="12" y1="11" x2="12" y2="16" stroke-linecap="round"/></svg>
       <span data-i18n="nav_about">About</span>
@@ -549,6 +678,16 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
           </div>
         </div>
         <div id="inline-backups-list"></div>
+        <!-- CONFIG SNAPSHOTS -->
+        <div class="cfg-snapshot-section" id="cfg-snapshot-section" style="display:none">
+          <div class="cfg-snapshot-header">
+            <div class="cfg-snapshot-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              <span data-i18n="cfg_snapshots_title">Config Snapshots</span>
+            </div>
+          </div>
+          <div id="cfg-snapshot-list"></div>
+        </div>
       </div>
       <button id="add-game-btn" onclick="openAddModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -573,6 +712,12 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
           </div>
         </div>
         <div class="detail-body">
+          <!-- SESSION LIVE BAR -->
+          <div class="session-live-bar" id="session-live-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span id="session-elapsed">0:00</span>
+            <span style="font-size:10px;opacity:.7;margin-left:4px" data-i18n="session_running">Session</span>
+          </div>
           <div class="action-bar">
             <button class="btn btn-play" id="btn-play-main" onclick="playOrKill()">
               <svg id="btn-play-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5,3 19,12 5,21"/></svg>
@@ -599,7 +744,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
             <div><div class="meta-label" data-i18n="meta_added">Added</div><div class="meta-value" id="meta-added">-</div></div>
             <div><div class="meta-label" data-i18n="meta_played">Last Played</div><div class="meta-value" id="meta-played">-</div></div>
             <div><div class="meta-label" data-i18n="meta_playtime">Play Time</div><div class="meta-value meta-playtime" id="meta-playtime">-</div></div>
-            <div style="grid-column:1/-1"><div class="meta-label" data-i18n="meta_path">Executable</div><div class="meta-value path" id="meta-path">-</div></div>
+            <div style="grid-column:1/-1;display:flex;align-items:flex-start;gap:7px"><div style="flex:1"><div class="meta-label" data-i18n="meta_path">Executable</div><div class="meta-value path" id="meta-path">-</div></div><button class="btn-copy-path" id="btn-copy-exe" onclick="copyExePath()" style="margin-top:14px;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-i18n="btn_copy_path">Copy</span></button></div>
           </div>
           <!-- SAVE DATA CARD -->
           <div class="save-data-card">
@@ -616,6 +761,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                 <div class="save-path-text not-set" id="save-path-display"></div>
                 <div class="save-path-actions">
+                  <button class="btn-copy-path" id="btn-copy-save" onclick="copySavePath()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-i18n="btn_copy_path">Copy</span></button>
                   <button class="save-path-btn" onclick="setSavePath()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                     <span data-i18n="save_setpath">Set Path</span>
@@ -646,13 +792,113 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
               </div>
             </div>
           </div>
+          <!-- NOTES CARD -->
+          <div class="notes-card" id="notes-card">
+            <div class="notes-card-header" onclick="toggleNotesEdit()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span data-i18n="meta_notes">Notes</span>
+              <svg id="notes-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;color:var(--text-dim);transition:transform .2s"><polyline points="6,9 12,15 18,9"/></svg>
+            </div>
+            <div class="notes-card-body" id="notes-card-body">
+              <div id="notes-display" class="notes-text empty" data-i18n="notes_empty">No notes yet.</div>
+              <div id="notes-edit-section" style="display:none">
+                <textarea class="notes-edit-area" id="notes-textarea" rows="4" placeholder="Write notes about this game…"></textarea>
+                <div class="notes-edit-row">
+                  <button class="btn-notes-cancel" onclick="cancelNotesEdit()">Cancel</button>
+                  <button class="btn-notes-save" onclick="saveNotes()">Save Notes</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ADD/EDIT GAME MODAL -->
+<!-- STATS FOOTER -->
+
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- CHANGELOG MODAL -->
+<div class="changelog-overlay" id="changelog-overlay">
+  <div class="changelog-box">
+    <div class="changelog-header">
+      <span class="changelog-title">🎉 What's new in v1.0.5</span>
+      <button class="modal-close" onclick="document.getElementById('changelog-overlay').classList.remove('open')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="changelog-body">
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>In-app toasts</strong> — Beautiful slide-in notifications replace system popups for quick feedback.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>Game Notes</strong> — Add personal notes to any game, visible right in the detail panel.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>Live Session Timer</strong> — See how long you've been playing, live in the detail panel.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>Library Stats Bar</strong> — Footer shows total games, total playtime, and FTP status at a glance.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>Copy Path Buttons</strong> — One-click copy for save folder and exe paths.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>FTPS Support</strong> — FTP over TLS (FTPS) option for secure connections.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-new">NEW</span><span><strong>New Theme: Sangre</strong> — A deep crimson theme for a bold new look.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-improve">IMPROVE</span><span><strong>Keyboard shortcuts</strong> — Press <kbd style="background:rgba(255,255,255,.1);padding:1px 4px;border-radius:2px;font-size:10px">/</kbd> to search, <kbd style="background:rgba(255,255,255,.1);padding:1px 4px;border-radius:2px;font-size:10px">Space</kbd> to play, <kbd style="background:rgba(255,255,255,.1);padding:1px 4px;border-radius:2px;font-size:10px">F</kbd> to favorite.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-improve">IMPROVE</span><span><strong>Auto-name from EXE</strong> — Game name is auto-filled when you browse for the executable.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-improve">IMPROVE</span><span><strong>Multi-result save scan</strong> — When multiple save folders are found, choose from a list.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-improve">IMPROVE</span><span><strong>More save scan paths</strong> — Includes OneDrive, D: drive Steam libraries, and more.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-fix">FIX</span><span>Fixed empty onclick handlers on cloud modal close buttons.</span></div>
+      <div class="changelog-item"><span class="changelog-badge badge-fix">FIX</span><span>Version bump references updated throughout.</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ STATS MODAL ═══ -->
+<div class="stats-overlay" id="stats-overlay">
+  <div class="stats-box">
+    <div class="stats-box-header">
+      <div class="stats-box-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span id="stats-modal-title" data-i18n="stats_modal_title">Global Stats</span>
+      </div>
+      <button class="modal-close" onclick="closeStats()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="stats-box-body">
+      <!-- KPIs -->
+      <div class="stats-kpi-row">
+        <div class="stats-kpi">
+          <div class="stats-kpi-label" data-i18n="stats_kpi_games">Total Games</div>
+          <div class="stats-kpi-val" id="skpi-games">0</div>
+          <div class="stats-kpi-sub" id="skpi-games-sub">—</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-label" data-i18n="stats_kpi_hours">Hours Played</div>
+          <div class="stats-kpi-val" id="skpi-hours">0h</div>
+          <div class="stats-kpi-sub" id="skpi-hours-sub">—</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-label" data-i18n="stats_kpi_backups">Backups Made</div>
+          <div class="stats-kpi-val" id="skpi-backups">0</div>
+          <div class="stats-kpi-sub" id="skpi-backups-sub">—</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-label" data-i18n="stats_kpi_ftp">FTP Space</div>
+          <div class="stats-kpi-val" id="skpi-ftp">—</div>
+          <div class="stats-kpi-sub" id="skpi-ftp-sub" data-i18n="stats_kpi_ftp_sub">checking...</div>
+        </div>
+      </div>
+      <!-- Activity chart -->
+      <div class="stats-chart-wrap">
+        <div class="stats-section-title" data-i18n="stats_chart_title">Activity — Last 30 Days</div>
+        <div class="stats-chart-bars" id="stats-chart-bars"></div>
+        <div class="stats-chart-legend">
+          <span id="stats-chart-start">30d ago</span>
+          <span id="stats-chart-today" data-i18n="stats_chart_today">Today</span>
+        </div>
+      </div>
+      <!-- Top 5 most played -->
+      <div class="stats-section-title" data-i18n="stats_top_title">Top 5 Most Played</div>
+      <div class="stats-top-list" id="stats-top-list"></div>
+    </div>
+  </div>
+</div>
+
+
 <div id="modal-overlay" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-header">
@@ -688,7 +934,12 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
           <input type="text" class="form-input" id="inp-save-folder" readonly data-i18n-placeholder="form_save_ph"/>
           <button class="file-picker-btn" onclick="browseSaveFolder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span data-i18n="btn_browse">Browse</span></button>
         </div>
-        <p class="form-hint" data-i18n="form_save_hint">Path to save files folder, used for cloud backup.</p>
+        <p class="form-hint" data-i18n="form_save_hint">Used for automatic cloud backup.</p>
+      </div>
+      <hr class="form-divider"/>
+      <div class="form-group">
+        <label class="form-label" data-i18n="form_notes">Notes</label>
+        <textarea class="form-input notes-edit-area" id="inp-notes" rows="3" data-i18n-placeholder="form_notes_ph" style="resize:vertical;min-height:65px"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -709,7 +960,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
         <h2 data-i18n="cloud_title">Cloud Backup</h2>
       </div>
-      <button class="modal-close" onclick=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="modal-close" onclick="closeAllModals()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <p style="font-size:12px;color:var(--text-mid);margin-bottom:16px;line-height:1.65" data-i18n="cloud_desc">Connect Google Drive or OneDrive to back up your save files securely using your own account.</p>
@@ -760,7 +1011,7 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
     </div>
     <div class="modal-footer">
       <button class="btn btn-danger" onclick="clearCloudSettings()" style="margin-right:auto" data-i18n="btn_disconnect_all">Disconnect All</button>
-      <button class="btn btn-secondary" onclick="" data-i18n="btn_close">Close</button>
+      <button class="btn btn-secondary" onclick="closeAllModals()" data-i18n="btn_close">Close</button>
     </div>
   </div>
 </div>
@@ -843,6 +1094,14 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
             <div class="toggle-thumb"></div>
           </label>
         </div>
+        <div class="settings-row">
+          <div><div class="settings-row-label" data-i18n="settings_toast_enable">In-App Toasts</div><div class="settings-row-desc" data-i18n="settings_toast_desc">Show slide-in notifications inside the app for actions and feedback</div></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-toasts" onchange="onToastToggle()"/>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </div>
       </div>
       <!-- Auto-backup -->
       <div class="settings-section">
@@ -855,14 +1114,28 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
             <div class="toggle-thumb"></div>
           </label>
         </div>
+        <div class="settings-row">
+          <div><div class="settings-row-label" data-i18n="settings_close_backup_enable">Backup on Close</div><div class="settings-row-desc" data-i18n="settings_close_backup_desc">Back up all save games automatically every time you exit EDR-Vault</div></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-close-backup" onchange="onCloseBackupToggle()"/>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </div>
+        <div class="settings-row" style="padding-top:4px">
+          <div><div class="settings-row-label" data-i18n="settings_backup_all_now">Backup All Games Now</div><div class="settings-row-desc" data-i18n="settings_backup_all_desc">Immediately back up all games that have a save path configured</div></div>
+          <button onclick="backupAllGames(true)" style="padding:5px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);font-family:'Exo 2',sans-serif;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;transition:all .15s;white-space:nowrap" data-i18n="btn_backup_all_now">Backup All Now</button>
+        </div>
         <div class="settings-row" id="interval-row" style="opacity:.35;pointer-events:none">
           <div><div class="settings-row-label" data-i18n="settings_auto_interval">Backup Interval</div><div class="settings-row-desc" id="interval-desc"></div></div>
-          <div class="interval-btn-group">
-            <button class="interval-btn" data-min="20" onclick="setAutoInterval(20)">20 min</button>
-            <button class="interval-btn" data-min="30" onclick="setAutoInterval(30)">30 min</button>
-            <button class="interval-btn" data-min="40" onclick="setAutoInterval(40)">40 min</button>
-            <button class="interval-btn" data-min="50" onclick="setAutoInterval(50)">50 min</button>
-            <button class="interval-btn" data-min="60" onclick="setAutoInterval(60)">60 min</button>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="number" id="inp-backup-val" min="1" max="9999" value="30"
+              style="width:58px;padding:5px 8px;background:var(--bg-input,var(--bg-card));border:1px solid var(--border);border-radius:5px;color:var(--text-bright);font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;text-align:center"
+              oninput="setAutoIntervalCustom()">
+            <select id="inp-backup-unit"
+              style="padding:5px 8px;background:var(--bg-input,var(--bg-card));border:1px solid var(--border);border-radius:5px;color:var(--text-bright);font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;cursor:pointer"
+              onchange="setAutoIntervalCustom()">
+            </select>
           </div>
         </div>
         <div style="margin-top:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-dim);line-height:1.6" id="autobackup-status-box"></div>
@@ -883,12 +1156,14 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
         </div>
         <div class="settings-row" id="purge-interval-row">
           <div><div class="settings-row-label" data-i18n="purge_interval_label">Purge Interval</div><div class="settings-row-desc" data-i18n="purge_interval_desc">How often to run the automatic purge</div></div>
-          <div class="interval-btn-group">
-            <button class="interval-btn purge-interval-btn" data-purge="12h" onclick="setPurgeInterval('12h')" data-i18n="purge_12h">12h</button>
-            <button class="interval-btn purge-interval-btn" data-purge="1d" onclick="setPurgeInterval('1d')" data-i18n="purge_day">1 Day</button>
-            <button class="interval-btn purge-interval-btn" data-purge="1w" onclick="setPurgeInterval('1w')" data-i18n="purge_week">1 Week</button>
-            <button class="interval-btn purge-interval-btn" data-purge="1mo" onclick="setPurgeInterval('1mo')" data-i18n="purge_month">1 Month</button>
-            <button class="interval-btn purge-interval-btn" data-purge="1y" onclick="setPurgeInterval('1y')" data-i18n="purge_year">1 Year</button>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="number" id="inp-purge-val" min="1" max="9999" value="1"
+              style="width:58px;padding:5px 8px;background:var(--bg-input,var(--bg-card));border:1px solid var(--border);border-radius:5px;color:var(--text-bright);font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;text-align:center"
+              oninput="setPurgeIntervalCustom()">
+            <select id="inp-purge-unit"
+              style="padding:5px 8px;background:var(--bg-input,var(--bg-card));border:1px solid var(--border);border-radius:5px;color:var(--text-bright);font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;cursor:pointer"
+              onchange="setPurgeIntervalCustom()">
+            </select>
           </div>
         </div>
         <div style="margin-top:10px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-dim);line-height:1.7" id="purge-status-box"></div>
@@ -898,6 +1173,52 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
             <span data-i18n="purge_btn">Purge FTP Saves Now</span>
           </button>
         </div>
+      </div>
+
+      <!-- DATA & MIGRATION -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings_migration_title">Data &amp; Migration</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label" data-i18n="settings_export_label">Export Configuration</div>
+            <div class="settings-row-desc" data-i18n="settings_export_desc">Save your entire library, paths, settings and session history to a JSON file</div>
+          </div>
+          <button class="btn btn-apply-settings" onclick="exportConfig()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span data-i18n="settings_export_btn">Export</span>
+          </button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label" data-i18n="settings_import_label">Import Configuration</div>
+            <div class="settings-row-desc" data-i18n="settings_import_desc">Restore a previously exported config — replaces your current library and settings</div>
+          </div>
+          <button class="btn btn-apply-settings" onclick="importConfig()" style="border-color:rgba(255,165,0,.35);color:#ffaa44;white-space:nowrap;min-width:fit-content;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,5 17,10"/><line x1="12" y1="5" x2="12" y2="17"/></svg>
+            <span data-i18n="settings_import_btn">Import</span>
+          </button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label" data-i18n="settings_backup_cfg_ftp_label">Backup Config to FTP</div>
+            <div class="settings-row-desc" data-i18n="settings_backup_cfg_ftp_desc">Upload a snapshot of your full config to your FTP server (keeps last 3 versions)</div>
+          </div>
+          <button class="btn btn-apply-settings" id="btn-backup-cfg-ftp" onclick="backupConfigToFtp()" style="border-color:rgba(61,220,132,.35);color:#3ddc84">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="16,16 12,12 8,16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39,18.39A5,5,0,0,0,18,9h-1.26A8,8,0,1,0,3,16.3"/></svg>
+            <span data-i18n="settings_backup_cfg_ftp_btn">Backup to FTP</span>
+          </button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label" data-i18n="settings_purge_cfg_ftp_label">Purge Config Files from FTP</div>
+            <div class="settings-row-desc" data-i18n="settings_purge_cfg_ftp_desc">Delete old config backups from FTP, keeping only the 3 most recent versions</div>
+          </div>
+          <button class="btn btn-apply-settings" id="btn-purge-cfg-ftp" onclick="purgeConfigFromFtp()" style="border-color:rgba(255,100,100,.35);color:#ff6464">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2L5,6"/></svg>
+            <span data-i18n="settings_purge_cfg_ftp_btn">Purge Config from FTP</span>
+          </button>
+        </div>
+        <div id="migration-status-box" style="display:none;margin-top:8px;padding:10px 13px;border-radius:6px;font-size:11px;line-height:1.6"></div>
       </div>
 
       <!-- UPDATES SECTION -->
@@ -1043,12 +1364,13 @@ body{font-family:'Exo 2',sans-serif;background:var(--bg-deep);color:var(--text-b
 // ═══════════════════════════════════════════════════════════
 // VERSION & MODAL IDS — declared first (used in STRINGS below)
 // ═══════════════════════════════════════════════════════════
-const CURRENT_VERSION = '1.0.4';
+const CURRENT_VERSION = '1.0.5';
 const DOWNLOAD_URL = 'https://github.com/EDR23/EDR-VAULT/releases/latest/download/EDR-Vault-Portable.exe';
 const ALL_MODAL_IDS = [
   'modal-overlay', 'cloud-modal-overlay', 'backups-modal-overlay',
   'settings-modal-overlay', 'customize-modal-overlay',
-  'about-overlay', 'donate-overlay', 'confirm-overlay'
+  'about-overlay', 'donate-overlay', 'confirm-overlay',
+  'stats-overlay', 'changelog-overlay'
 ];
 function closeAllModals() {
   ALL_MODAL_IDS.forEach(id => {
@@ -1078,12 +1400,24 @@ const STRINGS = {
     od_setup:'Setup:', od_step1:'Go to portal.azure.com → Azure Active Directory → App registrations → New registration.', od_step2:'In Redirect URI choose Mobile and desktop and enter http://localhost:9473/oauth/callback. Copy the Application (client) ID below.', od_clientid:'Microsoft Client ID',
     prov_disconnected:'Not connected', prov_connected:'Connected',
     backups_title:'FTP Backups',
+    cfg_snapshots_title:'Config Snapshots', cfg_snap_import_btn:'Restore Config', cfg_snap_no_snapshots:'No config snapshots on FTP yet',
     modal_add:'Add Game', modal_edit:'Edit Game',
     form_name:'Game Name', form_name_ph:'My Awesome Game', form_exe:'Executable', form_exe_ph:'Click Browse to select .exe', form_cover:'Cover Image', form_cover_ph:'Click Browse to select image', form_save:'Save Folder', form_save_ph:'Path to save game folder', form_save_hint:'Used for automatic cloud backup.',
     confirm_remove_title:'Remove Game?', confirm_remove_body:'This will remove', confirm_remove_body2:'from your library. Files will not be deleted.',
     settings_title:'Settings', settings_lang_title:'Language / Idioma', settings_lang:'Interface Language', settings_lang_desc:'Choose the language for the entire interface',
     settings_auto_title:'Auto-Backup', settings_auto_enable:'Enable Auto-Backup', settings_auto_desc:'Automatically back up all games with a save path while the app is open', settings_auto_interval:'Backup Interval',
     settings_startup_title:'System', settings_startup_enable:'Windows Startup', settings_startup_desc:'Creates a scheduled task to launch EDR-VAULT at login', settings_notif_enable:'Windows Notifications', settings_notif_desc:'Show system notifications for backups, game sessions and errors',
+    settings_toast_enable:'In-App Toasts', settings_toast_desc:'Show slide-in notifications inside the app for actions and feedback',
+    nav_stats:'Stats', stats_modal_title:'Global Stats', stats_kpi_games:'Total Games', stats_kpi_hours:'Hours Played', stats_kpi_backups:'Backups Made', stats_kpi_ftp:'FTP Space', stats_kpi_ftp_sub:'checking...', stats_chart_title:'Activity — Last 30 Days', stats_chart_today:'Today', stats_top_title:'Top 5 Most Played', stats_never:'Never played', stats_ftp_offline:'FTP Offline', stats_ftp_no_backups:'No backups yet',
+    settings_migration_title:'Data & Migration', settings_export_label:'Export Configuration', settings_export_desc:'Save your entire library, paths, settings and session history to a JSON file', settings_export_btn:'Export', settings_import_label:'Import Configuration', settings_import_desc:'Restore a previously exported config — replaces your current library and settings', settings_import_btn:'Import',
+    settings_backup_cfg_ftp_label:'Backup Config to FTP', settings_backup_cfg_ftp_desc:'Upload a snapshot of your full config to your FTP server (keeps last 3 versions)', settings_backup_cfg_ftp_btn:'Backup to FTP',
+    settings_purge_cfg_ftp_label:'Purge Config Files from FTP', settings_purge_cfg_ftp_desc:'Delete old config backups from FTP, keeping only the 3 most recent versions', settings_purge_cfg_ftp_btn:'Purge Config from FTP',
+    unit_min:'min', unit_hour:'hour(s)', unit_day:'day(s)', unit_week:'week(s)', unit_month:'month(s)', unit_year:'year(s)',
+    footer_impexp:'Import / Export', footer_log:'Activity Log',
+    settings_close_backup_enable:'Backup on Close', settings_close_backup_desc:'Back up all save games automatically every time you exit EDR-Vault',
+    settings_backup_all_now:'Backup All Games Now', settings_backup_all_desc:'Immediately back up all games that have a save path configured', btn_backup_all_now:'Backup All Now',
+    impexp_title:'Import / Export Library', impexp_export:'Export', impexp_import:'Import', impexp_export_desc:'Save your full library, settings and history to a JSON file', impexp_import_desc:'Restore a previously exported backup — this will replace your current library',
+    impexp_warn:'Warning: importing will overwrite your current library and settings.',
     btn_scan:'Scan', scan_searching:'Scanning…', scan_found:'Save folder found!', scan_notfound:'No save folder found. Try Browse.',
     never_played:'Never', toast_launched:'launched!', toast_launch_fail:'Failed to launch: ', toast_fav_add:'Added to favorites!', toast_fav_rem:'Removed from favorites.',
     toast_savepath_set:'Save folder set!', toast_backup_ok:'backed up successfully!', toast_backup_fail:'Backup failed: ', toast_cloud_saved:'Cloud settings saved!', toast_cloud_cleared:'All cloud accounts disconnected.',
@@ -1110,7 +1444,7 @@ const STRINGS = {
     settings_updates_desc:'Check if a new version of EDR-Vault is available',
     settings_updates_btn:'Check Now',
     update_checking:'Checking for updates…',
-    update_uptodate:'You are on the latest version (v1.0.4)',
+    update_uptodate:'You are on the latest version (v1.0.5)',
     update_available:'New version available! Click below to download.',
     update_error:'Could not check for updates. Check your internet connection.',
     update_download_btn:'Download latest version',
@@ -1127,6 +1461,15 @@ const STRINGS = {
     donate_title:'Support EDR-Vault', donate_sub:'If you enjoy the app, consider a small LTC donation ♥',
     donate_copy:'Copy', donate_note:'Scan the QR code or copy the address with your LTC wallet. Thank you! 🙏',
     about_donate:'Donate LTC',
+    form_notes:'Notes', form_notes_ph:'Optional notes about this game…',
+    meta_notes:'Notes', notes_empty:'No notes yet.',
+    btn_copy_path:'Copy', copied:'Copied!',
+    session_running:'Session', session_timer:'Playing',
+    scan_multi:'Multiple found — select:',
+    stats_games:'Games', stats_playtime:'Playtime', stats_backups:'Backups',
+    toast_path_copied:'Path copied to clipboard!',
+    toast_no_exe:'No executable set.',
+    changelog_title:'What\'s new in v1.0.5',
   },
   es: {
     nav_library:'Biblioteca', nav_recent:'Recientes', nav_favorites:'Favoritos', nav_backups:'Backups', nav_cloud:'FTP', nav_settings:'Ajustes', nav_about:'Acerca de',
@@ -1145,12 +1488,24 @@ const STRINGS = {
     od_setup:'Configuración:', od_step1:'Ve a portal.azure.com → Azure Active Directory → Registros de aplicaciones → Nuevo registro.', od_step2:'En URI de redirección elige Móvil y escritorio e introduce http://localhost:9473/oauth/callback. Copia el Application (client) ID abajo.', od_clientid:'Client ID de Microsoft',
     prov_disconnected:'No conectado', prov_connected:'Conectado',
     backups_title:'Backups FTP',
+    cfg_snapshots_title:'Snapshots de Configuración', cfg_snap_import_btn:'Restaurar Config', cfg_snap_no_snapshots:'Aún no hay snapshots de configuración en el FTP',
     modal_add:'Añadir Juego', modal_edit:'Editar Juego',
     form_name:'Nombre del Juego', form_name_ph:'Mi Juego Favorito', form_exe:'Ejecutable', form_exe_ph:'Haz clic en Examinar para seleccionar .exe', form_cover:'Imagen de Portada', form_cover_ph:'Haz clic en Examinar para seleccionar imagen', form_save:'Carpeta de Guardado', form_save_ph:'Ruta a la carpeta de partidas', form_save_hint:'Se usa para el backup automático en la nube.',
     confirm_remove_title:'¿Eliminar Juego?', confirm_remove_body:'Esto eliminará', confirm_remove_body2:'de tu biblioteca. Los archivos del disco no se borrarán.',
     settings_title:'Ajustes', settings_lang_title:'Language / Idioma', settings_lang:'Idioma de la interfaz', settings_lang_desc:'Elige el idioma para toda la interfaz',
     settings_auto_title:'Auto-Backup', settings_auto_enable:'Activar Auto-Backup', settings_auto_desc:'Hace backup automático de todos los juegos con ruta de guardado mientras la app está abierta', settings_auto_interval:'Intervalo de Backup',
     settings_startup_title:'Sistema', settings_startup_enable:'Inicio de Windows', settings_startup_desc:'Crea una tarea programada para arrancar EDR-VAULT al iniciar sesión', settings_notif_enable:'Notificaciones de Windows', settings_notif_desc:'Muestra notificaciones del sistema para backups, sesiones de juego y errores',
+    settings_toast_enable:'Toasts en la App', settings_toast_desc:'Muestra notificaciones deslizantes dentro de la app para acciones y feedback',
+    nav_stats:'Stats', stats_modal_title:'Estadísticas Globales', stats_kpi_games:'Juegos Totales', stats_kpi_hours:'Horas Jugadas', stats_kpi_backups:'Backups Realizados', stats_kpi_ftp:'Espacio FTP', stats_kpi_ftp_sub:'consultando...', stats_chart_title:'Actividad — Últimos 30 Días', stats_chart_today:'Hoy', stats_top_title:'Top 5 Más Jugados', stats_never:'Nunca jugado', stats_ftp_offline:'FTP desconectado', stats_ftp_no_backups:'Sin backups aún',
+    settings_migration_title:'Datos y Migración', settings_export_label:'Exportar Configuración', settings_export_desc:'Guarda toda tu librería, rutas, ajustes e historial de sesiones en un archivo JSON', settings_export_btn:'Exportar', settings_import_label:'Importar Configuración', settings_import_desc:'Restaura una config exportada anteriormente — reemplaza tu librería y ajustes actuales', settings_import_btn:'Importar',
+    settings_backup_cfg_ftp_label:'Backup Config al FTP', settings_backup_cfg_ftp_desc:'Sube una copia de tu configuración completa al servidor FTP (guarda las 3 últimas versiones)', settings_backup_cfg_ftp_btn:'Backup al FTP',
+    settings_purge_cfg_ftp_label:'Purgar Configs del FTP', settings_purge_cfg_ftp_desc:'Elimina backups de configuración antiguos del FTP, dejando solo las 3 versiones más recientes', settings_purge_cfg_ftp_btn:'Purgar Config del FTP',
+    unit_min:'min', unit_hour:'hora(s)', unit_day:'día(s)', unit_week:'semana(s)', unit_month:'mes(es)', unit_year:'año(s)',
+    footer_impexp:'Importar / Exportar', footer_log:'Registro',
+    settings_close_backup_enable:'Backup al Cerrar', settings_close_backup_desc:'Hace backup de todas las partidas automáticamente cada vez que cierras EDR-Vault',
+    settings_backup_all_now:'Backup de Todos Ahora', settings_backup_all_desc:'Hace backup inmediato de todos los juegos que tengan ruta de guardado configurada', btn_backup_all_now:'Backup Todo Ahora',
+    impexp_title:'Importar / Exportar Librería', impexp_export:'Exportar', impexp_import:'Importar', impexp_export_desc:'Guarda tu librería completa, ajustes e historial en un archivo JSON', impexp_import_desc:'Restaura un backup exportado — esto reemplazará tu librería y ajustes actuales',
+    impexp_warn:'Aviso: importar sobreescribirá tu librería y ajustes actuales.',
     btn_scan:'Escanear', scan_searching:'Buscando…', scan_found:'¡Carpeta de guardado encontrada!', scan_notfound:'No se encontró carpeta. Usa Examinar.',
     never_played:'Nunca', toast_launched:'iniciado!', toast_launch_fail:'Error al iniciar: ', toast_fav_add:'¡Añadido a favoritos!', toast_fav_rem:'Eliminado de favoritos.',
     toast_savepath_set:'¡Carpeta de guardado establecida!', toast_backup_ok:'backup completado!', toast_backup_fail:'Error en backup: ', toast_cloud_saved:'¡Configuración de nube guardada!', toast_cloud_cleared:'Todas las cuentas desconectadas.',
@@ -1176,7 +1531,7 @@ const STRINGS = {
     settings_updates_desc:'Comprueba si hay una nueva versión de EDR-Vault disponible',
     settings_updates_btn:'Comprobar',
     update_checking:'Buscando actualizaciones…',
-    update_uptodate:'Tienes la última versión (v1.0.4)',
+    update_uptodate:'Tienes la última versión (v1.0.5)',
     update_available:'¡Nueva versión disponible! Haz clic para descargar.',
     update_error:'No se pudo comprobar. Revisa tu conexión a internet.',
     update_download_btn:'Descargar última versión',
@@ -1194,6 +1549,15 @@ const STRINGS = {
     donate_title:'Apoya EDR-Vault', donate_sub:'Si disfrutas la app, considera una pequeña donación en LTC ♥',
     donate_copy:'Copiar', donate_note:'Escanea el QR o copia la dirección con tu wallet LTC. ¡Gracias! 🙏',
     about_donate:'Donar LTC',
+    form_notes:'Notas', form_notes_ph:'Notas opcionales sobre este juego…',
+    meta_notes:'Notas', notes_empty:'Sin notas aún.',
+    btn_copy_path:'Copiar', copied:'¡Copiado!',
+    session_running:'Sesión', session_timer:'Jugando',
+    scan_multi:'Varios encontrados — selecciona:',
+    stats_games:'Juegos', stats_playtime:'Tiempo', stats_backups:'Backups',
+    toast_path_copied:'¡Ruta copiada al portapapeles!',
+    toast_no_exe:'Sin ejecutable configurado.',
+    changelog_title:'Novedades en v1.0.5',
   }
 };
 let currentLang = 'es';
@@ -1230,7 +1594,14 @@ let isUploading    = false;
 let autoBackupTimer= null;
 let nextBackupAt   = null;
 let countdownTicker= null;
-let appSettings    = JSON.parse(localStorage.getItem('vault_settings') || '{"lang":"es","autobackup":false,"autoIntervalMin":30,"autopurge":true,"purgeInterval":"1w","notifications":true}');
+let appSettings    = JSON.parse(localStorage.getItem('vault_settings') || '{"lang":"es","autobackup":false,"autoIntervalMin":30,"autoBackupCustom":{"val":30,"unit":"m"},"autopurge":true,"purgeInterval":"1w","purgeCustom":{"val":1,"unit":"w"},"notifications":true,"toasts":true,"backupOnClose":false}');
+// Migrate old format → new custom fields if needed
+if (!appSettings.autoBackupCustom) appSettings.autoBackupCustom = {val: appSettings.autoIntervalMin || 30, unit: 'm'};
+if (!appSettings.purgeCustom) {
+  const oldKey = appSettings.purgeInterval || '1w';
+  const purgeMap = {'12h':{val:12,unit:'h'},'1d':{val:1,unit:'d'},'1w':{val:1,unit:'w'},'1mo':{val:1,unit:'mo'},'1y':{val:1,unit:'y'}};
+  appSettings.purgeCustom = purgeMap[oldKey] || {val:1, unit:'w'};
+}
 
 function save() { localStorage.setItem('vault_v2', JSON.stringify(games)); }
 function saveAppSettings() { localStorage.setItem('vault_settings', JSON.stringify(appSettings)); }
@@ -1247,21 +1618,42 @@ async function init() {
   currentLang = appSettings.lang || 'es';
   applyLang();
   updateCloudBadge();
+  updateStatsFooter();
   setTimeout(updateTbarFtpBadge, 300);
   renderAll();
   if (appSettings.autobackup) startAutoBackupTimer();
   // Auto-purge is enabled by default
   if (appSettings.autopurge !== false) startAutoPurgeTimer();
+
+  // Show changelog on first run of v1.0.5
+  const lastSeen = localStorage.getItem('vault_changelog_seen');
+  if (lastSeen !== CURRENT_VERSION) {
+    setTimeout(() => {
+      document.getElementById('changelog-overlay').classList.add('open');
+      localStorage.setItem('vault_changelog_seen', CURRENT_VERSION);
+    }, 800);
+  }
+
   // Refresh badge & detail when cloud window closes after connecting
   window.electronAPI.onCloudUpdated(async () => {
+    const prevSnapshot = window._ftpSnapshotBeforeOpen || null;
     cloudSettings = await window.electronAPI.getCloudSettings();
+    const newSnapshot = JSON.stringify(cloudSettings || null);
     updateCloudBadge();
     updateSettingsFtpBadge();
     updateTbarFtpBadge();
+    updateStatsFooter();
     const g = games.find(x => x.id === selected);
     if (g) renderDetail(g);
     // Refresh backups list automatically if user is on that tab
     if (filter === 'backups') loadInlineBackups();
+    // Only show toast when something actually changed
+    if (prevSnapshot !== newSnapshot) {
+      toastInfo(currentLang === 'es' ? 'Configuración FTP actualizada' : 'FTP settings updated', 'FTP');
+    } else {
+      toastInfo(currentLang === 'es' ? 'Sin cambios en la configuración FTP' : 'No changes to FTP configuration', 'FTP');
+    }
+    window._ftpSnapshotBeforeOpen = null;
   });
 
   // Listen for game process exit from main process
@@ -1270,16 +1662,26 @@ async function init() {
     runningGames.delete(gameId);
     closingGames.delete(gameId);
     if (_killTimers.has(gameId)) { clearTimeout(_killTimers.get(gameId)); _killTimers.delete(gameId); }
+    stopSessionTicker();
+    const statSession = document.getElementById('stat-session');
+    if (statSession) statSession.classList.remove('visible');
+    const bar = document.getElementById('session-live-bar');
+    if (bar) bar.classList.remove('visible');
     refreshPlayBtn();
     renderAll();
+    updateStatsFooter();
     const g = games.find(x => x.id === gameId);
     if (g && elapsed > 10000) {
       g.playtime = (g.playtime || 0) + elapsed;
       save();
+      // Log session for stats chart
+      logSession(g.id, elapsed);
       const ptEl = document.getElementById('meta-playtime');
       if (ptEl && selected === g.id) ptEl.textContent = fmtPlaytime(g.playtime);
       const mins = Math.round(elapsed / 60000);
-      notify('EDR-Vault', `${g.name} — +${mins > 0 ? mins + 'm' : '<1m'} ${currentLang === 'es' ? 'jugado' : 'played'}`);
+      const sessionStr = mins > 0 ? `+${mins}m` : '<1m';
+      notify('EDR-Vault', `${g.name} — ${sessionStr} ${currentLang === 'es' ? 'jugado' : 'played'}`);
+      toastSuccess(`${g.name}: ${sessionStr} ${currentLang === 'es' ? 'jugado' : 'played'}`, currentLang === 'es' ? 'Sesión finalizada' : 'Session ended');
     }
   });
 }
@@ -1371,6 +1773,233 @@ function notify(title, body) {
   window.electronAPI.notify({ title, body });
 }
 
+// ═══════════════════════════════════════════════════════════
+// IN-APP TOAST SYSTEM
+// ═══════════════════════════════════════════════════════════
+let _toastId = 0;
+function toast(msg, type = 'info', title = '', duration = 3500) {
+  if (appSettings.toasts === false) return;
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const id = ++_toastId;
+  const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+  const defaultTitles = {
+    success: currentLang === 'es' ? 'Éxito' : 'Done',
+    error:   currentLang === 'es' ? 'Error' : 'Error',
+    info:    currentLang === 'es' ? 'Info'  : 'Info',
+    warning: currentLang === 'es' ? 'Aviso' : 'Warning',
+  };
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.id = `toast-${id}`;
+  el.innerHTML = `
+    <span class="toast-icon">${icons[type] || 'ℹ'}</span>
+    <div class="toast-body">
+      <div class="toast-title">${title || defaultTitles[type]}</div>
+      ${msg ? `<div class="toast-msg">${msg}</div>` : ''}
+    </div>
+    <button class="toast-close" onclick="dismissToast(${id})">×</button>
+    <div class="toast-bar" style="animation-duration:${duration}ms"></div>
+  `;
+  container.appendChild(el);
+  const timer = setTimeout(() => dismissToast(id), duration);
+  el._timer = timer;
+  return id;
+}
+function dismissToast(id) {
+  const el = document.getElementById(`toast-${id}`);
+  if (!el) return;
+  if (el._timer) clearTimeout(el._timer);
+  el.classList.add('removing');
+  setTimeout(() => el.remove(), 200);
+}
+function toastSuccess(msg, title) { return toast(msg, 'success', title); }
+function toastError(msg, title)   { return toast(msg, 'error',   title, 5000); }
+function toastInfo(msg, title)    { return toast(msg, 'info',    title); }
+function toastWarn(msg, title)    { return toast(msg, 'warning', title); }
+
+// ═══════════════════════════════════════════════════════════
+// CLIPBOARD HELPERS
+// ═══════════════════════════════════════════════════════════
+async function copyToClipboard(text, successMsg) {
+  if (!text) return;
+  try {
+    await window.electronAPI.writeClipboard(text);
+    toastSuccess(successMsg || t('toast_path_copied'), t('copied'));
+  } catch(e) {
+    toastError('Could not copy to clipboard.');
+  }
+}
+async function copyExePath() {
+  const g = games.find(x => x.id === selected);
+  if (g && g.exePath) await copyToClipboard(g.exePath, t('toast_path_copied'));
+}
+async function copySavePath() {
+  const g = games.find(x => x.id === selected);
+  if (g && g.savePath) await copyToClipboard(g.savePath, t('toast_path_copied'));
+}
+async function copyDonateAddr() {
+  const addr = document.getElementById('donate-addr');
+  if (addr) await copyToClipboard(addr.textContent, 'Address copied!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// NOTES SYSTEM
+// ═══════════════════════════════════════════════════════════
+let _notesEditing = false;
+function toggleNotesEdit() {
+  const g = games.find(x => x.id === selected);
+  if (!g) return;
+  _notesEditing = !_notesEditing;
+  document.getElementById('notes-display').style.display = _notesEditing ? 'none' : 'block';
+  const editSection = document.getElementById('notes-edit-section');
+  editSection.style.display = _notesEditing ? 'block' : 'none';
+  const chevron = document.getElementById('notes-chevron');
+  if (chevron) chevron.style.transform = _notesEditing ? 'rotate(180deg)' : '';
+  if (_notesEditing) {
+    const ta = document.getElementById('notes-textarea');
+    ta.value = g.notes || '';
+    ta.focus();
+  }
+}
+function cancelNotesEdit() {
+  _notesEditing = false;
+  document.getElementById('notes-display').style.display = 'block';
+  document.getElementById('notes-edit-section').style.display = 'none';
+  const chevron = document.getElementById('notes-chevron');
+  if (chevron) chevron.style.transform = '';
+}
+function saveNotes() {
+  const g = games.find(x => x.id === selected);
+  if (!g) return;
+  g.notes = document.getElementById('notes-textarea').value.trim();
+  save();
+  cancelNotesEdit();
+  updateNotesCard(g);
+  toastSuccess('', currentLang === 'es' ? 'Notas guardadas' : 'Notes saved');
+}
+function updateNotesCard(g) {
+  const display = document.getElementById('notes-display');
+  if (!display) return;
+  if (g && g.notes) {
+    display.textContent = g.notes;
+    display.className = 'notes-text';
+  } else {
+    display.textContent = t('notes_empty');
+    display.className = 'notes-text empty';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LIVE SESSION TIMER
+// ═══════════════════════════════════════════════════════════
+let _sessionTicker = null;
+function startSessionTicker(gameId) {
+  stopSessionTicker();
+  _sessionTicker = setInterval(() => {
+    const startMs = runningGames.get(gameId);
+    if (!startMs) { stopSessionTicker(); return; }
+    const elapsed = Date.now() - startMs;
+    const s = Math.floor(elapsed / 1000) % 60;
+    const m = Math.floor(elapsed / 60000) % 60;
+    const h = Math.floor(elapsed / 3600000);
+    const fmt = h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${m}:${String(s).padStart(2,'0')}`;
+    const el = document.getElementById('session-elapsed');
+    const fl = document.getElementById('footer-session-time');
+    if (el) el.textContent = fmt;
+    if (fl) fl.textContent = fmt;
+  }, 1000);
+}
+function stopSessionTicker() {
+  if (_sessionTicker) { clearInterval(_sessionTicker); _sessionTicker = null; }
+}
+function updateSessionBar(gameId) {
+  const bar = document.getElementById('session-live-bar');
+  const statSession = document.getElementById('stat-session');
+  if (!bar) return;
+  const isRunning = gameId && runningGames.has(gameId);
+  bar.classList.toggle('visible', isRunning);
+  if (statSession) statSession.classList.toggle('visible', runningGames.size > 0);
+  if (isRunning) startSessionTicker(gameId);
+  else stopSessionTicker();
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATS FOOTER
+// ═══════════════════════════════════════════════════════════
+function updateStatsFooter() {
+  const countEl = document.getElementById('stat-game-count');
+  const ptEl    = document.getElementById('stat-playtime-total');
+  const ftpDot  = document.getElementById('stat-ftp-dot');
+  const ftpLbl  = document.getElementById('stat-ftp-label');
+  if (countEl) countEl.textContent = games.length;
+  if (ptEl) {
+    const totalMs = games.reduce((s, g) => s + (g.playtime || 0), 0);
+    const h = Math.floor(totalMs / 3600000);
+    const m = Math.floor((totalMs % 3600000) / 60000);
+    ptEl.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
+  }
+  const ftpOnline = isCloudConnected();
+  if (ftpDot) ftpDot.className = 'stat-ftp-dot' + (ftpOnline ? ' online' : '');
+  if (ftpLbl) ftpLbl.textContent = ftpOnline ? 'FTP ●' : 'FTP';
+}
+
+// ═══════════════════════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('keydown', (e) => {
+  const tag = (e.target.tagName || '').toLowerCase();
+  const inInput = tag === 'input' || tag === 'textarea' || tag === 'select';
+  const searchBar = document.getElementById('search-bar');
+  const isInSearch = e.target === searchBar;
+
+  // Escape: clear search or close modals
+  if (e.key === 'Escape') {
+    if (isInSearch && searchBar.value) { clearSearch(); return; }
+    const openModal = document.querySelector('.modal-overlay.open, .changelog-overlay.open');
+    if (openModal) { openModal.classList.remove('open'); return; }
+  }
+
+  if (inInput) return;
+
+  // / or Ctrl+F: focus search
+  if (e.key === '/' || (e.key === 'f' && e.ctrlKey)) {
+    e.preventDefault();
+    if (searchBar) { searchBar.focus(); searchBar.select(); }
+    return;
+  }
+
+  if (!selected) return;
+
+  // Space: play / stop
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    playOrKill();
+    return;
+  }
+  // F: toggle favorite
+  if (e.key === 'f' || e.key === 'F') {
+    toggleFav();
+    return;
+  }
+  // E: edit
+  if (e.key === 'e' || e.key === 'E') {
+    openEditModal();
+    return;
+  }
+  // Delete: remove
+  if (e.key === 'Delete') {
+    confirmRemove();
+    return;
+  }
+  // B: backup saves
+  if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey) {
+    backupSaves();
+    return;
+  }
+});
+
+
 function setPlayBtnRunning(running, killMode) {
   const btn   = document.getElementById('btn-play-main');
   const icon  = document.getElementById('btn-play-icon');
@@ -1424,7 +2053,7 @@ async function killGame(gameId) {
 
 async function playGame() {
   const g = games.find(x => x.id === selected); if (!g) return;
-  if (!g.exePath) { notify('EDR-Vault', currentLang==='es'?'Sin ejecutable configurado.':'No executable set.'); return; }
+  if (!g.exePath) { toastWarn(t('toast_no_exe')); return; }
   if (runningGames.has(g.id)) return;
   const r = await window.electronAPI.launchExe(g.exePath, g.id);
   if (r.success) {
@@ -1432,12 +2061,15 @@ async function playGame() {
     g.lastPlayed = new Date().toISOString();
     save(); renderAll();
     refreshPlayBtn();
-    // Schedule kill-mode transition after 10s
+    // Show session bar for currently selected game
+    if (selected === g.id) updateSessionBar(g.id);
+    // Schedule kill-mode transition after 3s
     const timer = setTimeout(() => setPlayBtnKillMode(g.id), 3000);
     _killTimers.set(g.id, timer);
     notify('EDR-Vault', `${g.name} — ${currentLang==='es'?'iniciado':'launched!'}`);
+    toastSuccess(`${g.name}`, currentLang==='es'?'¡Juego iniciado!':'Game launched!');
   } else {
-    notify('EDR-Vault ⚠', `${t('toast_launch_fail')}${r.error}`);
+    toastError(`${t('toast_launch_fail')}${r.error}`, 'EDR-Vault');
   }
 }
 // ═══════════════════════════════════════════════════════════
@@ -1538,6 +2170,34 @@ async function refreshSaveInfo(g) {
 function fmtBytes(b) { if (!b) return '0 B'; const k=1024,sz=['B','KB','MB','GB'],i=Math.floor(Math.log(b)/Math.log(k)); return parseFloat((b/Math.pow(k,i)).toFixed(1))+' '+sz[i]; }
 function fmtDate(d) { if (!d) return '—'; const dt = new Date(d); return dt.toLocaleDateString(currentLang === 'es' ? 'es-ES' : 'en-US', { day:'2-digit', month:'2-digit', year:'numeric' }) + ' ' + dt.toLocaleTimeString(currentLang === 'es' ? 'es-ES' : 'en-US', { hour:'2-digit', minute:'2-digit' }); }
 
+function timeAgo(dateStr) {
+  if (!dateStr) return null;
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins  = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days  = Math.floor(diff / 86400000);
+  const es = currentLang === 'es';
+  if (mins < 2)   return es ? 'ahora mismo'   : 'just now';
+  if (mins < 60)  return es ? `hace ${mins}min` : `${mins}min ago`;
+  if (hours < 24) return es ? `hace ${hours}h`  : `${hours}h ago`;
+  if (days === 1) return es ? 'ayer'            : 'yesterday';
+  if (days < 7)   return es ? `hace ${days} días` : `${days} days ago`;
+  if (days < 30)  return es ? `hace ${Math.floor(days/7)} sem.` : `${Math.floor(days/7)}w ago`;
+  if (days < 365) return es ? `hace ${Math.floor(days/30)} mes${Math.floor(days/30)>1?'es':''}` : `${Math.floor(days/30)}mo ago`;
+  return es ? `hace ${Math.floor(days/365)} año${Math.floor(days/365)>1?'s':''}` : `${Math.floor(days/365)}yr ago`;
+}
+
+function logSession(gameId, durationMs) {
+  try {
+    const sessions = JSON.parse(localStorage.getItem('vault_sessions') || '[]');
+    sessions.push({ date: new Date().toISOString(), gameId, ms: durationMs });
+    // Keep only last 365 days
+    const cutoff = Date.now() - 365 * 86400000;
+    const trimmed = sessions.filter(s => new Date(s.date).getTime() > cutoff);
+    localStorage.setItem('vault_sessions', JSON.stringify(trimmed));
+  } catch(e) {}
+}
+
 // ═══════════════════════════════════════════════════════════
 // CLOUD BACKUP
 // ═══════════════════════════════════════════════════════════
@@ -1573,9 +2233,11 @@ async function runBackup(g) {
     setProgress(currentLang==='es'?'¡Completado!':'Done!', 100);
     if (selected === g.id) renderDetail(g);
     notify('EDR-Vault ✓', `${g.name} — ${t('toast_backup_ok')} (${fmtBytes(zip.size)})`);
+    toastSuccess(`${g.name} · ${fmtBytes(zip.size)}`, currentLang==='es'?'Backup completado':'Backup done');
     setTimeout(() => { if (prog) prog.classList.remove('visible'); setProgress('',0); }, 2000);
   } catch(e) {
     notify('EDR-Vault ⚠', t('toast_backup_fail') + e.message);
+    toastError(e.message, t('toast_backup_fail').replace(': ',''));
     if (prog) prog.classList.remove('visible');
   } finally {
     isUploading = false;
@@ -1592,6 +2254,8 @@ function setProgress(text, pct) {
 // CLOUD WINDOW (opens separate BrowserWindow)
 // ═══════════════════════════════════════════════════════════
 function openCloudWindow() {
+  // snapshot current FTP config before opening so we can detect real changes on close
+  window._ftpSnapshotBeforeOpen = JSON.stringify(cloudSettings || null);
   window.electronAPI.openCloudWindow(currentLang);
 }
 function selectProvider(p) {
@@ -1678,6 +2342,8 @@ async function loadInlineBackups() {
   if (!isCloudConnected()) {
     container.innerHTML = `<div class="backups-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><p>${currentLang==='es'?'Sin conexión FTP. Configura el servidor en Ajustes.':'No FTP connected. Configure it in Settings.'}</p></div>`;
     if (subtitle) subtitle.textContent = '';
+    const sec = document.getElementById('cfg-snapshot-section');
+    if (sec) sec.style.display = 'none';
     return;
   }
   const cfg = getFtpCfg();
@@ -1685,6 +2351,8 @@ async function loadInlineBackups() {
   container.innerHTML = `<div class="backups-loading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="animation:spin 1s linear infinite;opacity:.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg><span>${currentLang==='es'?'Cargando backups…':'Loading backups…'}</span></div>`;
   const result = await window.electronAPI.listCloudBackups({ cfg });
   renderInlineBackupsList(result, container);
+  // Also load config snapshots in parallel
+  loadConfigSnapshots();
 }
 
 function refreshInlineBackups() { loadInlineBackups(); }
@@ -1774,6 +2442,121 @@ function filterInlineBackups(gameKey) {
   } else {
     container.innerHTML = filtered.map(f => buildInlineBackupItem(f)).join('');
   }
+  // also filter config snapshots by search query
+  filterConfigSnapshotsBySearch(q);
+}
+
+// ── CONFIG SNAPSHOTS ──────────────────────────────────────
+async function loadConfigSnapshots() {
+  if (!isCloudConnected()) return;
+  const cfg = getFtpCfg();
+  const sec = document.getElementById('cfg-snapshot-section');
+  const list = document.getElementById('cfg-snapshot-list');
+  if (!sec || !list) return;
+  const result = await window.electronAPI.listConfigBackups({ cfg }).catch(() => null);
+  if (!result || !result.success || !result.files || !result.files.length) {
+    sec.style.display = 'none';
+    window._cfgSnapshotFiles = [];
+    return;
+  }
+  window._cfgSnapshotFiles = result.files;
+  sec.style.display = 'block';
+  renderConfigSnapshots(result.files);
+}
+
+function renderConfigSnapshots(files) {
+  const list = document.getElementById('cfg-snapshot-list');
+  if (!list) return;
+  if (!files.length) {
+    list.innerHTML = `<div class="backups-empty" style="padding:14px 0"><p>${t('cfg_snap_no_snapshots')}</p></div>`;
+    return;
+  }
+  list.innerHTML = files.map(f => buildCfgSnapshotItem(f)).join('');
+}
+
+function buildCfgSnapshotItem(f) {
+  const safeId = f.id.replace(/['"<>&]/g,'');
+  const safeName = f.name.replace(/['"<>&]/g,'');
+  // extract timestamp from filename: vault_config_2025-01-15T10-30-00.json
+  const m = f.name.match(/vault_config_(.+)\.json$/);
+  const stamp = m ? m[1].replace(/T(\d{2})-(\d{2})-(\d{2})/, ' $1:$2:$3').replace(/_/g,'/') : '';
+  return `<div class="cfg-snap-item" id="csnap-${safeId}" data-cfg-name="${safeName}">
+    <div class="bkp-icon" style="font-size:16px">📋</div>
+    <div class="bkp-info">
+      <div class="bkp-game" style="color:var(--green)">${currentLang==='es'?'Snapshot de Configuración':'Configuration Snapshot'}</div>
+      <div class="bkp-name" title="${safeName}">${safeName}</div>
+      <div class="bkp-meta"><span>${stamp || fmtDate(f.date)}</span> &nbsp;·&nbsp; ${fmtBytes(f.size)}</div>
+    </div>
+    <div class="bkp-actions">
+      <button class="btn-cfg-import" onclick="restoreConfigSnapshot('${safeId}','${safeName}')" title="${currentLang==='es'?'Importar esta configuración al programa':'Import this configuration into the app'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 1 0 .49-4.72"/></svg>
+        ${t('cfg_snap_import_btn')}
+      </button>
+      <button class="btn-del" onclick="deleteCfgSnapshot('${safeId}','${safeName}')" title="${currentLang==='es'?'Eliminar':'Delete'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2L5,6"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function filterConfigSnapshotsBySearch(q) {
+  const sec = document.getElementById('cfg-snapshot-section');
+  const list = document.getElementById('cfg-snapshot-list');
+  if (!sec || !list || !window._cfgSnapshotFiles) return;
+  const files = q
+    ? window._cfgSnapshotFiles.filter(f => f.name.toLowerCase().includes(q))
+    : window._cfgSnapshotFiles;
+  if (!files.length && q) {
+    sec.style.display = 'none';
+  } else if (window._cfgSnapshotFiles.length) {
+    sec.style.display = 'block';
+    renderConfigSnapshots(files);
+  }
+}
+
+async function restoreConfigSnapshot(fileId, filename) {
+  if (!confirm(currentLang==='es'
+    ? `¿Restaurar esta configuración?\n\nEsto reemplazará toda tu librería, ajustes y sesiones con los del snapshot:\n${filename}\n\nLa app se recargará automáticamente.`
+    : `Restore this configuration?\n\nThis will replace your entire library, settings and sessions with:\n${filename}\n\nThe app will reload automatically.`)) return;
+  const cfg = getFtpCfg();
+  const btn = document.querySelector(`#csnap-${fileId} .btn-cfg-import`);
+  if (btn) { btn.disabled = true; btn.textContent = currentLang==='es'?'Restaurando…':'Restoring…'; }
+  const result = await window.electronAPI.downloadConfigBackup({ cfg, filename }).catch(e => ({ success: false, error: e.message }));
+  if (!result.success) {
+    toastError(result.error || 'Download failed', currentLang==='es'?'Error al restaurar':'Restore failed');
+    if (btn) { btn.disabled = false; btn.textContent = t('cfg_snap_import_btn'); }
+    return;
+  }
+  try {
+    const payload = JSON.parse(result.data);
+    if (!Array.isArray(payload.vault_v2)) throw new Error('Invalid config file');
+    if (payload.vault_v2)       localStorage.setItem('vault_v2', JSON.stringify(payload.vault_v2));
+    if (payload.vault_settings) localStorage.setItem('vault_settings', JSON.stringify(payload.vault_settings));
+    if (payload.vault_sessions) localStorage.setItem('vault_sessions', JSON.stringify(payload.vault_sessions));
+    if (payload.vault_cloud && window.electronAPI.saveCloudSettings) {
+      await window.electronAPI.saveCloudSettings(payload.vault_cloud).catch(()=>{});
+    }
+    toastSuccess(currentLang==='es'?'Configuración restaurada — recargando…':'Configuration restored — reloading…', currentLang==='es'?'Restaurar Config':'Restore Config');
+    notify('EDR-Vault ✓', currentLang==='es'?'Configuración restaurada correctamente.':'Configuration restored successfully.');
+    setTimeout(() => window.location.reload(), 1400);
+  } catch(e) {
+    toastError(e.message, currentLang==='es'?'Error al restaurar':'Restore failed');
+    if (btn) { btn.disabled = false; btn.textContent = t('cfg_snap_import_btn'); }
+  }
+}
+
+async function deleteCfgSnapshot(fileId, filename) {
+  if (!confirm(currentLang==='es'?`¿Eliminar snapshot "${filename}" del FTP?`:`Delete snapshot "${filename}" from FTP?`)) return;
+  const cfg = getFtpCfg();
+  const result = await window.electronAPI.deleteCloudBackup({ cfg, filename }).catch(e => ({ success: false, error: e.message }));
+  if (result.success) {
+    document.getElementById('csnap-' + fileId)?.remove();
+    window._cfgSnapshotFiles = (window._cfgSnapshotFiles||[]).filter(f => f.id !== fileId);
+    toastSuccess(currentLang==='es'?'Snapshot eliminado.':'Snapshot deleted.', 'FTP');
+    if (!window._cfgSnapshotFiles.length) document.getElementById('cfg-snapshot-section').style.display = 'none';
+  } else {
+    toastError(result.error, currentLang==='es'?'Error al eliminar':'Delete failed');
+  }
 }
 
 async function recoverAndRestore(fileId, filename, gameId) {
@@ -1789,18 +2572,18 @@ async function recoverAndRestore(fileId, filename, gameId) {
   if (!mk.success) { notify('EDR-Vault ⚠', (currentLang==='es'?'Error al crear carpetas: ':'Failed to create: ')+mk.error); return; }
 
   const dl = await window.electronAPI.downloadCloudBackup({ cfg: cfg_r, filename });
-  if (!dl.success) { notify('EDR-Vault ⚠', t('toast_restore_fail')+dl.error); return; }
+  if (!dl.success) { toastError(dl.error, t('toast_restore_fail').replace(': ','')); return; }
 
   const rs = await window.electronAPI.restoreBackup({ tmpPath: dl.tmpPath, restorePath: g.savePath });
-  rs.success ? notify('EDR-Vault ✓', t('toast_restore_ok')) : notify('EDR-Vault ⚠', t('toast_restore_fail')+rs.error);
+  rs.success ? toastSuccess('', t('toast_restore_ok')) : toastError(rs.error, t('toast_restore_fail').replace(': ',''));
 }
 
 async function deleteInlineBackup(fileId, filename) {
   if (!confirm((currentLang==='es'?`¿Eliminar "${filename}" del servidor FTP? No se puede deshacer.`:`Delete "${filename}" from FTP server? This cannot be undone.`))) return;
   await reloadCloud();
   const r = await window.electronAPI.deleteCloudBackup({ cfg: getFtpCfg(), filename });
-  if (r.success) { const el=document.getElementById('ibkp-'+fileId); if(el)el.remove(); }
-  else notify('EDR-Vault ⚠', t('toast_delete_fail')+r.error);
+  if (r.success) { const el=document.getElementById('ibkp-'+fileId); if(el)el.remove(); toastSuccess('', t('toast_delete_ok')); }
+  else toastError(r.error, t('toast_delete_fail').replace(': ',''));
 }
 
 async function openBackupsModal() {
@@ -1890,19 +2673,27 @@ function openSettings() {
   const row = document.getElementById('interval-row');
   row.style.opacity = appSettings.autobackup ? '1' : '.35';
   row.style.pointerEvents = appSettings.autobackup ? 'auto' : 'none';
-  document.querySelectorAll('.interval-btn:not(.purge-interval-btn)').forEach(b => b.classList.toggle('active', parseInt(b.dataset.min) === (appSettings.autoIntervalMin||30)));
   document.querySelectorAll('#lang-en,#lang-es').forEach(b => b.classList.remove('active'));
   const lb = document.getElementById('lang-' + currentLang); if(lb) lb.classList.add('active');
   // sync startup task button
   refreshStartupBtn();
   document.getElementById('toggle-notifications').checked = appSettings.notifications !== false;
+  document.getElementById('toggle-toasts').checked = appSettings.toasts !== false;
+  document.getElementById('toggle-close-backup').checked = !!appSettings.backupOnClose;
+  // build & sync interval selects
+  buildIntervalSelects();
+  const bkp = appSettings.autoBackupCustom || {val:30, unit:'m'};
+  const el_bv = document.getElementById('inp-backup-val'); if(el_bv) el_bv.value = bkp.val;
+  const el_bu = document.getElementById('inp-backup-unit'); if(el_bu) el_bu.value = bkp.unit;
   // sync purge UI
   const purgeOn = appSettings.autopurge !== false;
   document.getElementById('toggle-autopurge').checked = purgeOn;
-  document.querySelectorAll('.purge-interval-btn').forEach(b => b.classList.toggle('active', b.dataset.purge === (appSettings.purgeInterval||'1w')));
   const purgeRow = document.getElementById('purge-interval-row');
   purgeRow.style.opacity = purgeOn ? '1' : '.35';
   purgeRow.style.pointerEvents = purgeOn ? 'auto' : 'none';
+  const prg = appSettings.purgeCustom || {val:1, unit:'w'};
+  const el_pv = document.getElementById('inp-purge-val'); if(el_pv) el_pv.value = prg.val;
+  const el_pu = document.getElementById('inp-purge-unit'); if(el_pu) el_pu.value = prg.unit;
   updateAutoBackupStatusBox();
   updatePurgeStatusBox();
   updateSettingsFtpBadge();
@@ -1913,6 +2704,198 @@ function openSettings() {
   });
 }
 function closeSettings() { document.getElementById('settings-modal-overlay').classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════════
+// IMPORT / EXPORT CONFIG
+// ═══════════════════════════════════════════════════════════
+async function exportConfig() {
+  const statusBox = document.getElementById('migration-status-box');
+  try {
+    // Collect all data
+    const cloudCfg = await window.electronAPI.getCloudSettings().catch(() => null);
+    const payload = {
+      version:      '1.0.5',
+      exportedAt:   new Date().toISOString(),
+      vault_v2:     JSON.parse(localStorage.getItem('vault_v2') || '[]'),
+      vault_settings: JSON.parse(localStorage.getItem('vault_settings') || '{}'),
+      vault_sessions: JSON.parse(localStorage.getItem('vault_sessions') || '[]'),
+      vault_cloud:  cloudCfg || null,
+    };
+    const jsonStr = JSON.stringify(payload, null, 2);
+    const result  = await window.electronAPI.exportConfig(jsonStr);
+    if (result.cancelled) return;
+    if (result.success) {
+      toastSuccess(
+        currentLang === 'es' ? `Exportado correctamente` : `Exported successfully`,
+        currentLang === 'es' ? 'Exportar Config' : 'Export Config'
+      );
+      if (statusBox) {
+        statusBox.style.display = 'block';
+        statusBox.style.background = 'rgba(61,220,132,.1)';
+        statusBox.style.border = '1px solid rgba(61,220,132,.25)';
+        statusBox.style.color = '#3ddc84';
+        statusBox.innerHTML = (currentLang === 'es'
+          ? `✓ Exportado en: <code style="font-size:10px;opacity:.8">${result.filePath}</code>`
+          : `✓ Exported to: <code style="font-size:10px;opacity:.8">${result.filePath}</code>`);
+      }
+    } else {
+      toastError(result.error || 'Unknown error', currentLang === 'es' ? 'Error al exportar' : 'Export failed');
+    }
+  } catch(e) {
+    toastError(e.message, currentLang === 'es' ? 'Error al exportar' : 'Export failed');
+  }
+}
+
+async function importConfig() {
+  const statusBox = document.getElementById('migration-status-box');
+  // Ask confirmation first
+  const confirmed = confirm(
+    currentLang === 'es'
+      ? '¿Importar configuración?\n\nEsto reemplazará toda tu librería y ajustes actuales con los del archivo seleccionado.'
+      : 'Import configuration?\n\nThis will replace your entire library and current settings with those from the selected file.'
+  );
+  if (!confirmed) return;
+
+  try {
+    const result = await window.electronAPI.importConfig();
+    if (result.cancelled) return;
+    if (!result.success) {
+      toastError(result.error || 'Could not read file', currentLang === 'es' ? 'Error al importar' : 'Import failed');
+      return;
+    }
+    const d = result.data;
+    // Validate it's an EDR-Vault export
+    if (!d.vault_v2 || !Array.isArray(d.vault_v2)) {
+      toastError(
+        currentLang === 'es' ? 'Archivo no válido o no es un export de EDR-Vault.' : 'Invalid file or not an EDR-Vault export.',
+        currentLang === 'es' ? 'Error al importar' : 'Import failed'
+      );
+      return;
+    }
+    // Restore all keys
+    localStorage.setItem('vault_v2',         JSON.stringify(d.vault_v2));
+    if (d.vault_settings) localStorage.setItem('vault_settings', JSON.stringify(d.vault_settings));
+    if (d.vault_sessions) localStorage.setItem('vault_sessions', JSON.stringify(d.vault_sessions));
+    if (d.vault_cloud)    await window.electronAPI.saveCloudSettings(d.vault_cloud).catch(() => {});
+
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(61,220,132,.1)';
+      statusBox.style.border = '1px solid rgba(61,220,132,.25)';
+      statusBox.style.color = '#3ddc84';
+      const gameCount = d.vault_v2.length;
+      statusBox.innerHTML = currentLang === 'es'
+        ? `✓ Importados ${gameCount} juegos. Reiniciando…`
+        : `✓ Imported ${gameCount} games. Reloading…`;
+    }
+    toastSuccess(
+      currentLang === 'es' ? `${d.vault_v2.length} juegos importados` : `${d.vault_v2.length} games imported`,
+      currentLang === 'es' ? 'Importación completa' : 'Import complete'
+    );
+    // Short delay then reload to apply everything cleanly
+    setTimeout(() => window.location.reload(), 1400);
+  } catch(e) {
+    toastError(e.message, currentLang === 'es' ? 'Error al importar' : 'Import failed');
+  }
+}
+
+async function backupConfigToFtp() {
+  const btn = document.getElementById('btn-backup-cfg-ftp');
+  const statusBox = document.getElementById('migration-status-box');
+  if (btn) { btn.disabled = true; }
+  try {
+    await reloadCloud();
+    if (!isCloudConnected()) {
+      toastWarn(currentLang==='es'?'Configura primero el FTP.':'Configure FTP first.', 'Config Backup');
+      if (btn) btn.disabled = false;
+      return;
+    }
+    const cfg = getFtpCfg();
+    const cloudCfg = await window.electronAPI.getCloudSettings().catch(() => null);
+    const payload = {
+      version: '1.0.5',
+      exportedAt: new Date().toISOString(),
+      vault_v2:       JSON.parse(localStorage.getItem('vault_v2') || '[]'),
+      vault_settings: JSON.parse(localStorage.getItem('vault_settings') || '{}'),
+      vault_sessions: JSON.parse(localStorage.getItem('vault_sessions') || '[]'),
+      vault_cloud:    cloudCfg || null,
+    };
+    const jsonStr = JSON.stringify(payload, null, 2);
+    const result  = await window.electronAPI.backupConfigToFtp({ cfg, jsonStr });
+    if (result.success) {
+      const msg = currentLang==='es' ? `Config subida: ${result.filename}` : `Config uploaded: ${result.filename}`;
+      toastSuccess(msg, currentLang==='es' ? 'Backup Config FTP' : 'Config Backup FTP');
+      notify('EDR-Vault ✓', msg);
+      if (statusBox) {
+        statusBox.style.display = 'block';
+        statusBox.style.background = 'rgba(61,220,132,.1)';
+        statusBox.style.border = '1px solid rgba(61,220,132,.25)';
+        statusBox.style.color = '#3ddc84';
+        statusBox.innerHTML = `✓ ${currentLang==='es'?'Subido al FTP':'Uploaded to FTP'}: <code style="font-size:10px;opacity:.8">${result.filename}</code>`;
+      }
+    } else {
+      toastError(result.error || 'Unknown error', currentLang==='es'?'Error al subir':'Upload failed');
+    }
+  } catch(e) {
+    toastError(e.message, currentLang==='es'?'Error al subir':'Upload failed');
+  }
+  if (btn) btn.disabled = false;
+}
+
+async function purgeConfigFromFtp() {
+  const btn = document.getElementById('btn-purge-cfg-ftp');
+  const statusBox = document.getElementById('migration-status-box');
+  if (btn) { btn.disabled = true; }
+  try {
+    await reloadCloud();
+    if (!isCloudConnected()) {
+      toastWarn(currentLang==='es'?'Configura primero el FTP.':'Configure FTP first.', 'Config Purge');
+      if (btn) btn.disabled = false;
+      return;
+    }
+    const cfg = getFtpCfg();
+    const result = await window.electronAPI.purgeFtpConfigs({ cfg, keepCount: 3 });
+    if (result.success) {
+      if (result.deleted > 0) {
+        const purgeMsg = currentLang==='es'
+            ? `Eliminadas ${result.deleted} versiones antiguas (quedan ${result.kept})`
+            : `Deleted ${result.deleted} old versions (${result.kept} kept)`;
+        toastSuccess(purgeMsg, currentLang==='es' ? 'Purge Config FTP' : 'FTP Config Purge');
+        notify('EDR-Vault ✓', purgeMsg);
+        if (statusBox) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = 'rgba(61,220,132,.1)';
+          statusBox.style.border = '1px solid rgba(61,220,132,.25)';
+          statusBox.style.color = '#3ddc84';
+          statusBox.innerHTML = currentLang==='es'
+            ? `✓ Purge completado — eliminadas ${result.deleted} versiones antiguas, quedan ${result.kept}`
+            : `✓ Purge complete — deleted ${result.deleted} old versions, ${result.kept} kept`;
+        }
+      } else {
+        toastInfo(
+          currentLang==='es'
+            ? `Sin versiones antiguas que purgar (total: ${result.total})`
+            : `Nothing to purge — only ${result.total} version(s) on FTP`,
+          currentLang==='es' ? 'Purge Config FTP' : 'FTP Config Purge'
+        );
+        if (statusBox) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = 'rgba(100,160,255,.1)';
+          statusBox.style.border = '1px solid rgba(100,160,255,.25)';
+          statusBox.style.color = '#64a0ff';
+          statusBox.innerHTML = currentLang==='es'
+            ? `ℹ No hay versiones antiguas — total en FTP: ${result.total}`
+            : `ℹ Nothing to purge — total on FTP: ${result.total}`;
+        }
+      }
+    } else {
+      toastError(result.error || 'Unknown error', 'Config Purge');
+    }
+  } catch(e) {
+    toastError(e.message, 'Config Purge');
+  }
+  if (btn) btn.disabled = false;
+}
 
 async function updateSettingsFtpBadge() {
   const badge = document.getElementById('settings-ftp-status');
@@ -1965,15 +2948,27 @@ function saveSettings() {
   appSettings.lang = currentLang;
   appSettings.autobackup = document.getElementById('toggle-autobackup').checked;
   appSettings.autopurge  = document.getElementById('toggle-autopurge').checked;
-  // autoIntervalMin and purgeInterval already updated live
+  // read custom interval inputs (they also update live via oninput, but re-read on Apply to be safe)
+  const bkpVal  = parseInt(document.getElementById('inp-backup-val')?.value) || 30;
+  const bkpUnit = document.getElementById('inp-backup-unit')?.value || 'm';
+  appSettings.autoBackupCustom = {val: bkpVal, unit: bkpUnit};
+  appSettings.autoIntervalMin  = bkpUnit === 'm' ? bkpVal : Math.round(customIntervalMs({val:bkpVal,unit:bkpUnit}) / 60000);
+  const purgeVal  = parseInt(document.getElementById('inp-purge-val')?.value) || 1;
+  const purgeUnit = document.getElementById('inp-purge-unit')?.value || 'w';
+  appSettings.purgeCustom = {val: purgeVal, unit: purgeUnit};
+  // reset purge counter on Apply
+  const ms = customIntervalMs({val: purgeVal, unit: purgeUnit});
+  nextPurgeAt = Date.now() + ms;
+  localStorage.setItem('vault_next_purge', nextPurgeAt);
   saveAppSettings();
   applyLang();
+  buildIntervalSelects();
   stopAutoBackupTimer();
   if (appSettings.autobackup) startAutoBackupTimer();
   stopAutoPurgeTimer();
   if (appSettings.autopurge !== false) startAutoPurgeTimer();
   closeSettings();
-
+  toastSuccess(currentLang==='es'?'Ajustes guardados y contadores reiniciados.':'Settings saved and timers reset.', currentLang==='es'?'Ajustes':'Settings');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1981,7 +2976,8 @@ function saveSettings() {
 // ═══════════════════════════════════════════════════════════
 function startAutoBackupTimer() {
   stopAutoBackupTimer();
-  const ms = (appSettings.autoIntervalMin || 30) * 60 * 1000;
+  const bkp = appSettings.autoBackupCustom || {val:30, unit:'m'};
+  const ms = customIntervalMs(bkp);
   nextBackupAt = Date.now() + ms;
   autoBackupTimer = setInterval(runAutoBackup, ms);
   countdownTicker = setInterval(tickCountdown, 1000);
@@ -1999,7 +2995,8 @@ function tickCountdown() {
   const s = Math.floor((remaining % 60000) / 1000);
   const pad = n => String(n).padStart(2,'0');
   const count = games.filter(g => g.savePath).length;
-  box.innerHTML = `${t('autobackup_on')} ${appSettings.autoIntervalMin||30} ${t('autobackup_min')} (${count} ${currentLang==='es'?'juego(s)':'game(s)'})<br><span style="color:var(--accent);font-weight:700;font-size:13px">⏱ ${currentLang==='es'?'Próximo backup en':'Next backup in'}: ${pad(m)}:${pad(s)}</span>`;
+  const lbl = customIntervalLabel(appSettings.autoBackupCustom || {val:30, unit:'m'});
+  box.innerHTML = `${t('autobackup_on')} ${lbl} (${count} ${currentLang==='es'?'juego(s)':'game(s)'})<br><span style="color:var(--accent);font-weight:700;font-size:13px">⏱ ${currentLang==='es'?'Próximo backup en':'Next backup in'}: ${pad(m)}:${pad(s)}</span>`;
 }
 
 async function runAutoBackup() {
@@ -2018,7 +3015,8 @@ async function runAutoBackup() {
     } catch(e) {}
   }
   save();
-  nextBackupAt = Date.now() + (appSettings.autoIntervalMin || 30) * 60 * 1000;
+  const bkp = appSettings.autoBackupCustom || {val:30, unit:'m'};
+  nextBackupAt = Date.now() + customIntervalMs(bkp);
   const g = games.find(x => x.id === selected); if (g) renderDetail(g);
   notify('EDR-Vault ✓', currentLang==='es'?'Auto-backup completado.':'Auto-backup completed.');
 }
@@ -2026,39 +3024,112 @@ async function runAutoBackup() {
 // ═══════════════════════════════════════════════════════════
 // FTP PURGE
 // ═══════════════════════════════════════════════════════════
-function purgeIntervalMs(key) {
-  switch(key) {
-    case '1d': return 24 * 60 * 60 * 1000;
-    case '1y': return 365 * 24 * 60 * 60 * 1000;
-    default:   return 7 * 24 * 60 * 60 * 1000; // 1w
+// ═══════════════════════════════════════════════════════════
+// CUSTOM INTERVAL HELPERS
+// ═══════════════════════════════════════════════════════════
+function buildIntervalSelects() {
+  const units = [
+    {v:'m',  en:'min',       es:'min'},
+    {v:'h',  en:'hour(s)',   es:'hora(s)'},
+    {v:'d',  en:'day(s)',    es:'día(s)'},
+    {v:'w',  en:'week(s)',   es:'semana(s)'},
+    {v:'mo', en:'month(s)',  es:'mes(es)'},
+    {v:'y',  en:'year(s)',   es:'año(s)'},
+  ];
+  ['inp-backup-unit', 'inp-purge-unit'].forEach(id => {
+    const sel = document.getElementById(id); if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = units.map(u => `<option value="${u.v}">${currentLang==='es'?u.es:u.en}</option>`).join('');
+    if (cur) sel.value = cur;
+  });
+}
+
+function customIntervalMs({val, unit}) {
+  const v = Math.max(1, parseInt(val) || 1);
+  switch(unit) {
+    case 'm':  return v * 60 * 1000;
+    case 'h':  return v * 3600 * 1000;
+    case 'd':  return v * 86400 * 1000;
+    case 'w':  return v * 7 * 86400 * 1000;
+    case 'mo': return v * 30 * 86400 * 1000;
+    case 'y':  return v * 365 * 86400 * 1000;
+    default:   return v * 60 * 1000;
   }
 }
-function purgeIntervalLabel(key) {
-  switch(key) {
-    case '1d': return currentLang==='es' ? '1 día' : '1 day';
-    case '1y': return currentLang==='es' ? '1 año' : '1 year';
-    default:   return currentLang==='es' ? '1 semana' : '1 week';
+
+function customIntervalLabel({val, unit}) {
+  const v = Math.max(1, parseInt(val) || 1);
+  const units = {
+    m:  {en:'min',      es:'min'},
+    h:  {en:'hour(s)',  es:'hora(s)'},
+    d:  {en:'day(s)',   es:'día(s)'},
+    w:  {en:'week(s)',  es:'semana(s)'},
+    mo: {en:'month(s)', es:'mes(es)'},
+    y:  {en:'year(s)',  es:'año(s)'},
+  };
+  const u = units[unit] || units.m;
+  return `${v} ${currentLang==='es' ? u.es : u.en}`;
+}
+
+function setAutoIntervalCustom() {
+  const val  = parseInt(document.getElementById('inp-backup-val')?.value) || 30;
+  const unit = document.getElementById('inp-backup-unit')?.value || 'm';
+  appSettings.autoBackupCustom = {val, unit};
+  appSettings.autoIntervalMin  = unit === 'm' ? val : Math.round(customIntervalMs({val,unit}) / 60000);
+  if (appSettings.autobackup) {
+    startAutoBackupTimer();
   }
+}
+
+// kept for backward compat calls but now delegates
+function setAutoInterval(min) {
+  appSettings.autoIntervalMin = min;
+  appSettings.autoBackupCustom = {val: min, unit: 'm'};
+  if (appSettings.autobackup) startAutoBackupTimer();
+}
+
+function purgeIntervalMs(key) { // legacy key support
+  switch(key) {
+    case '12h': return 12 * 3600 * 1000;
+    case '1d':  return 86400 * 1000;
+    case '1mo': return 30 * 86400 * 1000;
+    case '1y':  return 365 * 86400 * 1000;
+    default:    return 7 * 86400 * 1000; // 1w
+  }
+}
+function purgeIntervalLabel(key) { return customIntervalLabel(appSettings.purgeCustom || {val:1,unit:'w'}); }
+
+function setPurgeIntervalCustom() {
+  const val  = parseInt(document.getElementById('inp-purge-val')?.value) || 1;
+  const unit = document.getElementById('inp-purge-unit')?.value || 'w';
+  appSettings.purgeCustom = {val, unit};
+  // reset counter immediately
+  if (appSettings.autopurge !== false) {
+    const ms = customIntervalMs({val, unit});
+    nextPurgeAt = Date.now() + ms;
+    localStorage.setItem('vault_next_purge', nextPurgeAt);
+    startAutoPurgeTimer();
+  }
+  updatePurgeStatusBox();
 }
 
 function startAutoPurgeTimer() {
   stopAutoPurgeTimer();
-  const interval = appSettings.purgeInterval || '1w';
-  // Check if we're past the scheduled next purge time
+  const cfg = appSettings.purgeCustom || {val:1, unit:'w'};
+  const ms  = customIntervalMs(cfg);
   const stored = parseInt(localStorage.getItem('vault_next_purge') || '0');
   const now = Date.now();
   if (stored && stored <= now) {
-    // Run immediately then schedule
     setTimeout(runAutoPurge, 3000);
-    nextPurgeAt = now + purgeIntervalMs(interval);
+    nextPurgeAt = now + ms;
     localStorage.setItem('vault_next_purge', nextPurgeAt);
   } else if (stored && stored > now) {
     nextPurgeAt = stored;
   } else {
-    nextPurgeAt = now + purgeIntervalMs(interval);
+    nextPurgeAt = now + ms;
     localStorage.setItem('vault_next_purge', nextPurgeAt);
   }
-  purgeTimer = setInterval(checkPurgeDue, 60 * 1000); // check every minute
+  purgeTimer = setInterval(checkPurgeDue, 10 * 1000); // check every 10s for responsiveness
   updatePurgeStatusBox();
 }
 
@@ -2071,8 +3142,8 @@ function checkPurgeDue() {
   if (!nextPurgeAt) return;
   if (Date.now() >= nextPurgeAt) {
     runAutoPurge();
-    const interval = appSettings.purgeInterval || '1w';
-    nextPurgeAt = Date.now() + purgeIntervalMs(interval);
+    const ms = customIntervalMs(appSettings.purgeCustom || {val:1, unit:'w'});
+    nextPurgeAt = Date.now() + ms;
     localStorage.setItem('vault_next_purge', nextPurgeAt);
   }
   updatePurgeStatusBox();
@@ -2084,17 +3155,18 @@ function onAutoPurgeToggle() {
   const purgeRow = document.getElementById('purge-interval-row');
   purgeRow.style.opacity = on ? '1' : '.35';
   purgeRow.style.pointerEvents = on ? 'auto' : 'none';
+  if (on) startAutoPurgeTimer(); else stopAutoPurgeTimer();
   updatePurgeStatusBox();
 }
 
-function setPurgeInterval(key) {
+function setPurgeInterval(key) { // legacy
+  const map = {'12h':{val:12,unit:'h'},'1d':{val:1,unit:'d'},'1w':{val:1,unit:'w'},'1mo':{val:1,unit:'mo'},'1y':{val:1,unit:'y'}};
+  appSettings.purgeCustom = map[key] || {val:1,unit:'w'};
   appSettings.purgeInterval = key;
-  document.querySelectorAll('.purge-interval-btn').forEach(b => b.classList.toggle('active', b.dataset.purge === key));
-  // reschedule
   if (appSettings.autopurge !== false) {
-    const ms = purgeIntervalMs(key);
-    nextPurgeAt = Date.now() + ms;
+    nextPurgeAt = Date.now() + customIntervalMs(appSettings.purgeCustom);
     localStorage.setItem('vault_next_purge', nextPurgeAt);
+    startAutoPurgeTimer();
   }
   updatePurgeStatusBox();
 }
@@ -2114,7 +3186,8 @@ function updatePurgeStatusBox() {
     return;
   }
   const nextStr = nextPurgeAt ? `<span style="color:var(--accent)">⏱ ${currentLang==='es'?'Próximo purge en':'Next purge in'}: <strong>${fmtTimeLeft(nextPurgeAt)}</strong> (${fmtDate(new Date(nextPurgeAt).toISOString())})</span>` : '';
-  box.innerHTML = `<div>${currentLang==='es'?'Auto-purge activo — mantiene las 3 versiones más recientes por juego.':'Auto-purge active — keeps the 3 most recent versions per game.'}<br>${t('purge_interval_word')}: <strong>${purgeIntervalLabel(appSettings.purgeInterval||'1w')}</strong></div><div style="margin-top:5px">${nextStr}</div><div style="margin-top:5px">${lastStr}</div>`;
+  const lbl = customIntervalLabel(appSettings.purgeCustom || {val:1, unit:'w'});
+  box.innerHTML = `<div>${currentLang==='es'?'Auto-purge activo — mantiene las 3 versiones más recientes por juego y config.':'Auto-purge active — keeps 3 most recent versions per game and config.'}<br>${t('purge_interval_word')}: <strong>${lbl}</strong></div><div style="margin-top:5px">${nextStr}</div><div style="margin-top:5px">${lastStr}</div>`;
 }
 
 function fmtTimeLeft(at) {
@@ -2122,9 +3195,11 @@ function fmtTimeLeft(at) {
   const d = Math.floor(ms / 86400000);
   const h = Math.floor((ms % 86400000) / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
   if (d > 0) return `${d}d ${h}h`;
   if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
 }
 
 function syncLocalBackupsAfterPurge(deletedNames) {
@@ -2164,13 +3239,22 @@ async function runAutoPurge() {
   await reloadCloud();
   if (!isCloudConnected()) return;
   const cfg = getFtpCfg(); if (!cfg) return;
+  // purge game save backups (keep 3)
   const result = await window.electronAPI.purgeFtpBackups({ cfg });
   localStorage.setItem('vault_last_purge', Date.now());
   localStorage.setItem('vault_last_purge_deleted', result.deleted || 0);
   if (result.success && result.deleted > 0) {
     syncLocalBackupsAfterPurge(result.deletedNames || []);
-    if(result.deleted>0) notify('EDR-Vault', `${currentLang==='es'?'FTP Purge: eliminados':'FTP Purge: deleted'} ${result.deleted} ${currentLang==='es'?'archivos':'files'}`);
+    notify('EDR-Vault', `${currentLang==='es'?'FTP Purge: eliminados':'FTP Purge: deleted'} ${result.deleted} ${currentLang==='es'?'archivos':'files'}`);
+    toastSuccess(`${currentLang==='es'?'Auto-purge: eliminados':'Auto-purge: deleted'} ${result.deleted} ${currentLang==='es'?'archivos':'files'}`, 'FTP Auto-purge');
   }
+  // also purge config backups (keep 3)
+  try {
+    const cfgResult = await window.electronAPI.purgeFtpConfigs({ cfg });
+    if (cfgResult.success && cfgResult.deleted > 0) {
+      toastInfo(`${currentLang==='es'?'Config FTP: eliminadas':'Config FTP: deleted'} ${cfgResult.deleted} ${currentLang==='es'?'versiones antiguas':'old versions'}`, 'FTP Config Purge');
+    }
+  } catch(e) {}
   updatePurgeStatusBox();
 }
 
@@ -2180,6 +3264,7 @@ async function runPurgeNow() {
   await reloadCloud();
   if (!isCloudConnected()) {
     notify('EDR-Vault', currentLang==='es'?'Configura primero el servidor FTP.':'Configure the FTP server first.');
+    toastWarn(currentLang==='es'?'Configura primero el servidor FTP.':'Configure the FTP server first.', 'FTP Purge');
     if (btn) { btn.disabled = false; btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2L5,6"/><path d="M10,11v6"/><path d="M14,11v6"/></svg> Purge FTP Saves Now`; }
     return;
   }
@@ -2191,11 +3276,14 @@ async function runPurgeNow() {
     if (result.deleted > 0) {
       syncLocalBackupsAfterPurge(result.deletedNames || []);
       notify('EDR-Vault ✓', `${currentLang==='es'?'Purge completado: eliminados':'Purge complete: deleted'} ${result.deleted} ${currentLang==='es'?'archivos antiguos':'old files'}`);
+      toastSuccess(`${currentLang==='es'?'Eliminados':'Deleted'} ${result.deleted} ${currentLang==='es'?'archivos antiguos del FTP':'old FTP files'}`, currentLang==='es'?'Purge completado':'Purge complete');
     } else {
       notify('EDR-Vault', currentLang==='es'?'Purge completado — sin archivos para eliminar.':'Purge complete — nothing to delete.');
+      toastInfo(currentLang==='es'?'Sin archivos para eliminar.':'Nothing to delete.', currentLang==='es'?'Purge completado':'Purge complete');
     }
   } else {
     notify('EDR-Vault ⚠', `Purge failed: ${result.error}`);
+    toastError(`Purge failed: ${result.error}`, 'FTP Purge');
   }
   nextPurgeAt = Date.now() + purgeIntervalMs(appSettings.purgeInterval || '1w');
   localStorage.setItem('vault_next_purge', nextPurgeAt);
@@ -2282,18 +3370,17 @@ async function checkForUpdates() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           ${t('update_download_btn')}
         </button>`;
-      if (appSettings.notifications !== false) {
-        window.electronAPI.notify({
-          title: 'EDR-Vault — ' + (currentLang === 'es' ? 'Nueva versión disponible' : 'New version available'),
-          body: (currentLang === 'es' ? 'v' + latest + ' ya disponible. Haz clic para descargar.' : 'v' + latest + ' is out. Click to download.'),
-          url: DOWNLOAD_URL
-        });
-      }
+      const updateMsg = currentLang === 'es' ? `v${latest} ya disponible. Haz clic para descargar.` : `v${latest} is out. Click to download.`;
+      toastSuccess(updateMsg, currentLang === 'es' ? 'Nueva versión' : 'New version');
+      notify('EDR-Vault — ' + (currentLang === 'es' ? 'Nueva versión disponible' : 'New version available'), updateMsg);
     } else if (latest) {
       box.style.background = 'rgba(61,220,132,.05)';
       box.style.border = '1px solid rgba(61,220,132,.2)';
       box.style.color = 'var(--green)';
       box.innerHTML = `<div style="text-align:center;padding:2px 0">${t('update_uptodate')}</div>`;
+      const uptodateMsg = currentLang === 'es' ? 'Ya tienes la última versión.' : 'You are up to date.';
+      toastSuccess(uptodateMsg, currentLang === 'es' ? 'Sin actualizaciones' : 'Up to date');
+      notify('EDR-Vault', uptodateMsg);
     } else {
       throw new Error('Empty tag');
     }
@@ -2319,7 +3406,20 @@ function compareVersions(a, b) {
 // ═══════════════════════════════════════════════════════════
 // BROWSE
 // ═══════════════════════════════════════════════════════════
-async function browseExe() { const p = await window.electronAPI.browseExe(); if(!p) return; pendingExePath=p; document.getElementById('inp-exe').value=p; }
+async function browseExe() {
+  const p = await window.electronAPI.browseExe();
+  if(!p) return;
+  pendingExePath = p;
+  document.getElementById('inp-exe').value = p;
+  // Auto-fill name from filename if name field is empty
+  const nameInput = document.getElementById('inp-name');
+  if (nameInput && !nameInput.value.trim()) {
+    const parts = p.replace(/\\/g, '/').split('/');
+    const filename = parts[parts.length - 1];
+    const nameNoExt = filename.replace(/\.[^.]+$/, '').replace(/[_\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    nameInput.value = nameNoExt;
+  }
+}
 async function browseImg() { const r = await window.electronAPI.browseImage(); if(!r) return; pendingImgData=r.dataUrl; pendingImgName=r.name; document.getElementById('inp-img-name').value=r.name; document.getElementById('img-preview').innerHTML=`<img src="${r.dataUrl}" style="width:100%;height:100%;object-fit:cover"/>`; }
 async function browseSaveFolder() { const p = await window.electronAPI.browseSaveFolder(); if(!p) return; pendingSavePath=p; document.getElementById('inp-save-folder').value=p; }
 
@@ -2330,6 +3430,7 @@ function openAddModal() {
   editingId=null; pendingExePath=null; pendingImgData=null; pendingImgName=''; pendingSavePath=null;
   document.getElementById('modal-title').textContent = t('modal_add');
   document.getElementById('inp-name').value=''; document.getElementById('inp-exe').value=''; document.getElementById('inp-img-name').value=''; document.getElementById('inp-save-folder').value='';
+  const notesEl = document.getElementById('inp-notes'); if(notesEl) notesEl.value='';
   document.getElementById('img-preview').innerHTML=`<div class="img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>${t('form_cover_ph')}</span></div>`;
   document.getElementById('modal-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('inp-name').focus(),100);
@@ -2339,21 +3440,28 @@ function openEditModal() {
   editingId=g.id; pendingExePath=g.exePath||null; pendingImgData=g.coverData||null; pendingImgName=g.coverName||''; pendingSavePath=g.savePath||null;
   document.getElementById('modal-title').textContent = t('modal_edit');
   document.getElementById('inp-name').value=g.name||''; document.getElementById('inp-exe').value=g.exePath||''; document.getElementById('inp-img-name').value=g.coverName||''; document.getElementById('inp-save-folder').value=g.savePath||'';
+  const notesEl = document.getElementById('inp-notes'); if(notesEl) notesEl.value=g.notes||'';
   document.getElementById('img-preview').innerHTML = g.coverData ? `<img src="${g.coverData}" style="width:100%;height:100%;object-fit:cover"/>` : `<div class="img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><span>${t('form_cover_ph')}</span></div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 function saveGame() {
   const name = document.getElementById('inp-name').value.trim();
-  if (!name) { return; }
+  if (!name) { document.getElementById('inp-name').focus(); return; }
+  const notesEl = document.getElementById('inp-notes');
+  const notes = notesEl ? notesEl.value.trim() : '';
   if (editingId) {
     const g = games.find(x=>x.id===editingId); if(!g) return;
-    g.name=name; if(pendingExePath!==null) g.exePath=pendingExePath; if(pendingImgData!==null){g.coverData=pendingImgData;g.coverName=pendingImgName;} if(pendingSavePath!==null) g.savePath=pendingSavePath;
+    g.name=name; g.notes=notes;
+    if(pendingExePath!==null) g.exePath=pendingExePath; if(pendingImgData!==null){g.coverData=pendingImgData;g.coverName=pendingImgName;} if(pendingSavePath!==null) g.savePath=pendingSavePath;
     save(); closeModal(); renderAll(); if(selected===editingId) renderDetail(g);
+    toastSuccess('', currentLang==='es'?'¡Juego actualizado!':'Game updated!');
   } else {
-    const g = { id: Date.now().toString(), name, exePath: pendingExePath||'', coverData: pendingImgData||'', coverName: pendingImgName||'', savePath: pendingSavePath||'', added: new Date().toISOString(), lastPlayed: null, favorite: false, backups: [] };
+    const g = { id: Date.now().toString(), name, notes, exePath: pendingExePath||'', coverData: pendingImgData||'', coverName: pendingImgName||'', savePath: pendingSavePath||'', added: new Date().toISOString(), lastPlayed: null, favorite: false, backups: [] };
     games.push(g); save(); closeModal(); renderAll(); selectGame(g.id);
+    toastSuccess('', currentLang==='es'?'¡Juego añadido!':'Game added!');
   }
+  updateStatsFooter();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2438,6 +3546,8 @@ function renderAll() {
         container.innerHTML = files.map(f => buildInlineBackupItem(f)).join('');
       }
     }
+    // also filter config snapshots
+    filterConfigSnapshotsBySearch((document.getElementById('search-bar').value||'').toLowerCase());
     return;
   }
   
@@ -2449,13 +3559,13 @@ function renderAll() {
     container.innerHTML = `<div class="game-grid">${list.map(g=>`
       <div class="game-item-grid${g.id===selected?' active':''}${runningGames.has(g.id)?' game-running':closingGames.has(g.id)?' game-closing':''}" data-gameid="${g.id}" onclick="selectGame('${g.id}')">
         <div class="game-thumb-grid">${g.coverData?`<img src="${g.coverData}"/>`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="28" height="28" style="opacity:.1"><rect x="2" y="4" width="20" height="16" rx="2"/></svg>`}${runningGames.has(g.id)?`<div class="running-badge-grid">&#9654;</div>`:closingGames.has(g.id)?`<div class="running-badge-grid" style="background:rgba(255,71,87,.9)">&#9632;</div>`:''}</div>
-        <div class="game-item-grid-info"><div class="game-item-grid-name">${g.name}</div><div class="game-item-grid-sub">${g.lastPlayed ? fmtDate(g.lastPlayed).split(' ')[0] : t('never_played')}</div></div>
+        <div class="game-item-grid-info"><div class="game-item-grid-name">${g.name}</div><div class="game-item-grid-sub ${g.lastPlayed && (Date.now()-new Date(g.lastPlayed).getTime())<604800000?'recent':''}">${g.lastPlayed ? timeAgo(g.lastPlayed) : t('never_played')}</div></div>
       </div>`).join('')}</div>`;
   } else {
     container.innerHTML = list.map(g=>`
       <div class="steam-game-row${g.id===selected?' active':''}${runningGames.has(g.id)?' game-running':closingGames.has(g.id)?' game-closing':''}" data-gameid="${g.id}" onclick="selectGame('${g.id}')">
         <div class="steam-game-thumb">${g.coverData?`<img src="${g.coverData}"/>`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="18" height="18" style="opacity:.15"><rect x="2" y="4" width="20" height="16" rx="2"/></svg>`}</div>
-        <div class="steam-game-name">${g.name}${runningGames.has(g.id)?`<span class="running-pill">${currentLang==='es'?'jugando':'playing'}</span>`:closingGames.has(g.id)?`<span class="closing-pill">${currentLang==='es'?'cerrando':'closing'}</span>`:''}</div>
+        <div class="steam-game-info"><div class="steam-game-name">${g.name}${runningGames.has(g.id)?`<span class="running-pill">${currentLang==='es'?'jugando':'playing'}</span>`:closingGames.has(g.id)?`<span class="closing-pill">${currentLang==='es'?'cerrando':'closing'}</span>`:''}</div><div class="card-last-played ${g.lastPlayed&&(Date.now()-new Date(g.lastPlayed).getTime())<604800000?'recent':''}">${g.lastPlayed?timeAgo(g.lastPlayed):(currentLang==='es'?'nunca jugado':'never played')}</div></div>
         ${g.favorite?`<svg class="steam-game-fav" viewBox="0 0 24 24" fill="#ffd32a" stroke="#ffd32a" stroke-width="2" width="10" height="10"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>`:''}
       </div>`).join('');
   }
@@ -2505,6 +3615,11 @@ function renderDetail(g) {
   const ptEl = document.getElementById('meta-playtime');
   if (ptEl) ptEl.textContent = fmtPlaytime(g.playtime || 0);
   const fi = document.getElementById('fav-icon'); if (fi) { fi.setAttribute('fill',g.favorite?'#ffd32a':'none'); fi.setAttribute('stroke',g.favorite?'#ffd32a':'currentColor'); }
+  // Copy buttons
+  const copyExeBtn = document.getElementById('btn-copy-exe');
+  if (copyExeBtn) copyExeBtn.style.display = g.exePath ? 'flex' : 'none';
+  const copySaveBtn = document.getElementById('btn-copy-save');
+  if (copySaveBtn) copySaveBtn.style.display = g.savePath ? 'flex' : 'none';
   // Save data
   const pd = document.getElementById('save-path-display'), obsb = document.getElementById('btn-open-save'), bb = document.getElementById('btn-backup'), lb = document.getElementById('save-last-backup'), notice = document.getElementById('cloud-setup-notice');
   if (!pd || !obsb || !bb || !lb) return; // detail panel elements missing
@@ -2517,6 +3632,18 @@ function renderDetail(g) {
   const bkps = g.backups||[]; document.getElementById('save-backup-count').textContent = bkps.length;
   if (g.lastBackup) { lb.style.display='block'; document.getElementById('last-backup-date').textContent=fmtDate(g.lastBackup); } else lb.style.display='none';
   updateCloudBadge();
+  // Notes card
+  updateNotesCard(g);
+  // Session bar
+  updateSessionBar(runningGames.has(g.id) ? g.id : null);
+  // Stats footer
+  updateStatsFooter();
+  // Notes: reset edit state on game switch
+  _notesEditing = false;
+  document.getElementById('notes-display').style.display = 'block';
+  document.getElementById('notes-edit-section').style.display = 'none';
+  const chevron = document.getElementById('notes-chevron');
+  if (chevron) chevron.style.transform = '';
 }
 
 // ── FTP TITLEBAR BADGE ────────────────────────────────────
@@ -2554,18 +3681,6 @@ function openAbout() {
 function closeAbout() { document.getElementById('about-overlay').classList.remove('open'); }
 function openDonate() { closeAbout(); document.getElementById('donate-overlay').classList.add('open'); }
 function closeDonate() { document.getElementById('donate-overlay').classList.remove('open'); }
-function copyDonateAddr() {
-  const addr = 'ltc1qmwtsjel65h6j4fu2ejrqe6sknxn3rcmpa7sdpz';
-  navigator.clipboard.writeText(addr).then(() => {
-    const btn = document.getElementById('donate-copy-btn');
-    btn.classList.add('copied');
-    btn.querySelector('span').textContent = currentLang === 'es' ? '¡Copiado!' : 'Copied!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.querySelector('span').textContent = t('donate_copy');
-    }, 2000);
-  });
-}
 
 // ═══════════════════════════════════════════════════════════
 // STARTUP ON BOOT
@@ -2620,6 +3735,248 @@ async function onStartupTaskBtn() {
 function onNotifToggle() {
   appSettings.notifications = document.getElementById('toggle-notifications').checked;
   saveAppSettings();
+}
+
+function onToastToggle() {
+  appSettings.toasts = document.getElementById('toggle-toasts').checked;
+  saveAppSettings();
+}
+
+function onCloseBackupToggle() {
+  appSettings.backupOnClose = document.getElementById('toggle-close-backup').checked;
+  saveAppSettings();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BACKUP ALL GAMES
+// ═══════════════════════════════════════════════════════════
+async function backupAllGames(interactive = false) {
+  if (!isCloudConnected()) {
+    if (interactive) toastWarn(currentLang==='es'?'Configura primero el servidor FTP.':'Configure FTP first.', 'Backup All');
+    return { done: 0, failed: 0 };
+  }
+  const eligible = games.filter(g => g.savePath);
+  if (!eligible.length) {
+    if (interactive) toastInfo(currentLang==='es'?'Ningún juego tiene ruta de guardado.':'No games have a save path.', 'Backup All');
+    return { done: 0, failed: 0 };
+  }
+  if (interactive) toastInfo(`${currentLang==='es'?'Iniciando backup de':'Starting backup for'} ${eligible.length} ${currentLang==='es'?'juegos…':'games…'}`, 'Backup All');
+  let done = 0, failed = 0;
+  for (const g of eligible) {
+    try {
+      const zip = await window.electronAPI.zipSaves(g.savePath, g.name);
+      if (!zip.success) throw new Error(zip.error);
+      const up = await window.electronAPI.uploadToCloud({ cfg: getFtpCfg(), base64Data: zip.data, filename: zip.filename });
+      if (!up.success) throw new Error(up.error);
+      if (!g.backups) g.backups = [];
+      g.backups.push({ date: new Date().toISOString(), size: zip.size, filename: zip.filename });
+      g.lastBackup = new Date().toISOString();
+      done++;
+    } catch(e) {
+      failed++;
+    }
+  }
+  save();
+  const msg = currentLang==='es'
+    ? `${done} juegos respaldados${failed>0?' · '+failed+' fallidos':''}`
+    : `${done} games backed up${failed>0?' · '+failed+' failed':''}`;
+  notify('EDR-Vault ✓', msg);
+  toastSuccess(msg, currentLang==='es'?'Backup completado':'Backup complete');
+  logActivity(currentLang==='es'?`Backup de todos: ${done} ok${failed>0?', '+failed+' fallidos':''}`:`Backup all: ${done} ok${failed>0?', '+failed+' failed':''}`);
+  return { done, failed };
+}
+
+// ── Before-exit: backup on close ─────────────────────────
+window.electronAPI.onBeforeExit(async () => {
+  if (appSettings.backupOnClose) {
+    notify('EDR-Vault', currentLang==='es'?'Haciendo backup al cerrar…':'Backing up on close…');
+    toastInfo(currentLang==='es'?'Haciendo backup al cerrar…':'Backing up on close…', currentLang==='es'?'Backup al cerrar':'Backup on close');
+    await reloadCloud();
+    await backupAllGames(false);
+  }
+  window.electronAPI.confirmQuit();
+});
+
+// ═══════════════════════════════════════════════════════════
+// ACTIVITY LOG
+// ═══════════════════════════════════════════════════════════
+function logActivity(msg) {
+  try { window.electronAPI.writeActivityLog(msg); } catch(e) {}
+}
+
+function openActivityLog() {
+  window.electronAPI.openLogWindow(currentLang);
+}
+
+// ═══════════════════════════════════════════════════════════
+// IMPORT / EXPORT
+// ═══════════════════════════════════════════════════════════
+function openImportExport() {
+  document.getElementById('impexp-overlay').classList.add('open');
+}
+function closeImportExport() {
+  document.getElementById('impexp-overlay').classList.remove('open');
+}
+
+async function doExport() {
+  const payload = {
+    version: '1.0.5',
+    exportedAt: new Date().toISOString(),
+    games,
+    appSettings
+  };
+  const result = await window.electronAPI.exportConfig(JSON.stringify(payload, null, 2));
+  if (result.cancelled) return;
+  if (result.success) {
+    toastSuccess(currentLang==='es'?'Librería exportada correctamente.':'Library exported successfully.', 'Export');
+    logActivity(currentLang==='es'?`Librería exportada a: ${result.filePath}`:`Library exported to: ${result.filePath}`);
+  } else {
+    toastError(result.error || 'Unknown error', 'Export failed');
+  }
+}
+
+async function doImport() {
+  const result = await window.electronAPI.importConfig();
+  if (result.cancelled) return;
+  if (!result.success) { toastError(result.error || 'Invalid file', 'Import failed'); return; }
+  const d = result.data;
+  if (!d || !Array.isArray(d.games)) { toastError(currentLang==='es'?'Archivo inválido o corrupto.':'Invalid or corrupt file.', 'Import'); return; }
+  const confirmed = confirm(t('impexp_warn') + `\n\n${d.games.length} games — exported ${d.exportedAt ? new Date(d.exportedAt).toLocaleDateString() : '?'}`);
+  if (!confirmed) return;
+  // Merge: restore games and settings
+  games.length = 0;
+  d.games.forEach(g => games.push(g));
+  save();
+  if (d.appSettings) {
+    Object.assign(appSettings, d.appSettings);
+    saveAppSettings();
+  }
+  renderAll();
+  updateStatsFooter();
+  closeImportExport();
+  toastSuccess(`${d.games.length} ${currentLang==='es'?'juegos importados.':'games imported.'}`, 'Import');
+  logActivity(currentLang==='es'?`Librería importada: ${d.games.length} juegos`:`Library imported: ${d.games.length} games`);
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATS MODAL
+// ═══════════════════════════════════════════════════════════
+async function openStats() {
+  buildStatsModal();
+  document.getElementById('stats-overlay').classList.add('open');
+}
+
+function closeStats() {
+  document.getElementById('stats-overlay').classList.remove('open');
+}
+
+async function buildStatsModal() {
+  // ── KPI: games ──
+  const totalGames = games.length;
+  const withSave   = games.filter(g => g.savePath).length;
+  document.getElementById('skpi-games').textContent = totalGames;
+  document.getElementById('skpi-games-sub').textContent = `${withSave} ${currentLang==='es'?'con save path':'with save path'}`;
+
+  // ── KPI: hours ──
+  const totalMs = games.reduce((s,g) => s+(g.playtime||0), 0);
+  const totalH  = Math.floor(totalMs / 3600000);
+  const totalM  = Math.floor((totalMs % 3600000) / 60000);
+  document.getElementById('skpi-hours').textContent = totalH > 0 ? `${totalH}h` : `${totalM}m`;
+  const avgMs = totalGames > 0 ? totalMs / totalGames : 0;
+  const avgH  = Math.floor(avgMs / 3600000), avgM = Math.floor((avgMs%3600000)/60000);
+  document.getElementById('skpi-hours-sub').textContent = currentLang==='es'
+    ? `promedio ${avgH>0?avgH+'h ':''} ${avgM}m/juego`
+    : `avg ${avgH>0?avgH+'h ':''}${avgM}m/game`;
+
+  // ── KPI: backups ──
+  const totalBkp = games.reduce((s,g) => s+(g.backups||[]).length, 0);
+  document.getElementById('skpi-backups').textContent = totalBkp;
+  const gamesWithBkp = games.filter(g=>(g.backups||[]).length>0).length;
+  document.getElementById('skpi-backups-sub').textContent = currentLang==='es'
+    ? `${gamesWithBkp} juegos respaldados`
+    : `${gamesWithBkp} games backed up`;
+
+  // ── KPI: FTP space ──
+  const ftpEl    = document.getElementById('skpi-ftp');
+  const ftpSubEl = document.getElementById('skpi-ftp-sub');
+  ftpEl.textContent    = '…';
+  ftpSubEl.textContent = currentLang==='es' ? 'consultando...' : 'checking...';
+  try {
+    // Reload cloud settings to make sure they're fresh
+    await reloadCloud();
+    const cfg = getFtpCfg();
+    if (!cfg) {
+      ftpEl.textContent    = '—';
+      ftpSubEl.textContent = t('stats_ftp_offline');
+    } else {
+      const result = await window.electronAPI.listCloudBackups({ cfg });
+      if (result && result.success && result.files) {
+        const used = result.files.reduce((s,f) => s+(f.size||0), 0);
+        ftpEl.textContent    = fmtBytes(used);
+        ftpSubEl.textContent = `${result.files.length} ${currentLang==='es'?'archivos en FTP':'files on FTP'}`;
+      } else {
+        ftpEl.textContent    = '—';
+        ftpSubEl.textContent = currentLang==='es' ? 'error al consultar' : 'query failed';
+      }
+    }
+  } catch(e) {
+    ftpEl.textContent    = '—';
+    ftpSubEl.textContent = currentLang==='es' ? 'sin conexión' : 'not connected';
+  }
+
+  // ── Activity chart: last 30 days ──
+  buildActivityChart();
+
+  // ── Top 5 most played ──
+  buildTopList();
+}
+
+function buildActivityChart() {
+  const sessions = JSON.parse(localStorage.getItem('vault_sessions') || '[]');
+  const now = Date.now();
+  const days = 30;
+  // Build array of 30 day buckets (ms played per day)
+  const buckets = Array(days).fill(0);
+  sessions.forEach(s => {
+    const age = Math.floor((now - new Date(s.date).getTime()) / 86400000);
+    if (age >= 0 && age < days) buckets[days - 1 - age] += (s.ms || 0);
+  });
+  // Also count current playtime from today (already saved games)
+  // (sessions are logged on exit, so this is fine)
+
+  const maxMs  = Math.max(...buckets, 1);
+  const barsEl = document.getElementById('stats-chart-bars');
+  const startEl = document.getElementById('stats-chart-start');
+  const d30ago = new Date(now - 29*86400000);
+  startEl.textContent = d30ago.toLocaleDateString(currentLang==='es'?'es-ES':'en-US',{day:'2-digit',month:'2-digit'});
+
+  barsEl.innerHTML = buckets.map((ms, i) => {
+    const pct    = Math.max((ms / maxMs) * 100, ms > 0 ? 3 : 0);
+    const isToday = i === days - 1;
+    const label  = ms > 0 ? (ms >= 3600000 ? `${Math.round(ms/3600000)}h` : `${Math.round(ms/60000)}m`) : '';
+    const dayDate = new Date(now - (days-1-i)*86400000);
+    const dow    = dayDate.toLocaleDateString(currentLang==='es'?'es-ES':'en-US',{weekday:'narrow'});
+    const tip    = `${dayDate.toLocaleDateString()} — ${ms>0?fmtPlaytime(ms):(currentLang==='es'?'sin actividad':'no activity')}`;
+    return `<div class="stats-chart-bar-wrap" title="${tip}">
+      <div class="stats-chart-bar${isToday?' today':''}" style="height:${pct}%"></div>
+    </div>`;
+  }).join('');
+}
+
+function buildTopList() {
+  const sorted = [...games].sort((a,b)=>(b.playtime||0)-(a.playtime||0)).slice(0,5);
+  const listEl = document.getElementById('stats-top-list');
+  if (!sorted.length || !sorted[0].playtime) {
+    listEl.innerHTML = `<div style="color:var(--text-dim);font-size:11px;padding:8px 0">${currentLang==='es'?'Sin datos de tiempo jugado aún.':'No playtime data yet.'}</div>`;
+    return;
+  }
+  listEl.innerHTML = sorted.filter(g=>g.playtime>0).map((g, i) => `
+    <div class="stats-top-row">
+      <div class="stats-top-rank ${i===0?'gold':''}">  ${i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`}</div>
+      ${g.coverData ? `<img class="stats-top-cover" src="${g.coverData}"/>` : `<div class="stats-top-cover-ph"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>`}
+      <div class="stats-top-name">${g.name}</div>
+      <div class="stats-top-time">${fmtPlaytime(g.playtime)}</div>
+    </div>`).join('');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2801,6 +4158,40 @@ const THEMES = [
     },
     gradient: 'linear-gradient(135deg,#110a10 0%,#1a1020 50%,#2a1a3c 100%)',
     swatch: '#f472b6',
+  },
+  {
+    id: 'sangre',
+    nameEn: 'Sangre',      nameEs: 'Sangre',
+    descEn: 'Deep crimson · Blood red',  descEs: 'Carmesí profundo · Rojo sangre',
+    vars: {
+      '--bg-deep':'#0e0505','--bg-mid':'#180808','--bg-panel':'#200c0c','--bg-card':'#2a1010','--bg-hover':'#381414',
+      '--accent':'#e11d48','--accent-glow':'rgba(225,29,72,.28)',
+      '--green':'#4ade80','--green-dim':'rgba(74,222,128,.15)',
+      '--red':'#ff6b6b','--red-dim':'rgba(255,107,107,.15)',
+      '--yellow':'#fbbf24','--purple':'#c084fc','--purple-dim':'rgba(192,132,252,.15)',
+      '--text-bright':'#fff1f2','--text-mid':'#c06070','--text-dim':'#6c1a22',
+      '--border':'rgba(225,29,72,.1)','--border-act':'rgba(225,29,72,.5)',
+      '--radius':'8px',
+    },
+    gradient: 'linear-gradient(135deg,#0e0505 0%,#180808 50%,#2a1010 100%)',
+    swatch: '#e11d48',
+  },
+  {
+    id: 'noche',
+    nameEn: 'Midnight',    nameEs: 'Noche',
+    descEn: 'Pure black · Gold accent',  descEs: 'Negro puro · Acento dorado',
+    vars: {
+      '--bg-deep':'#000000','--bg-mid':'#0a0a0a','--bg-panel':'#111111','--bg-card':'#181818','--bg-hover':'#222222',
+      '--accent':'#f59e0b','--accent-glow':'rgba(245,158,11,.28)',
+      '--green':'#34d399','--green-dim':'rgba(52,211,153,.15)',
+      '--red':'#f87171','--red-dim':'rgba(248,113,113,.15)',
+      '--yellow':'#f59e0b','--purple':'#a78bfa','--purple-dim':'rgba(167,139,250,.15)',
+      '--text-bright':'#f9fafb','--text-mid':'#9ca3af','--text-dim':'#374151',
+      '--border':'rgba(245,158,11,.08)','--border-act':'rgba(245,158,11,.45)',
+      '--radius':'8px',
+    },
+    gradient: 'linear-gradient(135deg,#000000 0%,#0a0a0a 50%,#181818 100%)',
+    swatch: '#f59e0b',
   },
 ];
 

@@ -1,121 +1,54 @@
-# EDR-Vault — Changelog
+# EDR-Vault Changelog
 
 ---
 
-## v1.0.4 — 2026-03-11
+## [v1.0.5] — 2026-03-11
+
+### 🆕 New Features
+
+- **In-app Toasts** — Beautiful slide-in notifications replace system popups for quick, non-intrusive feedback.
+- **Game Notes** — Add personal notes to any game, visible directly in the detail panel.
+- **Live Session Timer** — See how long you've been playing in real time, displayed in the detail panel during an active session.
+- **Library Stats Bar** — Footer bar shows total games, total playtime and FTP connection status at a glance.
+- **Copy Path Buttons** — One-click copy buttons for the save folder path and executable path in the game detail panel.
+- **FTPS Support** — Added FTP over TLS (FTPS) option for encrypted, secure connections.
+- **New Theme: Sangre** — A bold deep-crimson theme, bringing the total to 8 visual themes.
+
+### ⚡ Improvements
+
+- **Keyboard Shortcuts** — Press `/` to focus search, `Space` to launch the selected game, `F` to toggle favourite.
+- **Auto-name from EXE** — The game name field is now auto-filled when you browse and select an executable.
+- **Multi-result Save Scan** — When the save-folder scanner finds multiple candidate folders, a selection list is shown instead of picking one silently.
+- **Extended Save Scan Paths** — Scanner now also checks OneDrive game-save locations and D: drive Steam library folders.
 
 ### 🐛 Bug Fixes
 
-- **Windows Startup — `ffmpeg.dll was not found` after reboot**
-  The portable `.exe` depends on Electron's full runtime folder (DLLs, resources, etc.). Copying only the `.exe` to `%LOCALAPPDATA%\EDR-Vault\` left all DLLs behind, causing a fatal error on next login. Fixed by copying the **entire directory** recursively so all dependencies are present alongside the executable.
-
-### ✨ New Features
-
-- **Purge Interval — added 12h and 1 Month options**
-  The interval selector now offers five choices: **12h · 1 Day · 1 Week · 1 Month · 1 Year**, giving finer control over how often automatic FTP save cleanup runs.
+- Fixed empty `onclick` handlers on cloud modal close buttons that caused silent JS errors.
+- Updated all internal version-bump references from 1.0.4 → 1.0.5.
 
 ---
 
-## v1.0.3 — 2026-03-10
+## [v1.0.4] — 2026-03-10
 
-### 🐛 Bug Fixes
+### 🆕 New Features
 
-- **Windows Startup task pointed to Temp folder — broke after reboot**
-  The portable `.exe` runs from a temporary extraction folder (`%TEMP%\...\EDR-Vault.exe`) that Windows deletes after the process exits. The Task Scheduler task was pointing to this Temp path, so it became a dead link on the next login. Fixed by copying the exe to a permanent location (`%LOCALAPPDATA%\EDR-Vault\EDR-Vault.exe`) before registering the task.
+- **Config Snapshots** — Back up and restore your full app configuration (library + settings) to/from FTP, keeping the 3 most recent versions.
+- **FTP Save Purge** — Automatically keep only the 3 most recent backups per game on FTP; older backups are deleted automatically.
+- **Purge Config Files from FTP** — Manually delete old config backups from FTP, keeping only the 3 most recent.
+- **Backup Config to FTP** — Upload a full config snapshot to your FTP server on demand.
 
-### 🔧 Changes & Improvements
+### ⚡ Improvements
 
-- **Startup: two-layer approach (Task Scheduler + shell:startup shortcut)**
-  When enabling startup, EDR-Vault now:
-  1. Copies itself to `%LOCALAPPDATA%\EDR-Vault\EDR-Vault.exe` (permanent, survives temp cleanup)
-  2. Creates a Windows Task Scheduler task pointing to that permanent copy (elevated, highest privileges)
-  3. Drops a `.lnk` shortcut in `shell:startup` as a fallback (no UAC required)
-  Removing startup deletes both the task and the shortcut.
-
-- **Single-instance lock**
-  Added `app.requestSingleInstanceLock()` so that double-clicking the portable `.exe` when EDR-Vault is already running will not open a second instance.
+- Improved session history display.
+- Minor UI polish across settings panel.
 
 ---
 
-## v1.0.2 — 2026-03-10
+## [v1.0.3] — Earlier
 
-### 🐛 Bug Fixes
-
-- **All buttons were unresponsive after startup (click-blocking)**
-  Root cause: `window.electronAPI.oauthRefresh` and `window.electronAPI.oauthStart` were called in `index.html` but were missing from `preload.js` and `main.js`. The resulting `TypeError` silently crashed the entire JavaScript runtime on load, making every button non-functional. Fixed by adding stub IPC handlers for `oauth-start` and `oauth-refresh` in `main.js` and exposing them via `preload.js`.
-
-- **`CURRENT_VERSION` and `ALL_MODAL_IDS` — "Cannot access before initialization" errors**
-  Both `const` declarations were placed deep in the script, after code that referenced them (notably inside the `STRINGS` object). Since `const`/`let` are not hoisted like `var`, this caused a `ReferenceError` at runtime. Moved all three declarations (`CURRENT_VERSION`, `DOWNLOAD_URL`, `ALL_MODAL_IDS`) and the `closeAllModals()` helper to the very top of the script, before `STRINGS`.
-
-- **Search bar overlapped buttons when resizing the window narrower**
-  The search bar was positioned with `position:absolute; left:50%; transform:translateX(-50%)`, which placed it outside the normal flex flow. At narrow window widths it would render on top of the nav buttons and pill buttons. Changed to a proper flex item (`flex:1; min-width:0; overflow:hidden`) so it automatically yields space to its siblings without overlapping.
-
-### 🔧 Changes & Improvements
-
-- **Removed UAC / Administrator elevation requirement**
-  The `requireAdministrator` manifest flag and the `checkAdminAndRelaunch()` logic have been removed. EDR-Vault now launches as a standard user process, eliminating the UAC prompt on every start.
-
-- **Startup replaced: shell shortcut (LNK) → Windows Task Scheduler**
-  The previous "Launch at Startup" used a startup folder shortcut that required Administrator rights and was unreliable with portable executables. It has been replaced with a Windows Task Scheduler task (`EDR-Vault`), created via PowerShell with a one-time UAC elevation. The task runs at log-on with highest available privileges. The toggle switch has been replaced with a button that creates or removes the task and shows its current status.
-
-- **F12 / Ctrl+Shift+I DevTools shortcut — fixed in packaged `.exe`**
-  `globalShortcut.register` did not work reliably inside a packaged Electron executable. Replaced with a `before-input-event` listener on `mainWindow.webContents`, which works correctly in all environments.
-
-- **`asar: false` added to build configuration**
-  The build now extracts all files instead of bundling them into an `.asar` archive. This ensures `preload.js` and other files are accessible as real files on disk, preventing path resolution failures in packaged builds.
-
-### 🛠️ Developer
-
-- **Debug Tool added (`debug.html`)**
-  A standalone `debug.html` page is included in the build. Accessible via tray icon → right-click → **Open Debug Tool**. Opens with DevTools visible and provides:
-  - ✓/✗ status check for every `window.electronAPI` method
-  - Live IPC handler tests (`getCloudSettings`, `taskStatus`, `checkUpdate`)
-  - localStorage viewer with game count
-  - Console error / unhandled promise rejection intercept
-  - Buttons: Clear Storage, Export Storage as JSON, Run All Tests
+- Initial public release with core library management, FTP backup/restore, 7 themes, English/Spanish UI and portable Electron build.
 
 ---
 
-## v1.0.1 — 2026-03-10
-
-### 🐛 Bug Fixes
-
-- **Theme colors not applied to modal footer buttons (Cancel / Save Game)**
-  Several UI elements had hardcoded hex color values instead of CSS variables, causing them to remain stuck on the default "Abyss" theme colors. Fixed across modal footers, headers, Settings header, titlebar gradient, game list panel, and game grid cards.
-
-- **"About" and "Customize" buttons did not open their modals**
-  Redesigned the modal-opening system using `double requestAnimationFrame` and migrated CSS from `display:none/flex` to `opacity/visibility`.
-
-- **All modals opened simultaneously when clicking "Settings"**
-  Added a `closeAllModals()` helper that clears all overlays before opening any modal.
-
-- **"Close" and "Apply" buttons in Settings scrolled with content**
-  Modal footer was incorrectly nested inside `modal-body`. Now a sibling element with `flex-shrink:0`.
-
-- **X button click area misaligned from the visible icon**
-  Removed `overflow:hidden` from all modal-box elements, which was causing Electron to miscalculate click zones during CSS animations.
-
-- **X button in "About" modal unresponsive when using English**
-  Added `max-height:88vh` to the modal and `overflow-y:auto` to the body.
-
-### ✨ New Features
-
-- **Animated progress bar for update check**
-  Clicking "Check Now" shows an animated progress bar (0→100% over ~3s) with a spinning icon and live percentage counter.
-
-- **Titlebar buttons redesigned to pill style**
-  🟣 About · 🔵 Settings · 🟢 Customize
-
----
-
-## v1.0.0 — 2026-03-10
-
-- Initial release of EDR-Vault
-- Game library with play session tracking
-- Automatic and manual save game backup via FTP
-- Standalone FTP window for connection management
-- Settings modal with auto-backup, auto-purge, Windows notifications and startup with system
-- Multi-language support (Spanish / English)
-- Theme and visual customization system
-- Built-in update checker
-- Portable build for Windows 10/11 x64 (no installation required)
+*EDR-Vault is free and open source — MIT License.*
+*Releases and source: https://github.com/EDR23/EDR-VAULT*

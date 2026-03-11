@@ -149,6 +149,7 @@ ipcMain.handle('show-game-ctx-menu', async (_, { gameId, gameName, isRunning, is
 });
 
 // ── CLOSE DIALOG ─────────────────────────────────────────
+let _quitPending = false;
 function showCloseDialog() {
   dialog.showMessageBox(mainWindow, {
     type: 'question',
@@ -171,11 +172,21 @@ function showCloseDialog() {
         });
       }
     } else {
-      isQuitting = true;
-      app.quit();
+      // Ask renderer to run backup-on-close if enabled, then confirm quit
+      _quitPending = true;
+      mainWindow.webContents.send('before-exit');
+      // Safety timeout: force quit after 45s if renderer doesn't respond
+      setTimeout(() => { if (_quitPending) { isQuitting = true; app.quit(); } }, 45000);
     }
   });
 }
+
+// Renderer calls this when it's done with pre-quit tasks
+ipcMain.handle('confirm-quit', () => {
+  _quitPending = false;
+  isQuitting = true;
+  app.quit();
+});
 
 app.whenReady().then(createWindow);
 
@@ -374,12 +385,14 @@ function makeFtpClient() {
 
 async function ftpConnect(client, cfg) {
   if (!cfg || !cfg.host) throw new Error('FTP not configured');
+  const secureMode = cfg.secure === true || cfg.secure === 'true';
   await client.access({
     host:     cfg.host,
-    port:     parseInt(cfg.port) || 21,
+    port:     parseInt(cfg.port) || (secureMode ? 990 : 21),
     user:     cfg.user,
     password: cfg.password,
-    secure:   false,
+    secure:   secureMode,
+    secureOptions: secureMode ? { rejectUnauthorized: false } : undefined,
   });
   const remotePath = (cfg.remotePath || '/vault-saves').replace(/\\/g, '/');
   await client.ensureDir(remotePath);
@@ -565,8 +578,12 @@ ipcMain.handle('scan-save-folder', async (_, gameName) => {
     path.join(home, 'Documents', 'My Games'),
     path.join(home, 'Documents'),
     path.join(home, 'Saved Games'),
+    path.join(home, 'OneDrive', 'Documents', 'My Games'),
+    path.join(home, 'OneDrive', 'Saved Games'),
     'C:\\Program Files (x86)\\Steam\\userdata',
     'C:\\Program Files\\Steam\\userdata',
+    'D:\\SteamLibrary\\userdata',
+    'D:\\Steam\\userdata',
   ];
   function scoreName(dirName) {
     const dn = dirName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -634,6 +651,67 @@ ipcMain.handle('purge-ftp-backups', async (_, { cfg, keepCount = 3 }) => {
   finally { client.close(); }
 });
 
+// ── CONFIG BACKUP LISTING ──────────────────────────────────
+ipcMain.handle('list-config-backups', async (_, { cfg }) => {
+  const client = makeFtpClient();
+  try {
+    const remotePath = await ftpConnect(client, cfg);
+    const list = await client.list(remotePath);
+    const files = list
+      .filter(f => f.type !== 2 && f.name.startsWith('vault_config_') && f.name.endsWith('.json'))
+      .sort((a, b) => { const da = a.modifiedAt ? new Date(a.modifiedAt) : new Date(0); const db = b.modifiedAt ? new Date(b.modifiedAt) : new Date(0); return db - da; })
+      .map(f => ({ id: f.name, name: f.name, size: f.size || 0, date: f.modifiedAt ? f.modifiedAt.toISOString() : '' }));
+    return { success: true, files };
+  } catch(e) { return { success: false, error: e.message }; }
+  finally { client.close(); }
+});
+
+ipcMain.handle('download-config-backup', async (_, { cfg, filename }) => {
+  const client = makeFtpClient();
+  try {
+    const remotePath = await ftpConnect(client, cfg);
+    const tmpPath = path.join(app.getPath('temp'), filename);
+    await client.downloadTo(tmpPath, remotePath + '/' + filename);
+    const data = require('fs').readFileSync(tmpPath, 'utf-8');
+    try { require('fs').unlinkSync(tmpPath); } catch(e) {}
+    return { success: true, data };
+  } catch(e) { return { success: false, error: e.message }; }
+  finally { client.close(); }
+});
+
+// ── CONFIG BACKUP / PURGE TO FTP ─────────────────────────
+ipcMain.handle('backup-config-to-ftp', async (_, { cfg, jsonStr }) => {  const client = makeFtpClient();
+  try {
+    const remotePath = await ftpConnect(client, cfg);
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+    const filename = `vault_config_${stamp}.json`;
+    const { Readable } = require('stream');
+    const readable = Readable.from(Buffer.from(jsonStr, 'utf-8'));
+    await client.uploadFrom(readable, remotePath + '/' + filename);
+    return { success: true, filename };
+  } catch(e) { return { success: false, error: e.message }; }
+  finally { client.close(); }
+});
+
+ipcMain.handle('purge-config-backups', async (_, { cfg, keepCount = 3 }) => {
+  const client = makeFtpClient();
+  try {
+    const remotePath = await ftpConnect(client, cfg);
+    const list = await client.list(remotePath);
+    const cfgFiles = list
+      .filter(f => f.type !== 2 && f.name.startsWith('vault_config_') && f.name.endsWith('.json'))
+      .map(f => ({ name: f.name, date: f.modifiedAt || new Date(0) }))
+      .sort((a, b) => b.date - a.date);
+    const toDelete = cfgFiles.slice(keepCount);
+    let deleted = 0;
+    for (const f of toDelete) {
+      try { await client.remove(remotePath + '/' + f.name); deleted++; } catch(e) {}
+    }
+    return { success: true, deleted, total: cfgFiles.length, kept: Math.min(cfgFiles.length, keepCount) };
+  } catch(e) { return { success: false, error: e.message }; }
+  finally { client.close(); }
+});
+
 ipcMain.handle('restore-backup', async (_, { tmpPath, restorePath }) => {
   if (!fs.existsSync(tmpPath)) return { success:false, error:'Temp file not found' };
   try { fs.mkdirSync(restorePath, { recursive:true }); } catch(e){}
@@ -645,6 +723,14 @@ ipcMain.handle('restore-backup', async (_, { tmpPath, restorePath }) => {
   });
 });
 
+ipcMain.handle('write-clipboard', (_, text) => {
+  const { clipboard } = require('electron');
+  clipboard.writeText(String(text));
+  return true;
+});
+
+ipcMain.handle('get-app-version', () => app.getVersion());
+
 ipcMain.handle('ensure-save-path', async (_, savePath) => {
   try {
     fs.mkdirSync(savePath, { recursive: true });
@@ -652,4 +738,73 @@ ipcMain.handle('ensure-save-path', async (_, savePath) => {
   } catch(e) {
     return { success: false, error: e.message };
   }
+});
+
+// ── IMPORT / EXPORT CONFIG ────────────────────────────────
+ipcMain.handle('export-config', async (_, jsonStr) => {
+  const { filePath } = await dialog.showSaveDialog(mainWindow, {
+    title: 'Export EDR-Vault Config',
+    defaultPath: `EDR-Vault-backup-${new Date().toISOString().slice(0,10)}.json`,
+    filters: [{ name: 'JSON', extensions: ['json'] }]
+  });
+  if (!filePath) return { success: false, cancelled: true };
+  try {
+    fs.writeFileSync(filePath, jsonStr, 'utf-8');
+    return { success: true, filePath };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
+});
+
+ipcMain.handle('import-config', async () => {
+  const { filePaths } = await dialog.showOpenDialog(mainWindow, {
+    title: 'Import EDR-Vault Config',
+    filters: [{ name: 'JSON', extensions: ['json'] }],
+    properties: ['openFile']
+  });
+  if (!filePaths || !filePaths[0]) return { success: false, cancelled: true };
+  try {
+    const raw = fs.readFileSync(filePaths[0], 'utf-8');
+    const data = JSON.parse(raw);
+    return { success: true, data };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
+});
+
+// ── ACTIVITY LOG ─────────────────────────────────────────
+const logPath = path.join(app.getPath('userData'), 'vault_activity.json');
+
+ipcMain.handle('write-activity-log', (_, entry) => {
+  try {
+    let entries = [];
+    if (fs.existsSync(logPath)) {
+      try { entries = JSON.parse(fs.readFileSync(logPath, 'utf-8')); } catch(e) {}
+    }
+    entries.unshift({ date: new Date().toISOString(), msg: entry });
+    if (entries.length > 500) entries = entries.slice(0, 500);
+    fs.writeFileSync(logPath, JSON.stringify(entries), 'utf-8');
+    return true;
+  } catch(e) { return false; }
+});
+
+ipcMain.handle('read-activity-log', () => {
+  try {
+    if (!fs.existsSync(logPath)) return [];
+    return JSON.parse(fs.readFileSync(logPath, 'utf-8'));
+  } catch(e) { return []; }
+});
+
+ipcMain.handle('open-log-window', async (_, lang) => {
+  const win = new BrowserWindow({
+    width: 620, height: 540,
+    title: lang === 'es' ? 'Registro de Actividad — EDR-Vault' : 'Activity Log — EDR-Vault',
+    backgroundColor: '#0d1117',
+    frame: false,
+    resizable: true,
+    minimizable: true,
+    webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js') }
+  });
+  win.loadFile(path.join(__dirname, 'log.html'));
+  return true;
 });

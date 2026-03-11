@@ -110,6 +110,10 @@
       <label><span id="txt-lbl-path">Remote Path</span> <span style="color:#374151;font-weight:400;text-transform:none;letter-spacing:0" id="txt-lbl-path-hint">(folder on server)</span></label>
       <input class="inp" id="inp-path" type="text" placeholder="/vault-saves"/>
     </div>
+    <div class="field" style="display:flex;align-items:center;gap:10px;padding:7px 0">
+      <input type="checkbox" id="inp-secure" style="width:15px;height:15px;accent-color:#3b82f6;cursor:pointer;flex-shrink:0"/>
+      <label for="inp-secure" style="font-size:11px;color:#94a3b8;cursor:pointer;user-select:none"><strong id="txt-lbl-secure" style="color:#e2e8f0">FTPS (TLS)</strong> — <span id="txt-lbl-secure-hint">Encrypted connection. Port defaults to 990.</span></label>
+    </div>
 
     <div class="btn-row">
       <button class="btn-test" id="btn-test" onclick="testConnection()">Test Connection</button>
@@ -125,8 +129,8 @@
 
 <script>
 const FTP_STR = {
-  en:{title:'FTP Backup',sub:'Configure your FTP server to store game save backups. Files are uploaded directly to your server.',cardName:'FTP Server',cardDesc:'Upload save backups to your own server',notCfg:'Not configured',configured:'Configured',lblHost:'Host / Server',lblPort:'Port',lblUser:'Username',lblPass:'Password',lblPath:'Remote Path',lblPathHint:'(folder on server)',btnTest:'Test Connection',btnSave:'Save & Connect',btnDisc:'Disconnect',btnDone:'Done',discConfirm:'Remove FTP configuration?',validErr:'Please fill in Host, Username and Password.',connecting:'Connecting to FTP server…',connOk:'Connection successful!',connFail:'Connection failed: ',testing:'Testing connection…',savedOk:'FTP server saved! Backups will upload to ',couldNot:'Could not connect: ',removed:'FTP configuration removed.',apiErr:'API not available. Reinstall the app.'},
-  es:{title:'Backup FTP',sub:'Configura tu servidor FTP para almacenar backups de partidas. Los archivos se suben directamente a tu servidor.',cardName:'Servidor FTP',cardDesc:'Sube backups de partidas a tu propio servidor',notCfg:'No configurado',configured:'Configurado',lblHost:'Host / Servidor',lblPort:'Puerto',lblUser:'Usuario',lblPass:'Contraseña',lblPath:'Ruta Remota',lblPathHint:'(carpeta en el servidor)',btnTest:'Probar Conexión',btnSave:'Guardar y Conectar',btnDisc:'Desconectar',btnDone:'Listo',discConfirm:'¿Eliminar la configuración FTP?',validErr:'Por favor rellena Host, Usuario y Contraseña.',connecting:'Conectando al servidor FTP…',connOk:'¡Conexión exitosa!',connFail:'Falló la conexión: ',testing:'Probando conexión…',savedOk:'¡Servidor FTP guardado! Los backups se subirán a ',couldNot:'No se pudo conectar: ',removed:'Configuración FTP eliminada.',apiErr:'API no disponible. Reinstala la aplicación.'}
+  en:{title:'FTP Backup',sub:'Configure your FTP server to store game save backups. Files are uploaded directly to your server.',cardName:'FTP Server',cardDesc:'Upload save backups to your own server',notCfg:'Not configured',configured:'Configured',lblHost:'Host / Server',lblPort:'Port',lblUser:'Username',lblPass:'Password',lblPath:'Remote Path',lblPathHint:'(folder on server)',lblSecure:'FTPS (TLS)',lblSecureHint:'Encrypted connection. Port defaults to 990.',btnTest:'Test Connection',btnSave:'Save & Connect',btnDisc:'Disconnect',btnDone:'Done',discConfirm:'Remove FTP configuration?',validErr:'Please fill in Host, Username and Password.',connecting:'Connecting to FTP server…',connOk:'Connection successful!',connFail:'Connection failed: ',testing:'Testing connection…',savedOk:'FTP server saved! Backups will upload to ',couldNot:'Could not connect: ',removed:'FTP configuration removed.',apiErr:'API not available. Reinstall the app.'},
+  es:{title:'Backup FTP',sub:'Configura tu servidor FTP para almacenar backups de partidas. Los archivos se suben directamente a tu servidor.',cardName:'Servidor FTP',cardDesc:'Sube backups de partidas a tu propio servidor',notCfg:'No configurado',configured:'Configurado',lblHost:'Host / Servidor',lblPort:'Puerto',lblUser:'Usuario',lblPass:'Contraseña',lblPath:'Ruta Remota',lblPathHint:'(carpeta en el servidor)',lblSecure:'FTPS (TLS)',lblSecureHint:'Conexión cifrada. El puerto por defecto es 990.',btnTest:'Probar Conexión',btnSave:'Guardar y Conectar',btnDisc:'Desconectar',btnDone:'Listo',discConfirm:'¿Eliminar la configuración FTP?',validErr:'Por favor rellena Host, Usuario y Contraseña.',connecting:'Conectando al servidor FTP…',connOk:'¡Conexión exitosa!',connFail:'Falló la conexión: ',testing:'Probando conexión…',savedOk:'¡Servidor FTP guardado! Los backups se subirán a ',couldNot:'No se pudo conectar: ',removed:'Configuración FTP eliminada.',apiErr:'API no disponible. Reinstala la aplicación.'}
 };
 
 const urlLang = new URLSearchParams(window.location.search).get('lang') || 'en';
@@ -144,11 +148,20 @@ const L = FTP_STR[urlLang] || FTP_STR.en;
   document.getElementById('txt-lbl-pass').textContent     = L.lblPass;
   document.getElementById('txt-lbl-path').textContent     = L.lblPath;
   document.getElementById('txt-lbl-path-hint').textContent= L.lblPathHint;
+  document.getElementById('txt-lbl-secure').textContent   = L.lblSecure;
+  document.getElementById('txt-lbl-secure-hint').textContent = L.lblSecureHint;
   document.getElementById('btn-test').textContent         = L.btnTest;
   document.getElementById('btn-save').textContent         = L.btnSave;
   document.getElementById('btn-disc').textContent         = L.btnDisc;
   document.getElementById('btn-done').textContent         = L.btnDone;
 })();
+
+// Auto-toggle port when FTPS checkbox changes
+document.getElementById('inp-secure').addEventListener('change', function() {
+  const portEl = document.getElementById('inp-port');
+  if (this.checked && (!portEl.value || portEl.value === '21')) portEl.value = '990';
+  else if (!this.checked && (!portEl.value || portEl.value === '990')) portEl.value = '21';
+});
 
 function waitForAPI(cb){if(window.cloudAPI){cb();return;}let t=0;const id=setInterval(()=>{t++;if(window.cloudAPI){clearInterval(id);cb();}else if(t>40){clearInterval(id);showErr(L.apiErr);}},50);}
 let S={};
@@ -156,9 +169,9 @@ function doClose(){if(window.cloudAPI)window.cloudAPI.close();else window.close(
 function showStatus(type,msg){const el=document.getElementById('status');el.className='show '+type;document.getElementById('status-text').textContent=msg;document.getElementById('status-icon').innerHTML=type==='loading'?'<span class="spin">&#9696;</span>':type==='ok'?'✓':'✕';if(type!=='loading')setTimeout(()=>el.classList.remove('show'),4500);}
 function showErr(m){showStatus('err',m);}
 function setLoading(on){document.getElementById('btn-test').disabled=on;document.getElementById('btn-save').disabled=on;}
-function getCfg(){return{host:document.getElementById('inp-host').value.trim(),port:document.getElementById('inp-port').value.trim()||'21',user:document.getElementById('inp-user').value.trim(),password:document.getElementById('inp-pass').value,remotePath:document.getElementById('inp-path').value.trim()||'/vault-saves'};}
+function getCfg(){return{host:document.getElementById('inp-host').value.trim(),port:document.getElementById('inp-port').value.trim()||'21',user:document.getElementById('inp-user').value.trim(),password:document.getElementById('inp-pass').value,remotePath:document.getElementById('inp-path').value.trim()||'/vault-saves',secure:document.getElementById('inp-secure').checked};}
 function validateFields(){let ok=true;['inp-host','inp-user','inp-pass'].forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('err');setTimeout(()=>el.classList.remove('err'),600);ok=false;}});if(!ok)showErr(L.validErr);return ok;}
-function updateUI(){const cfg=S.ftp;const conn=!!(cfg&&cfg.host);document.getElementById('badge-ftp').className='badge '+(conn?'badge-on':'badge-off');document.getElementById('badge-ftp-text').textContent=conn?L.configured:L.notCfg;document.getElementById('ci-ftp').classList.toggle('show',conn);document.getElementById('card-ftp').classList.toggle('connected',conn);document.getElementById('btn-disc').style.display=conn?'block':'none';if(conn){document.getElementById('ci-ftp-host').textContent=cfg.user+'@'+cfg.host+':'+(cfg.port||21)+(cfg.remotePath||'/vault-saves');document.getElementById('inp-host').value=cfg.host;document.getElementById('inp-port').value=cfg.port||21;document.getElementById('inp-user').value=cfg.user;document.getElementById('inp-pass').value=cfg.password||'';document.getElementById('inp-path').value=cfg.remotePath||'/vault-saves';}}
+function updateUI(){const cfg=S.ftp;const conn=!!(cfg&&cfg.host);document.getElementById('badge-ftp').className='badge '+(conn?'badge-on':'badge-off');document.getElementById('badge-ftp-text').textContent=conn?L.configured:L.notCfg;document.getElementById('ci-ftp').classList.toggle('show',conn);document.getElementById('card-ftp').classList.toggle('connected',conn);document.getElementById('btn-disc').style.display=conn?'block':'none';if(conn){document.getElementById('ci-ftp-host').textContent=cfg.user+'@'+cfg.host+':'+(cfg.port||21)+(cfg.remotePath||'/vault-saves')+(cfg.secure?' [TLS]':'');document.getElementById('inp-host').value=cfg.host;document.getElementById('inp-port').value=cfg.port||21;document.getElementById('inp-user').value=cfg.user;document.getElementById('inp-pass').value=cfg.password||'';document.getElementById('inp-path').value=cfg.remotePath||'/vault-saves';document.getElementById('inp-secure').checked=!!cfg.secure;}}
 async function testConnection(){if(!validateFields())return;setLoading(true);showStatus('loading',L.connecting);const r=await window.cloudAPI.ftpTest(getCfg());setLoading(false);if(r.success)showStatus('ok',L.connOk);else showErr(L.connFail+(r.error||'Unknown error'));}
 async function saveConfig(){if(!validateFields())return;setLoading(true);showStatus('loading',L.testing);const cfg=getCfg();const r=await window.cloudAPI.ftpTest(cfg);setLoading(false);if(!r.success){showErr(L.couldNot+(r.error||'Unknown error'));return;}S.ftp=cfg;S.provider='ftp';await window.cloudAPI.saveSettings(S);updateUI();showStatus('ok',L.savedOk+cfg.host);}
 async function disconnect(){if(!confirm(L.discConfirm))return;delete S.ftp;S.provider=null;await window.cloudAPI.saveSettings(S);updateUI();showStatus('ok',L.removed);}
