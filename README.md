@@ -131,7 +131,6 @@ You can verify the release binary on VirusTotal:
 
 [**View scan on VirusTotal — v1.2.0**](https://www.virustotal.com/gui/file/93cc056092ab0f7d988c08cac5ba5d46393e1b904685be3dd37c356bb45ea9c5?nocache=1)
 
-The source code is fully open — build it yourself with `BUILD.bat` if you prefer.
 
 ---
 
