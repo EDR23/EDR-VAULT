@@ -123,54 +123,6 @@ In Settings → Backup, toggle **Auto-Backup** on and pick an interval. EDR-Vaul
 
 ---
 
-## Building from Source
-
-```bash
-# Clone the repo
-git clone https://github.com/EDR23/EDR-VAULT.git
-cd EDR-VAULT
-
-# Install dependencies
-npm install
-
-# Run in development
-npm start
-
-# Build portable .exe (Windows x64)
-npm run build
-```
-
-Or double-click **BUILD.bat** — it wipes `node_modules` and `dist`, installs dependencies, and builds the portable in one step.
-
-> **Dependencies:** `basic-ftp` · `electron` · `electron-builder`
-
----
-
-## Repository Structure
-
-```
-EDR-VAULT/
-├── main.js               # Electron main process & IPC bootstrap
-├── preload.js            # Context bridge (renderer ↔ main)
-├── preload-ftp.js        # Context bridge for FTP window
-├── preload-cover.js      # Context bridge for Cover Search window
-├── index.html            # Main UI — entire renderer in one file
-├── ftp.html              # FTP configuration window
-├── cover-search.html     # Cover Search window
-├── ipc/
-│   ├── games.js          # Game library IPC handlers
-│   ├── ftp.js            # FTP backup/restore IPC handlers
-│   ├── settings.js       # Settings, startup task, encryption
-│   └── updater.js        # Update checker & cover search API
-├── icon.ico
-├── package.json
-├── BUILD.bat             # One-click build script
-├── CHANGELOG.md
-└── CHANGELOG.es.md
-```
-
----
-
 ## Security & Antivirus
 
 EDR-Vault is an unsigned portable Electron app. Some antivirus engines flag unsigned Electron portables as potentially unwanted — this is a **false positive** common to all unsigned Electron builds.
