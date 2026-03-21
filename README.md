@@ -29,7 +29,7 @@ No installation. No account required. No subscription. Just your games, your sav
 ## Features
 
 ### Library Management
-- Add any game with a custom name, cover art, and executable path
+- Add any game with a custom name and executable path
 - Launch games directly from the app and track playtime automatically
 - **Executable health monitor** — checks every 5 minutes whether each game's `.exe` still exists; shows a warning badge if it disappears (useful after Steam updates or moves)
 - Search, sort and filter your library instantly
@@ -48,22 +48,17 @@ No installation. No account required. No subscription. Just your games, your sav
 - Assign a save-data folder to each game
 - **Manual backup** — one-click zip & upload to your FTP server
 - **Auto-backup** — schedule backups every 20–60 minutes (or custom interval)
-- **Differential backup** — skips games and covers unchanged since the last upload
+- **Differential backup** — skips games unchanged since the last upload
 - Auto-backup also uploads a full **config snapshot** on every cycle
 - **FTPS support** — FTP over TLS for encrypted connections
 - Configurable auto-purge — keeps only the backups you want per game
-- **Independent item selection** — choose to back up Saves, Config and Covers independently
+- **Independent item selection** — choose to back up Saves and Config independently
 
 ### Backups Panel
 - Unified chronological list of all save backups and config snapshots
 - Filter chips: **All · Saves · Config** with live count badges
 - **One-click restore** — download and extract any backup
 - Delete individual backups directly from the panel
-
-### Cover Art
-- Built-in **Cover Search** window — Bing HD image search without leaving the app
-- Drag-and-drop or paste covers from clipboard
-- Cover differential backup — only re-uploads if the image actually changed
 
 ### Themes
 12 built-in animated and static themes with live preview:
@@ -102,7 +97,7 @@ No installation. No account required. No subscription. Just your games, your sav
 Download **EDR-Vault-Portable.exe** from [GitHub Releases](https://github.com/EDR23/EDR-VAULT/releases/latest) or [MEGA](https://mega.nz/folder/Wk1llCaZ#HReYn_KrsIQEe4kq68-lUw). Double-click it — no setup wizard, no registry entries.
 
 ### 2 — Add Your First Game
-Click the **`+`** button at the bottom of the game list, enter a name, browse for the `.exe`, and optionally attach a cover image and save-data folder path.
+Click the **`+`** button at the bottom of the game list, enter a name and browse for the `.exe`. Optionally assign a save-data folder path.
 
 ### 3 — Set Up FTP Backup
 Open Settings → FTP Configuration and enter your server credentials. A free FTP host with no credit card required is available at [ftpgrid.com](https://ftpgrid.com).
@@ -131,7 +126,6 @@ You can verify the release binary on VirusTotal:
 
 [**View scan on VirusTotal — v1.2.0**](https://www.virustotal.com/gui/file/93cc056092ab0f7d988c08cac5ba5d46393e1b904685be3dd37c356bb45ea9c5?nocache=1)
 
-
 ---
 
 ## Changelog
@@ -142,7 +136,7 @@ See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 - Annual 52-week heatmap + per-game Last 4 Weeks heatmap
 - Executable health monitor with warning badge
 - Windows startup via Task Scheduler (works on hardened Windows 11 LTSC)
-- GitHub Releases download button alongside MEGA
+- GitHub Releases download alongside MEGA
 - 20+ bug fixes across heatmaps, animations, backups and UI
 
 ---
