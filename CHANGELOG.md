@@ -1,5 +1,14 @@
 # Changelog — EDR-Vault
 
+## [v1.2.1] — 2026-03-24
+
+### Added
+- **New 3D animated theme: Synthwave** — neon pink retrowave grid with converging perspective lines, cyberpunk city silhouette, and pulsing magenta horizon glow.
+
+### Fixed
+- **Restore failed with "MissingEndCurlyBrace"** — A PowerShell `#` comment embedded inside a single-line `-Command` string commented out everything after it, including the closing `}` of the `foreach` block, causing a parser error on every restore attempt.
+- **Renaming backups did not persist** — The `rename-ftp-file` IPC handler was the only FTP write operation that did not call `invalidateListCache()`. The 10-second cache kept returning the old filename on the next list load, making the rename appear to have no effect. In some cases it also caused an error when renaming the same file a second time, because the original name no longer existed on the server.
+
 ## [v1.2.0] — 2026-03-22
 
 ### Added
