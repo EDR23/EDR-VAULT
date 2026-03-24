@@ -1,152 +1,201 @@
 <div align="center">
 
+<img src="icon.ico" width="80" alt="EDR-Vault logo"/>
+
 # EDR-Vault
 
-**Personal Game Library & Save Backup Manager**
+**Portable game library & save backup manager for Windows**
 
-![Version](https://img.shields.io/badge/version-1.2.0-blue?style=flat-square)
-![Platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011%20x64-lightgrey?style=flat-square&logo=windows)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Electron](https://img.shields.io/badge/built%20with-Electron-47848f?style=flat-square&logo=electron)](https://www.electronjs.org/)
-![Portable](https://img.shields.io/badge/portable-no%20install%20needed-orange?style=flat-square)
+[![Version](https://img.shields.io/badge/version-v1.2.1-blue?style=for-the-badge)](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[![Platform](https://img.shields.io/badge/Windows-10%20%2F%2011%20x64-0078d4?style=for-the-badge&logo=windows)](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[![License](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)](LICENSE)
+[![VirusTotal](https://img.shields.io/badge/VirusTotal-Clean-brightgreen?style=for-the-badge&logo=virustotal)](https://www.virustotal.com/gui/file/ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3)
+[![Electron](https://img.shields.io/badge/Electron-Portable-47848f?style=for-the-badge&logo=electron)](https://github.com/EDR23/EDR-VAULT/releases/latest)
 
-*Organise every game you own. Back up your saves to your own FTP server. Restore with one click.*
-
-[**⬇ Download from GitHub**](https://github.com/EDR23/EDR-VAULT/releases/latest) · [**⬇ Download from MEGA**](https://mega.nz/folder/Wk1llCaZ#HReYn_KrsIQEe4kq68-lUw) · [Changelog](CHANGELOG.md)
+**[⬇️ Download latest](https://github.com/EDR23/EDR-VAULT/releases/latest)** &nbsp;·&nbsp; **[📋 Changelog](CHANGELOG.md)** &nbsp;·&nbsp; **[🐛 Report a bug](https://github.com/EDR23/EDR-VAULT/issues)**
 
 </div>
 
 ---
 
-## What is EDR-Vault?
+## 🗂️ What is EDR-Vault?
 
-EDR-Vault is a **portable, single-file Electron app** for Windows that gives you a clean unified view of your entire game collection — regardless of platform or store. Organise your library, track playtime, visualise your activity, and keep your save files safely backed up to your own FTP server with automatic scheduling and one-click restore.
+EDR-Vault is a **zero-install, single-file portable application** for Windows that lets you manage your entire game library and automatically back up your save files to a personal FTP server — no cloud accounts, no subscriptions, no bloat. Everything stays on your own server.
 
-No installation. No account required. No subscription. Just your games, your saves, your server.
-
----
-
-## Features
-
-### Library Management
-- Add any game with a custom name and executable path
-- Launch games directly from the app and track playtime automatically
-- **Executable health monitor** — checks every 5 minutes whether each game's `.exe` still exists; shows a warning badge if it disappears (useful after Steam updates or moves)
-- Search, sort and filter your library instantly
-- Mark games as **Favourites** for quick access
-- Add personal notes to any game
-- **3D Drum Wheel** random game picker with physics easing and animated countdown
-- Keyboard shortcuts: `/` to search · `Space` to launch · `F` to favourite
-
-### Activity & Stats
-- **Annual heatmap** (Global Stats) — 52-week GitHub-style activity grid with year selector, hover tooltip and intensity legend
-- **Last 4 Weeks heatmap** per game — 4-column × 7-row Mon–Sun grid with today highlighted
-- Live session timer in the titlebar while a game is running
-- Library stats bar — total games, total playtime and FTP status at a glance
-
-### Save Game Backups (FTP)
-- Assign a save-data folder to each game
-- **Manual backup** — one-click zip & upload to your FTP server
-- **Auto-backup** — schedule backups every 20–60 minutes (or custom interval)
-- **Differential backup** — skips games unchanged since the last upload
-- Auto-backup also uploads a full **config snapshot** on every cycle
-- **FTPS support** — FTP over TLS for encrypted connections
-- Configurable auto-purge — keeps only the backups you want per game
-- **Independent item selection** — choose to back up Saves and Config independently
-
-### Backups Panel
-- Unified chronological list of all save backups and config snapshots
-- Filter chips: **All · Saves · Config** with live count badges
-- **One-click restore** — download and extract any backup
-- Delete individual backups directly from the panel
-
-### Themes
-12 built-in animated and static themes with live preview:
-`Obsidian` · `Jungle` · `Ember` · `Aurora` · `Storm` · `Dawn` · `Sangre` · `Galaxy` · `Void Rift` · `Solar Flare` · `Abyss` · `Ghost OS`
-
-### Settings & Customisation
-- **Language** — English / Español, switch instantly without restart
-- **Auto-Backup** — toggle and set interval with live countdown status box
-- **Auto-Purge** — keep your FTP tidy automatically
-- **FTP Configuration** — host, port, user, encrypted password, remote path, FTPS toggle
-- **Startup with Windows** — creates a Task Scheduler entry (`OnLogon`, no installer needed)
-- **Auto-Update Check** — manual or automatic with customisable interval
-- Per-tab Apply button — changes require explicit confirmation before saving
-
-### Updates
-- Checks for new versions via MEGA and GitHub Releases
-- Titlebar badge pulses when a new version is found — click to choose **MEGA** or **GitHub** download
-- Silent check at launch + background check on a configurable schedule
+> **Just drop the `.exe` and run.** No setup wizard, no dependencies, no admin rights required.
 
 ---
 
-## Requirements
+## ✨ Features at a glance
+
+### 🎮 Game Library
+| Feature | Details |
+|---|---|
+| **Add any game** | Point to any `.exe` — Steam, GOG, Epic, emulators, anything |
+| **Launch from app** | Launch with optional custom arguments |
+| **Playtime tracking** | Automatic session timer, total hours, session history |
+| **Activity heatmaps** | 52-week GitHub-style annual heatmap + Last 4 Weeks per-game grid |
+| **Executable health** | Checks every 5 min if the `.exe` still exists — red badge if missing |
+| **Cover art** | Built-in Bing HD cover search, drag-and-drop custom covers |
+| **Notes** | Per-game freeform notes |
+| **Favorites & Categories** | Pin games, filter by category, recent, backups |
+| **🎲 Random Game** | 3D drum-wheel case-opening roll that picks from your installed games |
+
+### 💾 Save Backup System
+| Feature | Details |
+|---|---|
+| **Manual backup** | One click — zips saves and uploads to FTP |
+| **Auto-backup** | Scheduled every 20–60 min while the app is open |
+| **Differential backup** | Skips games with no save changes since last upload |
+| **Auto-restore** | Download any backup and extract to the original save path |
+| **Auto-purge** | Keep only N most recent backups per game (configurable) |
+| **Config snapshots** | Backs up your entire EDR-Vault library config to FTP |
+| **FTPS support** | FTP over TLS for encrypted transfers |
+| **Backup on close** | Optional: backs up everything when you exit the app |
+
+### 🌐 FTP Manager
+- Visual connection status badge in titlebar
+- Upload/download progress bar
+- Persistent red error badge after 3 consecutive failures
+- Rename, delete and restore individual backups from the UI
+- FTP size stats per-game and total usage
+
+### 🎨 Themes — 20+ skins including 16 animated 3D
+
+<details>
+<summary><b>Click to expand full theme list</b></summary>
+
+#### Static themes
+| ID | Name |
+|---|---|
+| `abismo` | Abyss Dark |
+| `sangre` | Blood Moon |
+| `default` | Default |
+| `galaxy` | Galaxy ✨ |
+| `macos` | macOS Dark |
+| `android` | Android Material You |
+| `plasma` | Plasma |
+
+#### 3D Animated themes
+| ID | Name | Style |
+|---|---|---|
+| `holograma` | Hologram | Cyan cyberpunk holographic grid |
+| `synth` | **Synthwave** 🆕 | Neon pink retrowave grid + city skyline |
+| `obsidian` | Obsidian | Volcanic glass, deep purple shimmer |
+| `forja` | Forge | Molten metal, red-hot glow |
+| `matrix` | Matrix | Digital rain, classic green CRT |
+| `aurora3d` | Aurora Borealis | Polar lights, dancing curtains |
+| `dusk` | Dusk | Twilight sky, amber horizon |
+| `cybgrid` | Cyber Grid | Tron-style neon data highway |
+| `inferno` | Inferno | Raging flame vortex |
+| `arctic` | Arctic | Frozen tundra, ice crystal shimmer |
+| `slate` | Slate | Storm sky, electric teal |
+| `voidrift` | Void Rift | Dark matter waves, gravitational lensing |
+| `solarflare` | Solar Flare | Coronal mass ejection, magnetic arcs |
+| `abyss` | Abyss | Deep ocean bioluminescence |
+| `phantom` | Phantom | Interdimensional ghost interference grid |
+| `ghostos` | Ghost OS | Silver kanji rain — Matrix × Apple × Fluent |
+
+</details>
+
+### ⌨️ Keyboard Shortcuts
+| Key | Action |
+|---|---|
+| `/` | Focus search bar |
+| `Enter` | Launch selected game |
+| `E` | Edit selected game |
+| `F` | Toggle favorite |
+| `Delete` | Remove game |
+| `F12` | Open DevTools |
+| `Esc` | Close modal / cancel |
+
+---
+
+## 🚀 Getting Started
+
+### 1 — Download
+Grab **`EDR-Vault-Portable.exe`** from the [latest release](https://github.com/EDR23/EDR-VAULT/releases/latest). No installation needed.
+
+### 2 — Add your games
+Click **+ Add Game** → browse for the `.exe` → optionally set a cover, save folder and launch arguments → Save.
+
+### 3 — Configure FTP
+Go to **Settings → FTP** and enter your server credentials. Don't have a server? [ftpgrid.com](https://ftpgrid.com) offers a free FTP account.
+
+### 4 — Enable Auto-Backup
+Toggle **Auto-Backup** in Settings, choose your interval, and EDR-Vault will silently back up every game's save folder on schedule.
+
+---
+
+## 📋 Requirements
 
 | | |
 |---|---|
-| OS | Windows 10 / Windows 11 (64-bit) |
-| Installation | None — fully portable single `.exe` |
-| Admin rights | Not required (startup task requests UAC once, optional) |
-| FTP server | Your own — [ftpgrid.com](https://ftpgrid.com) offers free hosting |
+| **OS** | Windows 10 or 11 — 64-bit |
+| **Install** | None — single portable `.exe` |
+| **Admin rights** | Not required (optional for startup task) |
+| **FTP server** | Any FTP/FTPS server (e.g. [ftpgrid.com](https://ftpgrid.com) — free) |
 
 ---
 
-## Getting Started
+## 🌍 Languages
 
-### 1 — Download & Run
-Download **EDR-Vault-Portable.exe** from [GitHub Releases](https://github.com/EDR23/EDR-VAULT/releases/latest) or [MEGA](https://mega.nz/folder/Wk1llCaZ#HReYn_KrsIQEe4kq68-lUw). Double-click it — no setup wizard, no registry entries.
-
-### 2 — Add Your First Game
-Click the **`+`** button at the bottom of the game list, enter a name and browse for the `.exe`. Optionally assign a save-data folder path.
-
-### 3 — Set Up FTP Backup
-Open Settings → FTP Configuration and enter your server credentials. A free FTP host with no credit card required is available at [ftpgrid.com](https://ftpgrid.com).
-
-### 4 — Assign Save Paths & Back Up
-For each game, click **Set Path** to point EDR-Vault at the folder where that game stores its saves. Click **Backup to FTP** — the folder is zipped and uploaded automatically.
-
-### 5 — Enable Auto-Backup (optional)
-In Settings → Backup, toggle **Auto-Backup** on and pick an interval. EDR-Vault backs up all games with assigned save paths in the background on your schedule.
+| Language | Status |
+|---|---|
+| 🇬🇧 English | ✅ Full |
+| 🇪🇸 Spanish | ✅ Full |
 
 ---
 
-## Restoring Saves
+## 🛡️ VirusTotal — v1.2.1
 
-1. Click **Backups** in the top navigation bar
-2. Find the backup you want (filter by type if needed)
-3. Click **Restore** — the zip is downloaded and extracted to the correct folder
+The portable executable has been scanned and verified clean.
 
----
+> 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3)
 
-## Security & Antivirus
+```
+SHA-256  ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3
+File     EDR-Vault-Portable.exe  (v1.2.1)
+```
 
-EDR-Vault is an unsigned portable Electron app. Some antivirus engines flag unsigned Electron portables as potentially unwanted — this is a **false positive** common to all unsigned Electron builds.
-
-You can verify the release binary on VirusTotal:
-
-[**View scan on VirusTotal — v1.2.0**](https://www.virustotal.com/gui/file/93cc056092ab0f7d988c08cac5ba5d46393e1b904685be3dd37c356bb45ea9c5?nocache=1)
+> ⚠️ Some antivirus engines may flag **any** unsigned portable Electron app as potentially unwanted (PUA/heuristic). This is a known false-positive pattern for self-contained `.exe` builds — EDR-Vault contains no malicious code. The full source is available in this repository for review.
 
 ---
 
-## Changelog
+## 📦 What's new in v1.2.1
 
-See [CHANGELOG.md](CHANGELOG.md) for the full version history.
+```
+✨  New 3D animated theme: Synthwave
+🐛  Fix — Restore failed with MissingEndCurlyBrace (PowerShell # comment bug)
+🐛  Fix — Renaming backups did not persist (missing invalidateListCache)
+```
 
-**v1.2.0 highlights:**
-- Annual 52-week heatmap + per-game Last 4 Weeks heatmap
-- Executable health monitor with warning badge
-- Windows startup via Task Scheduler (works on hardened Windows 11 LTSC)
-- GitHub Releases download alongside MEGA
-- 20+ bug fixes across heatmaps, animations, backups and UI
-
----
-
-## License
-
-MIT License — free for personal and commercial use.
-You may copy, modify and distribute this software freely.
-No warranties expressed or implied.
+→ Full history in [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-<div align="center">Made with ☕</div>
+## 🏗️ Tech stack
+
+| | |
+|---|---|
+| **Runtime** | [Electron](https://www.electronjs.org/) v29 |
+| **FTP client** | [basic-ftp](https://github.com/patrickjuchli/basic-ftp) |
+| **Build** | electron-builder — portable `.exe`, no installer |
+| **Frontend** | Vanilla HTML / CSS / JS — zero frameworks |
+| **Storage** | `localStorage` via Electron renderer process |
+
+---
+
+## 📄 License
+
+MIT — free for personal and commercial use. See [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+
+Made with ❤️ by **EDR**
+
+[⬇️ Download v1.2.1](https://github.com/EDR23/EDR-VAULT/releases/latest)
+
+</div>
