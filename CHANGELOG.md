@@ -1,5 +1,34 @@
 # Changelog — EDR-Vault
 
+## [v1.2.1] — 2026-03-25
+
+### ✨ Game Roll — Complete Visual Overhaul
+
+**RetroWave background**
+The drum viewport now shows a classic retrowave scene: a perspective grid
+that scrolls toward you, a sun with horizontal stripe cutouts at the horizon,
+and 62 twinkling stars in the sky. Replaces the previous wave lines.
+
+**Stellar Burst reveal**
+When a game is selected, a new 3-phase effect fires:
+  1. 52 neon particles spiral inward in a vortex
+  2. Full-screen white flash
+  3. 4 shockwave rings expand + 18 starburst beams + 96 burst particles
+     with glowing trails + 16 orbiting halo dots
+
+### 🎨 Toolbar Buttons Redesigned
+All toolbar buttons (About, Settings, Customize, Roll) now share a unified
+cyberpunk/synthwave look: gradient backgrounds, animated shimmer sweep on
+hover, neon glow, and icon drop-shadow per button color.
+
+The Roll button gets a proper 5-dot dice icon + "Roll" label.
+
+### 🐛 Bug Fixes
+- Game cards were invisible during the drum roll (z-index layering fixed)
+- Pink horizontal stripe removed from the drum background
+
+
+
 ## [v1.2.1] — 2026-03-24
 
 ### Added
