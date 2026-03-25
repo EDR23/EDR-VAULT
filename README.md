@@ -154,8 +154,8 @@ The portable executable has been scanned and verified clean.
 > 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/3f471958c1726d1fc049d0334ae960757c2d8109caf94bdc26e0fdc3b5ed409b)
 
 ```
-SHA-256  ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3
-File     EDR-Vault-Portable.exe  (v1.2.1)
+SHA-256  3f471958c1726d1fc049d0334ae960757c2d8109caf94bdc26e0fdc3b5ed409b
+File     EDR-Vault-Portable.exe  (v1.2.2)
 ```
 
 > ⚠️ Some antivirus engines may flag **any** unsigned portable Electron app as potentially unwanted (PUA/heuristic). This is a known false-positive pattern for self-contained `.exe` builds — EDR-Vault contains no malicious code. The full source is available in this repository for review.
@@ -189,6 +189,6 @@ MIT — free for personal and commercial use. See [LICENSE](LICENSE).
 
 Made with ❤️ by **EDR**
 
-[⬇️ Download v1.2.1](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[⬇️ Download v1.2.2](https://github.com/EDR23/EDR-VAULT/releases/latest)
 
 </div>
