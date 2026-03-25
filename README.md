@@ -38,7 +38,7 @@ EDR-Vault is a **zero-install, single-file portable application** for Windows th
 | **Executable health** | Checks every 5 min if the `.exe` still exists — red badge if missing |
 | **Cover art** | Built-in Bing HD cover search, drag-and-drop custom covers |
 | **Notes** | Per-game freeform notes |
-| **Favorites & Categories** | Pin games, filter by category, recent, backups |
+| **Favorites & Categories** | Pin games, filter by recent, backups |
 | **🎲 Random Game** | 3D drum-wheel case-opening roll that picks from your installed games |
 
 ### 💾 Save Backup System
