@@ -151,10 +151,10 @@ Toggle **Auto-Backup** in Settings, choose your interval, and EDR-Vault will sil
 
 The portable executable has been scanned and verified clean.
 
-> 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/3f471958c1726d1fc049d0334ae960757c2d8109caf94bdc26e0fdc3b5ed409b)
+> 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/729760d10ecc09d1e04fda77fe0adff03904574873ac8fa0103487b4206f29cc)
 
 ```
-SHA-256  3f471958c1726d1fc049d0334ae960757c2d8109caf94bdc26e0fdc3b5ed409b
+SHA-256  729760d10ecc09d1e04fda77fe0adff03904574873ac8fa0103487b4206f29cc
 File     EDR-Vault-Portable.exe  (v1.2.2)
 ```
 
