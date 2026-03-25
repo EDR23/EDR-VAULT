@@ -6,7 +6,7 @@
 
 **Portable game library & save backup manager for Windows**
 
-[![Version](https://img.shields.io/badge/version-v1.2.1-blue?style=for-the-badge)](https://github.com/EDR23/EDR-VAULT/releases/latest)
+[![Version](https://img.shields.io/badge/version-v1.2.2-blue?style=for-the-badge)](https://github.com/EDR23/EDR-VAULT/releases/latest)
 [![Platform](https://img.shields.io/badge/Windows-10%20%2F%2011%20x64-0078d4?style=for-the-badge&logo=windows)](https://github.com/EDR23/EDR-VAULT/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)](LICENSE)
 [![VirusTotal](https://img.shields.io/badge/VirusTotal-Clean-brightgreen?style=for-the-badge&logo=virustotal)](https://www.virustotal.com/gui/file/ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3)
@@ -147,11 +147,11 @@ Toggle **Auto-Backup** in Settings, choose your interval, and EDR-Vault will sil
 
 ---
 
-## 🛡️ VirusTotal — v1.2.1
+## 🛡️ VirusTotal — v1.2.2
 
 The portable executable has been scanned and verified clean.
 
-> 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3)
+> 🔗 [View full scan report on VirusTotal](https://www.virustotal.com/gui/file/3f471958c1726d1fc049d0334ae960757c2d8109caf94bdc26e0fdc3b5ed409b)
 
 ```
 SHA-256  ba96e00859a3e26c3d498282a02a4a06f3bd158044329226df967e8d62fcbbd3
