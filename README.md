@@ -162,13 +162,6 @@ File     EDR-Vault-Portable.exe  (v1.2.1)
 
 ---
 
-## 📦 What's new in v1.2.1
-
-```
-✨  New 3D animated theme: Synthwave
-🐛  Fix — Restore failed with MissingEndCurlyBrace (PowerShell # comment bug)
-🐛  Fix — Renaming backups did not persist (missing invalidateListCache)
-```
 
 → Full history in [CHANGELOG.md](CHANGELOG.md)
 
